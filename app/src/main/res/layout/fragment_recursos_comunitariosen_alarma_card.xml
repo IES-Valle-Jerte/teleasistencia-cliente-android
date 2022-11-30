@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    tools:context=".ui.fragments.recursosComunitariosEnAlarma.RecursosComunitariosEnAlarmaCardFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineIzquierda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.01" />
+
+        <TextView
+            android:id="@+id/txtCardIdRecursoComunitarioEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id_dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtCardFechaRecursoComunitarioEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fecha_registro_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonVerRecursoComunitarioEnAlarma"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerRecursoComunitarioEnAlarma" />
+
+        <TextView
+            android:id="@+id/txtCardPersonaRecursoComunitarioEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/persona_dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/txtCardFechaRecursoComunitarioEnAlarma" />
+
+
+        <TextView
+            android:id="@+id/txtCardAlarmaRecursoComunitarioEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id_alarma_dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/txtCardPersonaRecursoComunitarioEnAlarma" />
+
+        <TextView
+            android:id="@+id/txtCardNombreRecursoComunitarioEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recurso_comunitario_dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/txtCardAlarmaRecursoComunitarioEnAlarma" />
+
+
+        <ImageButton
+            android:id="@+id/imageButtonVerRecursoComunitarioEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/imageButtonModificarRecursoComunitarioEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintBottom_toTopOf="@+id/imageButtonBorrarRecursoComunitarioEnAlarma"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerRecursoComunitarioEnAlarma"
+            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+
+        <ImageButton
+            android:id="@+id/imageButtonBorrarRecursoComunitarioEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

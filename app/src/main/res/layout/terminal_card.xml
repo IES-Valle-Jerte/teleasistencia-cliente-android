@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    tools:context=".ui.fragments.paciente.paciente_card" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineIzquierda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.01" />
+
+        <TextView
+            android:id="@+id/numTerminalCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prueba"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/modoAccesoViviendaCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/numeroExpediente"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonVerTerminal"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerTerminal" />
+
+        <TextView
+            android:id="@+id/titularTermianlCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/tieneUCR"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonModificarTerminal"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerTerminal" />
+
+        <TextView
+            android:id="@+id/tipoViviendaCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/idTerminal"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonModificarTerminal"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonModificarTerminal" />
+
+        <ImageButton
+            android:id="@+id/imageButtonVerTerminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/imageButtonModificarTerminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintBottom_toTopOf="@+id/imageButtonBorrarTerminal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerTerminal"
+            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+
+        <ImageButton
+            android:id="@+id/imageButtonBorrarTerminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

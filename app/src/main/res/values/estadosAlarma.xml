@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="estados_alarmas">
+        <item>Abierta</item>
+        <item>Cerrada</item>
+    </string-array>
+</resources>

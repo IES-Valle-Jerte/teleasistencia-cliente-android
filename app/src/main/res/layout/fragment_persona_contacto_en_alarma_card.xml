@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    tools:context=".ui.fragments.personaContactoEnAlarma.PersonaContactoEnAlarmaCardFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineIzquierda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.01" />
+
+        <TextView
+            android:id="@+id/txtCardIdPersonaContactoEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id_dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtCardFechaPersonaContactoEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fecha_registro_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonVerPersonaContactoEnAlarma"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerPersonaContactoEnAlarma" />
+
+        <TextView
+            android:id="@+id/txtCardIdAlarmaPersonaContactoEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id_alarma_dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/txtCardFechaPersonaContactoEnAlarma" />
+
+        <TextView
+            android:id="@+id/txtCardNombrePersonaContactoEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contacto_dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/txtCardIdAlarmaPersonaContactoEnAlarma" />
+
+
+        <ImageButton
+            android:id="@+id/imageButtonVerPersonaContactoEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/imageButtonModificarPersonaContactoEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintBottom_toTopOf="@+id/imageButtonBorrarPersonaContactoEnAlarma"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerPersonaContactoEnAlarma"
+            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+
+        <ImageButton
+            android:id="@+id/imageButtonBorrarPersonaContactoEnAlarma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

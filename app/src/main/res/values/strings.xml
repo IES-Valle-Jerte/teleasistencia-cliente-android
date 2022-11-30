@@ -1,0 +1,485 @@
+<resources>
+    <string name="app_name">Teleappsistencia</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- API -->
+    <string name="bearer">Bearer </string>
+
+    <!-- Nombres de los menus -->
+    <string name="menu_usuarios">Usuarios</string>
+    <string name="menu_persona">Persona</string>
+    <string name="menu_direccion">Dirección</string>
+    <string name="menu_grupos">Grupos</string>
+    <string name="menu_dispositivos_auxiliares_terminal">Dispositivos auxiliares en terminal</string>
+    <string name="menu_tipo_vivienda">Tipo de vivienda</string>
+    <string name="menu_tipo_situacion">Tipo de situación</string>
+    <string name="menu_historico_tipo_situacion">Histórico tipo de situación</string>
+
+    <!-- Nombres de los menus -->
+    <string name="menu_tipo_alarma">Tipo Alarma</string>
+    <string name="menu_clasificacion_alarma">Clasificación Alarma</string>
+    <string name="menu_alarma">Alarma</string>
+    <string name="menu_centro_sanitario_en_alarma">Centro Sanitario en Alarma</string>
+    <string name="menu_recursos_comunitarios_en_alarma">Recursos Comunitarios en Alarma</string>
+    <string name="menu_persona_de_contacto_en_alarma">Persona de contacto en Alarma</string>
+
+    <!-- Nombres de los submenus -->
+    <string name="insertar">Insertar</string>
+    <string name="listar">Listar</string>
+
+
+    <!-- *** TextViews *** -->
+
+    <!-- TextViews de uso general -->
+    <string name="nombreUsuario">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="email">Email</string>
+    <string name="sexo">Sexo</string>
+    <string name="sexo_masculino">Hombre</string>
+    <string name="sexo_femenimo">Mujer</string>
+    <string name="id_direccion">ID de la dirección</string>
+    <string name="id_historicoTipoSituacion">ID del histórico tipo de situación</string>
+    <string name="id_tipoSituacion">ID del tipo de situación</string>
+    <string name="id_dispositivoAuxiliar">ID del dispositivo auxiliar en terminal</string>
+    <string name="id_tipoAlarma">ID del tipo de alarma</string>
+    <string name="numeroTerminal">Número del terminal</string>
+    <string name="grupo">Grupo</string>
+
+
+    <!-- TextViews de datos obligatorios -->
+    <string name="textview_nombre_usuario_obligatorio">El nombre de usuario es obligatorio.</string>
+    <string name="textview_password_obligatoria">La contraseña es obligatoria.</string>
+    <string name="textview_nombre_obligatorio">El nombre es obligatorio</string>
+    <string name="textview_apellidos_obligatorios">Los apellidos son obligatorios</string>
+    <string name="textview_email_obligatorio">El email es obligatorio</string>
+    <string name="textview_fecha_obligatoria">La fecha es obligatoria</string>
+    <string name="textview_localidad_obligatoria">La localidad es obligatoria</string>
+    <string name="textview_provincia_obligatoria">La provincia es obligatoria</string>
+    <string name="textview_direccion_obligatoria">La dirección es obligatoria</string>
+    <string name="textview_codigoPostal_obligatoria">El código postal es obligatorio</string>
+    <string name="textview_dni_obligatorio">El DNI es obligatorio</string>
+    <string name="textview_dni_no_valido">El DNI no es válido</string>
+    <string name="textview_fechaNacimiento_obligatorio">La fecha de nacimiento es obligatoria</string>
+    <string name="textview_telefonoFijo_obligatorio">El teléfono fijo es obligatorio</string>
+    <string name="textview_telefonoFijo_error_longitud">El teléfono fijo debe tener 9 dígitos</string>
+    <string name="textview_telefonoFijo_error_caracter">El teléfono fijo solo puede tener dígitos</string>
+    <string name="textview_telefonoMovil_obligatorio">El teléfono móvil es obligatorio</string>
+    <string name="textview_telefonoMovil_error_longitud">El teléfono móvil debe tener 9 dígitos</string>
+    <string name="textview_telefonoMovil_error_caracter">El teléfono móvil solo puede tener dígitos</string>
+
+
+    <!-- TextViews de condiciones no cumplidas -->
+    <string name="textview_longitud_minima_nombre_usuario">El nombre de usuario debe tener al menos 4 caracteres.</string>
+
+
+    <!-- TextViews de titulos de listar -->
+    <string name="titulo_listar_tipoVivienda">Tipos de vivienda</string>
+    <string name="titulo_listar_tipoSituacion">Tipos de Situaciones</string>
+    <string name="titulo_listar_usuario">Usuarios del sistema</string>
+    <string name="titulo_listar_persona">Personas</string>
+    <string name="titulo_listar_historicoTipoSituacion">Histórico tipos de situaciones</string>
+    <string name="titulo_listar_grupo">Grupos en el sistema</string>
+    <string name="titulo_listar_dispositivoAux">Dispositivos auxiliares en terminal</string>
+    <string name="titulo_listar_direccion">Direcciones</string>
+
+
+    <!-- TextViews de insertar y modificar TipoVivienda -->
+    <string name="titulo_insertar_tipoVivienda">Crear nuevo tipo de vivienda</string>
+    <string name="titulo_modificar_tipoVivienda">Modificar datos tipo vivienda</string>
+
+
+    <!-- TextViews de insertar y modificar TipoSituacion -->
+    <string name="titulo_insertar_tipoSituacion">Crear nuevo tipo de situación</string>
+    <string name="titulo_modificar_tipoSituacion">Modificar datos tipo situacion</string>
+
+
+    <!-- TextViews de insertar y modificar Usuarios -->
+    <string name="titulo_insertar_usuarios">Crear nuevo usuario</string>
+    <string name="titulo_modificar_usuarios">Modificar datos usuario</string>
+    <string name="grupos_usuarios">Grupos</string>
+
+
+    <!-- TextViews de insertar y modificar Persona -->
+    <string name="titulo_insertar_personas">Crear nueva persona</string>
+    <string name="dni_persona">DNI</string>
+    <string name="fechaNacimiento_persona">Fecha de nacimiento</string>
+    <string name="telefonoFijo_persona">Teléfono fijo</string>
+    <string name="telefonoMovil_persona">Teléfono móvil</string>
+    <string name="titulo_modificar_personas">Modificar datos persona</string>
+
+
+    <!-- TextViews de insertar y modificar HistoricoTipoSituacion -->
+    <string name="fecha_historicoTipoSituacion">Fecha</string>
+    <string name="titulo_insertar_historicoTipoSituacion">Crear nuevo histórico tipo de situación</string>
+    <string name="titulo_modificar_historicoTipoSituacion">Modificar datos histórica tipo de situación</string>
+    <string name="terminal_historicoTipoSituacion">Terminal</string>
+    <string name="tipoSituacion_historicoTipoSituacion">Terminal</string>
+
+
+    <!-- TextViews de insertar y modificar Grupos -->
+    <string name="titulo_insertar_grupo">Crear nuevo grupo</string>
+    <string name="titulo_modificar_grupo">Modificar datos grupo</string>
+
+
+    <!-- TextViews de insertar y modificar DispositivosAuxiliares -->
+    <string name="titulo_insertar_dispositivosAux">Crear nuevo dispositivo auxiliar en terminal</string>
+    <string name="titulo_modificar_dispositivosAux">Modificar datos dispositivos auxiliares en terminal</string>
+
+
+    <!-- TextViews de insertar y modificar Direccion -->
+    <string name="titulo_insertar_direccion">Crear nueva dirección</string>
+    <string name="localidad_direccion">Localidad</string>
+    <string name="provincia_direccion">Provincia</string>
+    <string name="direccion_direccion">Dirección</string>
+    <string name="codigoPostal_direccion">Código postal</string>
+    <string name="titulo_modificar_direccion">Modificar datos dirección</string>
+
+
+    <!-- TextViews de la Activity Login -->
+    <string name="textview_iniciar_sesion">Iniciar sesión</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <!-- Datos Login. -->
+    <string name="login_nombre">Aarón Martín Jiménez</string>
+    <string name="login_correo">martinjimenezaaron@gmail.com</string>
+
+    <!-- Opciones del menú. -->
+    <string name="menu_tipoCentroSanitario">Tipo_Centro_Sanitario</string>
+    <string name="menu_tipoModalidadPaciente">Tipo_Modalidad_Paciente</string>
+    <string name="menu_centroSanitario">Centro_Sanitario</string>
+    <string name="menu_tipoRecursoComunitario">Tipo_Recurso_Comunitario</string>
+    <string name="menu_recursoComunitario">Recurso_Comunitario</string>
+    <string name="menu_insertar">Insertar</string>
+    <string name="menu_modificar">Modificar</string>
+    <string name="menu_listar">Listar</string>
+
+    <!-- Textos para TextView. -->
+    <string name="titulo_crearNuevoTipoCentroSanitario">Crear nuevo tipo centro sanitario</string>
+    <string name="titulo_crearNuevoTipoModalidadPaciente">Crear nuevo tipo modalidad paciente</string>
+    <string name="titulo_crearNuevoCentroSanitario">Crear nuevo centro sanitario</string>
+    <string name="titulo_crearNuevoTipoRecursoComunitario">Crear nuevo tipo recurso comunitario</string>
+    <string name="titulo_crearNuevoRecursoComunitario">Crear nuevo recurso comunitario</string>
+    <string name="titulo_modificarDatosTipoCentroSanitario">Modificar datos tipo centro sanitario</string>
+    <string name="titulo_modificarDatosTipoModalidadPaciente">Modificar datos tipo modalidad paciente</string>
+    <string name="titulo_modificarDatosCentroSanitario">Modificar datos centro sanitario</string>
+    <string name="titulo_modificarDatosTipoRecursoComunitario">Modificar datos tipo recurso comunitario</string>
+    <string name="titulo_modificarDatosRecursoComunitario">Modificar datos recurso comunitario</string>
+    <string name="titulo_listarDatosTipoCentroSanitario">Tipos de centros sanitarios</string>
+    <string name="titulo_listarDatosTipoModalidadPaciente">Tipos de modalidades de pacientes</string>
+    <string name="titulo_listarPacientes">Pacientes</string>
+    <string name="titulo_listarDatosCentroSanitario">Centros sanitarios</string>
+    <string name="titulo_listarDatosTipoRecursoComunitario">Tipos de recursos comunitarios</string>
+    <string name="titulo_listarDatosRecursoComunitario">Recursos comunitarios</string>
+    <string name="tipoCentroSanitario">Tipo de centro sanitario</string>
+    <string name="tipoRecursoComunitario">Tipo de recurso comunitario</string>
+    <string name="nombre">Nombre</string>
+    <string name="telefono">Teléfono</string>
+    <string name="localidad">Localidad</string>
+    <string name="provincia">Provincia</string>
+    <string name="direccion">Dirección</string>
+    <string name="codigoPostal">Código Postal</string>
+
+    <!-- Mensajes Botones. -->
+    <string name="guardar">Guardar</string>
+    <string name="volver">Volver</string>
+    <string name="modificar">Modificar datos</string>
+    <string name="visualizar">Visualizar datos</string>
+
+    <!-- Mensajes para AlertDialog. -->
+    <string name="error_nombreVacio">El nombre es obligatorio.</string>
+    <string name="error_telefonoVacio">El teléfono es obligatorio.</string>
+    <string name="error_localidadVacio">La localidad es obligatoria.</string>
+    <string name="error_provinciaVacio">La provincia es obligatoria.</string>
+    <string name="error_direccionVacio">La dirección es obligatoria.</string>
+    <string name="error_codigoPostalVacio">El código postal es obligatorio.</string>
+    <string name="espacioEnBlanco"> </string>
+
+    <!-- Mensajes para Toasts. -->
+    <string name="mensaje_insertar_tipo_centro_sanitario">Se ha insertado el tipo de centro sanitario satisfactoriamente.</string>
+    <string name="mensaje_insertar_tipo_modalidad_paciente">Se ha insertado el tipo de modalidad paciente satisfactoriamente.</string>
+    <string name="mensaje_insertar_centro_sanitario">Se ha insertado el centro sanitario satisfactoriamente.</string>
+    <string name="mensaje_insertar_tipo_recurso_comunitario">Se ha insertado el tipo de recurso comunitario satisfactoriamente.</string>
+    <string name="mensaje_insertar_recurso_comunitario">Se ha insertado el recurso comunitario satisfactoriamente.</string>
+    <string name="mensaje_modificar_tipo_centro_sanitario">Se ha modificado el tipo de centro sanitario satisfactoriamente.</string>
+    <string name="mensaje_modificar_tipo_modalidad_paciente">Se ha modificado el tipo de modalidad paciente satisfactoriamente.</string>
+    <string name="mensaje_modificar_centro_sanitario">Se ha modificado el centro sanitario satisfactoriamente.</string>
+    <string name="mensaje_modificar_tipo_recurso_comunitario">Se ha modificado el tipo de recurso comunitario satisfactoriamente.</string>
+    <string name="mensaje_modificar_recurso_comunitario">Se ha modificado el recurso comunitario satisfactoriamente.</string>
+    <string name="mensaje_eliminar_tipo_centro_sanitario">Se ha eliminado el tipo de centro sanitario satisfactoriamente.</string>
+    <string name="mensaje_eliminar_tipo_modalidad_paciente">Se ha eliminado el tipo de modalidad paciente satisfactoriamente.</string>
+    <string name="mensaje_eliminar_centro_sanitario">Se ha eliminado el centro sanitario satisfactoriamente.</string>
+    <string name="mensaje_eliminar_tipo_recurso_comunitario">Se ha eliminado el tipo de recurso comunitario satisfactoriamente.</string>
+    <string name="mensaje_eliminar_recurso_comunitario">Se ha eliminado el recurso comunitario satisfactoriamente.</string>
+    <string name="error_mensaje_insertar_tipo_centro_sanitario">Error al insertar el tipo de centro sanitario.</string>
+    <string name="error_mensaje_insertar_tipo_modalidad_paciente">Error al insertar el tipo de modalidad paciente.</string>
+    <string name="error_mensaje_insertar_centro_sanitario">Error al insertar el centro sanitario.</string>
+    <string name="error_mensaje_insertar_tipo_recurso_comunitario">Error al insertar el tipo de recurso comunitario.</string>
+    <string name="error_mensaje_insertar_recurso_comunitario">Error al insertar el recurso comunitario.</string>
+    <string name="error_mensaje_modificar_tipo_centro_sanitario">Error al modificar el tipo de centro sanitario.</string>
+    <string name="error_mensaje_modificar_tipo_modalidad_paciente">Error al modificar el tipo de modalidad paciente.</string>
+    <string name="error_mensaje_modificar_centro_sanitario">Error al modificar el centro sanitario.</string>
+    <string name="error_mensaje_modificar_tipo_recurso_comunitario">Error al modificar el tipo de recurso comunitario.</string>
+    <string name="error_mensaje_modificar_recurso_comunitario">Error al modificar el recurso comunitario.</string>
+    <string name="error_mensaje_eliminar_tipo_centro_sanitario">Error al eliminar el tipo de centro sanitario.</string>
+    <string name="error_mensaje_eliminar_tipo_modalidad_paciente">Error al eliminar el tipo de modalidad paciente.</string>
+    <string name="error_mensaje_eliminar_centro_sanitario">Error al eliminar el centro sanitario.</string>
+    <string name="error_mensaje_eliminar_tipo_recurso_comunitario">Error al eliminar el tipo de recurso comunitario.</string>
+    <string name="error_mensaje_eliminar_recurso_comunitario">Error al eliminar el recurso comunitario.</string>
+    <string name="error_al_obtener_datos">Error al obtener los datos.</string>
+
+    <!-- Nombres de los menus -->
+    <string name="menu_relacion_terminal_recurso_comunitario">Relación Terminal Recurso Comunitario</string>
+    <string name="menu_terminal">Terminal</string>
+    <string name="menu_paciente">Paciente</string>
+    <string name="menu_relacion_paciente_persona">Relación Paciente Persona</string>
+    <string name="menu_relacion_usuario_centro">Relación Usuario Centro</string>
+
+    <!-- *** TextViews *** -->
+
+    <!-- TextViews de la Activity Login -->
+    <string name="textview_usuario">Usuario: </string>
+    <string name="textview_password">Contraseña: </string>
+
+    <!-- Toast Activity Login -->
+    <string name="toast_activity_login">Nombre de usuario o contraseña incorrectos.</string>
+
+    <!-- *** Botones *** -->
+
+    <!-- Botones de la Activity Login -->
+    <string name="btn_login">LOGIN</string>
+
+    <!-- Botones de los fragments insertar y modificar. -->
+    <string name="btn_volver">VOLVER</string>
+    <string name="btn_guardar">GUARDAR</string>
+
+
+    <!-- ID de los fragments de modificar -->
+    <string name="object">OBJECT</string>
+
+    <!-- Tag del dialogo (datePicker) de las fechas -->
+    <string name="tag_date_picker">datePicker</string>
+
+    <!-- Mensajes de los AlertDialogs -->
+    <string name="informacion">Información</string>
+    <string name="error">Error</string>
+    <string name="infoAlertDialog_credenciales_incorrectas_login">Nombre de usuario o contraseña incorrectos.</string>
+    <string name="infoAlertDialog_usuario_ya_existe">El usuario ya existe.</string>
+
+    <string name="infoAlertDialog_insertado_usuario">Se ha creado correctamente un nuevo usuario.</string>
+    <string name="infoAlertDialog_insertado_tipoVivienda">Se ha creado correctamente un nuevo tipo de vivienda.</string>
+    <string name="infoAlertDialog_insertado_tipoSituacion">Se ha creado correctamente un nuevo tipo de situación.</string>
+    <string name="infoAlertDialog_insertado_persona">Se ha creado correctamente una nueva persona.</string>
+    <string name="infoAlertDialog_insertado_historicoTipoSituacion">Se ha creado correctamente un nuevo hístorico tipo de situación.</string>
+    <string name="infoAlertDialog_insertado_grupo">Se ha creado correctamente un nuevo grupo.</string>
+    <string name="infoAlertDialog_insertado_dispositivoAuxiliar">Se ha creado correctamente un nuevo dispositivo auxiliar en terminal.</string>
+    <string name="infoAlertDialog_insertado_direccion">Se ha creado correctamente una nueva dirección.</string>
+
+    <string name="infoAlertDialog_modificado_usuario">Se ha modificado correctamente el usuario.</string>
+    <string name="infoAlertDialog_modificado_tipoVivienda">Se ha modificado correctamente el tipo de vivienda.</string>
+    <string name="infoAlertDialog_modificado_tipoSituacion">Se ha modificado correctamente el tipo de situación.</string>
+    <string name="infoAlertDialog_modificado_persona">Se ha modificado correctamente la persona.</string>
+    <string name="infoAlertDialog_modificado_historicoTipoSituacion">Se ha modificado correctamente el hístorico tipo de situación.</string>
+    <string name="infoAlertDialog_modificado_grupo">Se ha modificado correctamente el grupo.</string>
+    <string name="infoAlertDialog_modificado_dispositivoAuxiliar">Se ha modificado correctamente el dispositivo auxiliar en terminal.</string>
+    <string name="infoAlertDialog_modificado_direccion">Se ha modificado correctamente la dirección.</string>
+
+    <string name="infoAlertDialog_eliminado_usuario">Se ha eliminado correctamente el usuario.</string>
+    <string name="infoAlertDialog_eliminado_tipoVienda">Se ha eliminado correctamente el tipo de vivienda.</string>
+    <string name="infoAlertDialog_eliminado_tipoSituacion">Se ha eliminado correctamente el tipo de situación.</string>
+    <string name="infoAlertDialog_eliminado_persona">Se ha eliminado correctamente la persona.</string>
+    <string name="infoAlertDialog_eliminado_historicoTipoSituacion">Se ha eliminado correctamente el hístorico tipo de situación.</string>
+    <string name="infoAlertDialog_eliminado_grupo">Se ha eliminado correctamente el grupo.</string>
+    <string name="infoAlertDialog_eliminado_dispositivoAuxiliar">Se ha eliminado correctamente el dispositivo auxiliar en terminal.</string>
+    <string name="infoAlertDialog_eliminado_direccion">Se ha eliminado correctamente la dirección.</string>
+
+    <string name="alertDialog_error">Ha ocurrido un error. Código de error: </string>
+
+
+    <!-- Strings autorización -->
+    <string name="unauthorized">Unauthorized</string>
+    <string name="profesor">Profesor</string>
+
+    <!-- Nombre de las clases -->
+    <string name="usuario_class">Usuario</string>
+    <string name="titular_class">Titular</string>
+    <string name="tipoVivienda_class">TipoVivienda</string>
+    <string name="tipoSituacion_class">TipoSituacion</string>
+    <string name="tipoAlarma_class">TipoAlarma</string>
+    <string name="terminal_class">Terminal</string>
+    <string name="persona_class">Persona</string>
+    <string name="historicoTipoSituacion_class">HistoricoTipoSituacion</string>
+    <string name="grupo_class">Grupo</string>
+    <string name="dispositivoAuxiliar_class">DispositivoAuxiliar</string>
+    <string name="direccion_class">Direccion</string>
+    <string name="error_al_conectarse_al_servidor">Ha ocurrido un error al conectarse al servidor, intentelo más tarde.</string>
+    <string name="btn_iniciar_sesion">Iniciar sesión</string>
+    <string name="titulo_modificar_paciente">Modificar paciente</string>
+    <string name="spinnerTerminalHint">Elige el terminal asociado...</string>
+    <string name="spinnerPersonaHint">Elige la persona asociada...</string>
+    <string name="tieneUCRHint">¿Tiene UCR este paciente?</string>
+    <string name="numeroExpedienteHint">Introduce el nº de expediente</string>
+    <string name="textViewNumeroExpedienteObligatorio">Nº de expediente obligatorio</string>
+    <string name="textViewNumeroSeguridadSocialObligatorio">Nº de Seguridad Social obligatorio</string>
+    <string name="numeroSeguridadSocialHint">Introduce un nº de Seguridad Social</string>
+    <string name="numeroSeguridadSocial">Nº de Seguridad Social</string>
+    <string name="textViewPrestacionOtrosServiciosObligatorio">Prestación y otros servicios sociales obligatorios</string>
+    <string name="editTextPrestacionOtrosServiciosHint">Introduzca las prestaciones y otros servicios asociados al paciente</string>
+    <string name="observacionesMedicasHint">Observaciones del paciente</string>
+    <string name="textViewObservacionesMedicasObligatorio">Las observaciones son obligatorias</string>
+    <string name="interesesActivadesHint">Intereses y actividades</string>
+    <string name="textViewInteresesActividadesObligatorios">Intereses y actividades son obligatorios</string>
+    <string name="spinnerTipoModalidadPacienteHint">Introduzca una modalidad de paciente</string>
+    <string name="idTerminal">Id terminal:</string>
+    <string name="campoVacio">Campo vacío</string>
+    <string name="idPersona">Id persona:</string>
+    <string name="tieneUCR">¿Posee el paciente UCR?</string>
+    <string name="numeroExpediente">Nº de expediente</string>
+    <string name="PrestacionOtrosServiciosSociales">Prestación y otros servicios sociales</string>
+    <string name="observacionesMedicas">Observaciones Medicas:</string>
+    <string name="interesesActividades">Intereses y actividades</string>
+    <string name="idModalidadPaciente">ID modalidad paciente:</string>
+    <string name="modalidadPaciente">Modalidad paciente</string>
+    <string name="titulo_insertar_paciente">Insertar paciente</string>
+    <string name="titulo_insertar_relacion_paciente_persona">Insertar relación paciente persona</string>
+    <string name="tipoRelacionHint">Introduce relación con el paciente...</string>
+    <string name="texto_insertar_relacion_paciente_persona">Tipo de relación:</string>
+    <string name="texto_insertar_tienes_llave_vivienda">¿Tiene llaves de la vivienda?</string>
+    <string name="tieneLlavesViviendaHint">Indica \"Sí\" o \"No\"</string>
+    <string name="texto_insertar_disponibilidad">Disponibilidad:</string>
+    <string name="disponibilidadHint">Indica la disponibilidad de la persona...</string>
+    <string name="texto_insertar_observaciones">Observaciones:</string>
+    <string name="texto_insertar_prioridad">Prioridad:</string>
+    <string name="texto_insertar_persona">Persona:</string>
+    <string name="nombrePersonaConsultar">Persona de contacto:</string>
+    <string name="numeroSeguridadSocialPacienteConsultar">Nº de Seguridad Social del paciente:</string>
+    <string name="prioridadConsultar">Prioridad:</string>
+    <string name="observacionesConsultar">Observaciones:</string>
+    <string name="disponibilidadConsultar">Disponibilidad:</string>
+    <string name="tieneLlaveViviendasConsultar">¿Tiene llaves de la vivienda?</string>
+    <string name="tipoRelacionConsultar">Tipo de relación:</string>
+    <string name="titulo_modificar_relacion_paciente_persona">Modificar relación paciente persona</string>
+    <string name="titulo_listarRelacionTerminalRecursoComunitario">Relación Terminal Recurso Comunitario</string>
+    <string name="idRelacionTerminalRecursoComunitario">"ID relación Terminal - Recurso Comunitario: "</string>
+    <string name="campoNumeroTerminalConsultar">Número del terminal:</string>
+    <string name="campoNombreRecursoComunitarioConsultar">"Recurso comunitario asociado: "</string>
+    <string name="titulo_insertar_relacion_terminal_recurso_comunitario">Insertar relación Terminal - Recurso Comunitario</string>
+    <string name="titulo_modificar_relacion_terminal_recurso_comunitario">Modificar Relación Terminal - Recurso Comunitario</string>
+    <string name="titulo_listarRelacionUsuarioCentro">Relación Usuario-Centro</string>
+    <string name="idRelacionUsuarioCentroConsultar">ID:</string>
+    <string name="personaContactoConsultar">Persona de contacto:</string>
+    <string name="distanciaConsultar">Distancia:</string>
+    <string name="tiempoConsultar">Tiempo:</string>
+    <string name="nombreCentroSanitarioConsultar">Nombre del centro sanitario:</string>
+    <string name="editTextPersonaContactoHint">Persona de contacto...</string>
+    <string name="distanciaHint">Distancia</string>
+    <string name="tiempoHint">Tiempo...</string>
+    <string name="titulo_insertar_relacion_usuario_centro">Insertar Relación Usuario-Centro</string>
+    <string name="observacionesHint">Observaciones...</string>
+    <string name="titulo_modificar_relacion_usuario_centro">Modificar Relación Usuario-Centro</string>
+    <string name="titulo_listarTerminales">Terminales</string>
+    <string name="idTerminalConsultar">ID del terminal:</string>
+    <string name="modoAccesoViviendaConsultar">Modo de acceso a la vivienda:</string>
+    <string name="barrerasArquitectonicasConsultar">Barreras arquitectónicas:</string>
+    <string name="tipoViviendaConsultar">Tipo vivienda:</string>
+    <string name="titulo_insertar_terminal">Insertar Terminal</string>
+    <string name="numeroTerminalHint">Nº de terminal...</string>
+    <string name="modoAccesoViviendaHint">Modo de acceso a la vivienda...</string>
+    <string name="barrerasArquitectonicasHint">Barreras arquitectonicas...</string>
+    <string name="titulo_modificar_terminal">Modificar terminal:</string>
+    <string name="texto_insertar_paciente">Elige el paciente a asociar:</string>
+    <!-- Layouts Jorge -->
+    <string name="nueva_alarma">¡Nueva Alarma!</string>
+    <string name="terminal_dp">Terminal:</string>
+    <string name="paciente_dp">Paciente:</string>
+    <string name="telefono_dp">Teléfono:</string>
+    <string name="rechazar">Rechazar</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="id_alarma_dp">ID Alarma:</string>
+    <string name="estado_dp">Estado:</string>
+    <string name="fecha_dp">Fecha:</string>
+    <string name="tipo_ddp">Tipo:</string>
+    <string name="prueba">Prueba</string>
+    <string name="id_dp">ID:</string>
+    <string name="fecha_registro_dp">Fecha registro:</string>
+    <string name="persona_dp">Persona:</string>
+    <string name="centro_sanitario_dp">Centro Sanitario:</string>
+    <string name="id_clasificacion_alarma_dp">ID Clasificación Alarma:</string>
+    <string name="nombre_dp">Nombre:</string>
+    <string name="codigo_dp">Código:</string>
+    <string name="id_alarma">ID Alarma</string>
+    <string name="estado">Estado</string>
+    <string name="paciente">Paciente</string>
+    <string name="teleoperador">Teleoperador</string>
+    <string name="sin_asginar">Sin Asginar</string>
+    <string name="fecha_registro">Fecha Registro</string>
+    <string name="observaciones">Observaciones</string>
+    <string name="resumen">Resumen</string>
+    <string name="id">ID</string>
+    <string name="fecha">Fecha</string>
+    <string name="persona">Persona</string>
+    <string name="acuerdo_alcanzado">Acuerdo Alcanzado</string>
+    <string name="centro">Centro</string>
+    <string name="codigo">Código</string>
+    <string name="es_dispositivo">Es dispositivo</string>
+    <string name="clasificacion">Clasificación</string>
+    <string name="registrar_llamada">Registrar Llamada</string>
+    <string name="llamar_a_una_persona_de_contacto_dp">LLamar a una persona de contacto:</string>
+    <string name="llamar_a_centro_sanitario_dp">LLamar a Centro Sanitario:</string>
+    <string name="persona_que_atendi_la_llamada">Persona que atendió la llamada</string>
+    <string name="llamar_a_un_recurso_comunitario_dp">LLamar a un recurso comunitario:</string>
+    <string name="crear_agenda_dp">Crear agenda:</string>
+    <string name="registrar_agenda">Registrar Agenda</string>
+    <string name="resumen_dp">Resumen:</string>
+    <string name="cancelar">CANCELAR</string>
+    <string name="finalizar">FINALIZAR</string>
+    <string name="tipo_dp">Tipo:</string>
+    <string name="clasificacion_dp">Clasificación:</string>
+    <string name="contactos_dp">Contactos:</string>
+    <string name="gestionar">Gestionar</string>
+    <string name="crear_alarma">Crear Alarma</string>
+    <string name="tipo_alarma">Tipo Alarma</string>
+    <string name="terminal">Terminal</string>
+    <string name="id_terminal">ID Terminal</string>
+    <string name="crear_centro_sanitario_en_alarma">Crear Centro Sanitario en Alarma</string>
+    <string name="id_centro_sanitario">ID Centro Sanitario</string>
+    <string name="crear_clasificacion_de_alarma">Crear Clasificacion de Alarma</string>
+    <string name="crear_persona_contacto_en_alarma">Crear Persona Contacto En Alarma</string>
+    <string name="id_persona_contacto">ID Persona Contacto</string>
+    <string name="crear_recurso_comunitario_en_alarma">Crear Recurso Comunitario En Alarma</string>
+    <string name="id_recurso_comunitario">ID Recurso Comunitario</string>
+    <string name="crear_tipo_alarma">Crear Tipo Alarma</string>
+    <string name="si">Sí</string>
+    <string name="no">No</string>
+    <string name="clasificaci_n">Clasificación</string>
+    <string name="lista_alarmas">Lista Alarmas</string>
+    <string name="lista_centros_sanitarios_en_alarma">Lista Centros Sanitarios En Alarma</string>
+    <string name="lista_clasificacion_alarmas">Lista Clasificación Alarmas</string>
+    <string name="lista_personas_contacto_en_alarma">Lista Personas Contacto En Alarma</string>
+    <string name="lista_recurso_comunitario_en_alarma">Lista Recurso Comunitario En Alarma</string>
+    <string name="lista_tipos_de_alarma">Lista Tipos de Alarma</string>
+    <string name="modificar_alarma">Modificar Alarma</string>
+    <string name="id_teleoperador">ID Teleoperador</string>
+    <string name="modificar_centro_sanitario_en_alarma">Modificar Centro Sanitario En Alarma</string>
+    <string name="modificar_clasificacion_de_alarma">Modificar Clasificacion de Alarma</string>
+    <string name="modificar_persona_contacto_en_alarma">Modificar Persona Contacto En Alarma</string>
+    <string name="modificar_recurso_comunitario_en_alarma">Modificar Recurso Comunitario En Alarma</string>
+    <string name="modificar_tipo_alarma">Modificar Tipo Alarma</string>
+    <string name="contacto_dp">Contacto:</string>
+    <string name="recurso_comunitario_dp">Recurso Comunitario:</string>
+    <string name="dispositivo_dp">Dispositivo:</string>
+    <!-- no pisar este bloque -->
+
+</resources>

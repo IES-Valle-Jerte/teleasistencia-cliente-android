@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.direccion.ModificarDireccionFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/titulo_modificar_direccion"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="70"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editText_localidad_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:hint="@string/localidad_direccion"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:textColorHint="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            tools:layout_editor_absoluteY="179dp" />
+
+        <TextView
+            android:id="@+id/textView_error_localidad_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/fondo_bordes_textviews"
+            android:gravity="center"
+            android:minHeight="35dp"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:text="@string/textview_localidad_obligatoria" />
+
+        <EditText
+            android:id="@+id/editText_provincia_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:hint="@string/provincia_direccion"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:textColorHint="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            tools:layout_editor_absoluteY="179dp" />
+
+        <TextView
+            android:id="@+id/textView_error_provincia_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/fondo_bordes_textviews"
+            android:gravity="center"
+            android:minHeight="35dp"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:text="@string/textview_provincia_obligatoria" />
+
+        <EditText
+            android:id="@+id/editText_direccion_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:hint="@string/direccion_direccion"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:textColorHint="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            tools:layout_editor_absoluteY="179dp" />
+
+        <TextView
+            android:id="@+id/textView_error_direccion_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/fondo_bordes_textviews"
+            android:gravity="center"
+            android:minHeight="35dp"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:text="@string/textview_direccion_obligatoria" />
+
+        <EditText
+            android:id="@+id/editText_codigoPostal_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:hint="@string/codigoPostal_direccion"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:textColorHint="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            tools:layout_editor_absoluteY="179dp" />
+
+        <TextView
+            android:id="@+id/textView_error_codigoPostal_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/fondo_bordes_textviews"
+            android:gravity="center"
+            android:minHeight="35dp"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:text="@string/textview_codigoPostal_obligatoria" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:gravity="center|top"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_guardar_direccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="@string/btn_guardar"
+                android:textColor="#4CAF50" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:gravity="center|top"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_volver_direccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="@string/btn_volver" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
