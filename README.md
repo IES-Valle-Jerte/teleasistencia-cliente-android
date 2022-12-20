@@ -30,7 +30,7 @@ Existen varias maneras de clonar un proyecto. Para simplificar todas las tareas 
 
     ![image](https://user-images.githubusercontent.com/3669279/122243564-824e1800-cec4-11eb-9cd6-e93938341098.png)
 
-6. FALTA AÑADIR LA DESCRIPCIÓN DEL DESPIEGUE ANGULAR
+6. FALTA AÑADIR LA DESCRIPCIÓN DEL DESPIEGUE ANDROID
 
 ## Licencia
 
