@@ -218,6 +218,7 @@ public class Constantes {
     public static final String OK = "OK";
     public static final String SIN_ASIGNAR = "Sin Asignar";
     public static final String MIS_ALARMAS = "Mis Alarmas";
+    public static final String RUTA_MODELOS = "com.example.teleappsistencia.modelos.";
 
     /* Constantes Clase AlarmaWebSocketListener */
     public final static String CONEXION_ESTABLECIDA_WEBSOCKET = "Conexión establecida con el WebSocket" ;

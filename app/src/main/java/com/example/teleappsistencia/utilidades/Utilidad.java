@@ -124,7 +124,7 @@ public class Utilidad {
         // En caso de que que tipo solo contenga el nombre de la calse y no un ArrayList subacadena sera igual a tipo
 
         Class<?> clazz = null;
-        String ruta="com.example.teleappsistencia.modelos."+subcadena;
+        String ruta=Constantes.RUTA_MODELOS+subcadena;
         try {
             clazz = Class.forName(ruta); // Creamos una clase con la ruta indicada
         } catch (ClassNotFoundException e) {
