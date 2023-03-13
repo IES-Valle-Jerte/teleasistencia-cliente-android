@@ -69,7 +69,7 @@ public class Constantes {
          * En producción (1): http://api-rest.teleasistencia.iesvjp.es/
          *
          * (1) en próxima convocatoria se añadirá conexión mediante https */
-    public static final String API_BASE_URL = "http://api-rest.teleasistencia.iesvjp.es/";
+    public static final String API_BASE_URL = "http://10.0.2.2:8000/";
     public static final String TOKEN_BEARER = "Bearer ";
     public static final String FORMATEADOR_API = "yyyy-MM-dd'T'HH:mm:ssZ";
 
