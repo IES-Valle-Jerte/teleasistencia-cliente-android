@@ -15,6 +15,7 @@ import com.example.teleappsistencia.modelos.Alarma;
 import com.example.teleappsistencia.modelos.CentroSanitario;
 import com.example.teleappsistencia.modelos.CentroSanitarioEnAlarma;
 import com.example.teleappsistencia.modelos.ClasificacionAlarma;
+import com.example.teleappsistencia.modelos.ClasificacionRecurso;
 import com.example.teleappsistencia.modelos.Contacto;
 import com.example.teleappsistencia.modelos.Direccion;
 import com.example.teleappsistencia.modelos.Grupo;
@@ -245,6 +246,10 @@ public class Utilidad {
                 break;
             case "TipoVivienda":
                 type = new TypeToken<TipoVivienda>() {
+                }.getType();
+                break;
+            case "ClasificacionRecurso":
+                type = new TypeToken<ArrayList<ClasificacionRecurso>>() {
                 }.getType();
                 break;
         }

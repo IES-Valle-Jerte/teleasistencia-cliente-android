@@ -7,13 +7,18 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.teleappsistencia.modelos.ClasificacionRecurso;
 import com.example.teleappsistencia.modelos.Usuario;
 import com.example.teleappsistencia.servicios.APIService;
+import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.ui.fragments.alarma.InsertarAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasDeHoyFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasFragment;
@@ -43,6 +48,10 @@ import com.example.teleappsistencia.ui.fragments.personaContactoEnAlarma.ListarP
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentInsertarRecursoComunitario;
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentListarRecursoComunitario;
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentModificarRecursoComunitario;
+import com.example.teleappsistencia.ui.fragments.recursos.RecursosOrganismosInstitucionales;
+import com.example.teleappsistencia.ui.fragments.recursos.RecursosSanitarios;
+import com.example.teleappsistencia.ui.fragments.recursos.RecursosSeguridad;
+import com.example.teleappsistencia.ui.fragments.recursos.RecursosSociosanitarios;
 import com.example.teleappsistencia.ui.fragments.recursosComunitariosEnAlarma.InsertarRecursosComunitariosEnAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.recursosComunitariosEnAlarma.ListarRecursosComunitariosEnAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.relacion_paciente_persona.InsertarRelacionPacientePersonaFragment;
@@ -84,6 +93,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
 
 /**
  * Esta clase aparte de ser la clase principal, contendrá el menu con un fragment, el cual cambiará según las necesidades del usuario.
@@ -105,6 +117,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private List<MenuModel> headerList = new ArrayList<>();
     private HashMap<MenuModel, List<MenuModel>> childList = new HashMap<>();
+
+    /**
+     * Atributo para trabajar con la lista que devuelve la llamada a la API.
+     */
+    private ArrayList<ClasificacionRecurso> lRecursos;
 
     private TextView textView_nombre_usuarioLogged;
     private TextView textView_email_usuarioLogged;
@@ -571,6 +588,62 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+
+        // mod-GAG
+        // Menu Recursos
+        menuRecursos();
+    }
+
+    // mod-GAG
+    /**
+     * Método que genera la opción "Recursos" menu.
+     *
+     * 1º Crea la opción "Recursos".
+     * 2º Hace una llamada a la API para agregar las opciones al sub-menu de "Recursos".
+     */
+    private void menuRecursos(){
+        MenuModel menuModel = new MenuModel("Recursos", true, true, null);
+        List<MenuModel> childModelsList = new ArrayList<>();
+        headerList.add(menuModel);
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Object>> call = apiService.getClasificacionRecursoComunitario(Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new retrofit2.Callback<List<Object>>() {
+            @Override
+            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+                if(response.isSuccessful()){
+                    List<Object> lObjetos = response.body();
+                    lRecursos = (ArrayList<ClasificacionRecurso>) Utilidad.getObjeto(lObjetos,"ClasificacionRecurso");
+                    for (ClasificacionRecurso auxR : lRecursos) {
+                        switch (auxR.getId()){
+                            case 1:
+                                childModelsList.add(new MenuModel(auxR.getNombre(),false,false, new RecursosSanitarios()));
+                                break;
+                            case 2:
+                                childModelsList.add(new MenuModel(auxR.getNombre(),false,false, new RecursosSociosanitarios()));
+                                break;
+                            case 3:
+                                childModelsList.add(new MenuModel(auxR.getNombre(),false,false, new RecursosOrganismosInstitucionales()));
+                                break;
+                            case 4:
+                                childModelsList.add(new MenuModel(auxR.getNombre(),false,false, new RecursosSeguridad()));
+                                break;
+                        }
+                    }
+                    if (menuModel.hasChildren()) {
+                        childList.put(menuModel, childModelsList);
+                    } else {
+                        childList.put(menuModel, null);
+                    }
+                }else{
+                    Toast.makeText(getBaseContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Object>> call, Throwable t) {
+                Toast.makeText(getBaseContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
@@ -619,6 +692,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
 
 }

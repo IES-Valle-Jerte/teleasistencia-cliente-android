@@ -715,6 +715,11 @@ public interface APIService {
     @GET("/api-rest/relacion_terminal_recurso_comunitario")
     public Call<List<Object>> getRecursosComunitariosbyIdTerminal(@Query("id_terminal") int id, @Header("Authorization") String token);
 
-
-
+    // mod-GAG
+    /**
+     * Peticiones Recursos
+     */
+    // Peticion Clasificación_recurso_comunitario
+    @GET("/api-rest/clasificacion_recurso_comunitario")
+    public Call<List<Object>> getClasificacionRecursoComunitario(@Header("Authorization") String token);
 }
