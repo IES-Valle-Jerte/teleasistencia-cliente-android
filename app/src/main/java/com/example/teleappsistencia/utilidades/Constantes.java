@@ -66,7 +66,7 @@ public class Constantes {
     /* Se utiliza:
          * "http://localhost:8000/" con dispositivos físicos
          * con el emulador se ha de utilizar "http://10.0.2.2:8000/"
-         * En producción (1): http://api-rest.teleasistencia.iesvjp.es/
+         * En producción (1): https://api-rest-teleasistencia.iesvjp.es/teleasistencia/
          *
          * (1) en próxima convocatoria se añadirá conexión mediante https */
     public static final String API_BASE_URL = "http://10.0.2.2:8000/";

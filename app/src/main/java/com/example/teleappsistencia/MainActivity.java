@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.teleappsistencia.modelos.Usuario;
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.ui.fragments.alarma.InsertarAlarmaFragment;
@@ -221,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -233,6 +237,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String[] childNames = {Constantes.SUBMENU_INSERTAR, Constantes.SUBMENU_LISTAR, Constantes.SUBMENU_MODIFICAR}; // Nombres de las sub-opciones
         List<MenuModel> childModelsList; // Lista para las sub-opciones
         MenuModel menuModel; // Modelo de la opción.
+
+        // Menu Usuarios del servicio.
+        childModelsList = new ArrayList<>();
+        menuModel = new MenuModel(getResources().getString(R.string.menu_usuarios_servicio), true, true, new ListarPacienteFragment());
+        headerList.add(menuModel);
 
         // Menu Alarma.
         childModelsList = new ArrayList<>();
@@ -581,22 +590,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         expandableListAdapter = new ExpandableListAdapter(this, headerList, childList);
         expandableListView.setAdapter(expandableListAdapter);
 
-        /*
+
         // Aquí se define que pasará cuando el usuario pulse en una de las opciones principales.
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                MenuModel menuModel = headerList.get(groupPosition);
+                Fragment fragment = menuModel.getFragment();
 
-                if (headerList.get(groupPosition).isGroup()) {
+                // Carga el fragmento si existe
+                if (fragment != null) {
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.main_fragment, fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+                /*if (headerList.get(groupPosition).isGroup()) {
                     if (!headerList.get(groupPosition).hasChildren()) {
                         // En este caso no hay nada que hacer al pulsar en una opción principal.
                     }
-                }
-
+                }*/
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
                 return false;
             }
         });
-        */
+
 
         // Aquí se define que pasará cuando el usuario pulse en una de las sub-opciones.
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teleappsistencia.MainActivity;
@@ -37,11 +38,27 @@ public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.Pacien
     // La lista de objetos Paciente a mostrar dentro del RecyclerView.
     private List<Paciente> items;
     private PacienteViewHolder pacienteViewHolder;
-
+    //Item seleccionado
+    private Paciente pacienteSelecionado;
+    //Interfaz que establece el elemento sleccionado
+    private OnItemSelectedListener listener;
+    private int selectedPosition = RecyclerView.NO_POSITION;
     /**
      * Una clase {@link RecyclerView.ViewHolder} para recoger los datos a mostrar dentro de la tarjeta Paciente del RecyclerView.
      * <p> Esta clase es una subclase de {@link RecyclerView.ViewHolder} y hereda de ella todos sus métodos y atributos.
      */
+    public interface OnItemSelectedListener {
+        void onItemSelected(int position);
+    }
+    //Devuelve el paciete seleccionado
+    public Paciente getPacienteSelecionado() {
+        return pacienteSelecionado;
+    }
+
+    // Define el método getItemAtPosition para obtener el elemento en la posición indicada
+    public Paciente getItemAtPosition(int position) {
+        return items.get(position);
+    }
     public static class PacienteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // Contexto de la aplicación.
@@ -219,5 +236,31 @@ public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.Pacien
         } else {
             viewHolder.tipoModalidadPacienteCard.setText("");
         }
+
+        // Establecer un click listener para ViewHolder
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Actualizar la posición seleccionada y notificar al adapter
+                int previousSelectedPosition = selectedPosition;
+                selectedPosition = viewHolder.getAdapterPosition();
+                notifyItemChanged(previousSelectedPosition);
+                notifyItemChanged(selectedPosition);
+
+                // Llamar al método onItemSelected de OnItemSelectedListener
+                if (listener != null) {
+                    listener.onItemSelected(selectedPosition);
+                }
+                pacienteSelecionado= viewHolder.paciente;
+            }
+        });
+
+        // Establecer el color de fondo del ViewHolder en función de si está seleccionado o no
+        if (selectedPosition == i) {
+            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.azul));
+        } else {
+            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), android.R.color.white));
+        }
     }
+
 }
