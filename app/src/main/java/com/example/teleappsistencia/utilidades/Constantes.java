@@ -369,4 +369,9 @@ public class Constantes {
     public static final String TERMINAL_DP_SP = "Terminal: ";
     public static final String ALARMAS_DE_HOY = "Alarmas de hoy";
     public static final String ALARMAS_SIN_ASIGNAR = "Alarmas sin asignar";
+
+    /* Constantes Recursos */
+    public static final String TITULO_RECURSOS = "Recursos ";
+    public static final String KEY_ID_CLASIFICACION_RECURSOS = "key_id";
+    public static final String KEY_NOMBRE_CLASIFICACION_RECURSOS = "key_nombre";
 }

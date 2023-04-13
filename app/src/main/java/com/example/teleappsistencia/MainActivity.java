@@ -48,10 +48,7 @@ import com.example.teleappsistencia.ui.fragments.personaContactoEnAlarma.ListarP
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentInsertarRecursoComunitario;
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentListarRecursoComunitario;
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentModificarRecursoComunitario;
-import com.example.teleappsistencia.ui.fragments.recursos.RecursosOrganismosInstitucionales;
-import com.example.teleappsistencia.ui.fragments.recursos.RecursosSanitarios;
-import com.example.teleappsistencia.ui.fragments.recursos.RecursosSeguridad;
-import com.example.teleappsistencia.ui.fragments.recursos.RecursosSociosanitarios;
+import com.example.teleappsistencia.ui.fragments.recursos.RecursosListadoFragment;
 import com.example.teleappsistencia.ui.fragments.recursosComunitariosEnAlarma.InsertarRecursosComunitariosEnAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.recursosComunitariosEnAlarma.ListarRecursosComunitariosEnAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.relacion_paciente_persona.InsertarRelacionPacientePersonaFragment;
@@ -600,6 +597,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *
      * 1º Crea la opción "Recursos".
      * 2º Hace una llamada a la API para agregar las opciones al sub-menu de "Recursos".
+     * 3º Le pasamos un objeto al fragment (id) para que muestre solo los recursos del submenu seleccionado.
      */
     private void menuRecursos(){
         MenuModel menuModel = new MenuModel("Recursos", true, true, null);
@@ -611,21 +609,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
                 if(response.isSuccessful()){
+                    RecursosListadoFragment recursosListadoFragment;
                     List<Object> lObjetos = response.body();
                     lRecursos = (ArrayList<ClasificacionRecurso>) Utilidad.getObjeto(lObjetos,"ClasificacionRecurso");
                     for (ClasificacionRecurso auxR : lRecursos) {
+                        Bundle bundle = new Bundle();
                         switch (auxR.getId()){
                             case 1:
-                                childModelsList.add(new MenuModel(auxR.getNombre(),false,false, new RecursosSanitarios()));
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Sanitarios", false, false, recursosListadoFragment));
                                 break;
                             case 2:
-                                childModelsList.add(new MenuModel(auxR.getNombre(),false,false, new RecursosSociosanitarios()));
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Sociosanitarios", false, false, recursosListadoFragment));
                                 break;
                             case 3:
-                                childModelsList.add(new MenuModel(auxR.getNombre(),false,false, new RecursosOrganismosInstitucionales()));
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Organismos institucionales", false, false, recursosListadoFragment));
                                 break;
                             case 4:
-                                childModelsList.add(new MenuModel(auxR.getNombre(),false,false, new RecursosSeguridad()));
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Seguridad", false, false, recursosListadoFragment));
                                 break;
                         }
                     }
