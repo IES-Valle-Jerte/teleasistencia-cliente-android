@@ -163,7 +163,11 @@ public class ModificarPacienteFragment extends Fragment implements View.OnClickL
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         TipoModalidadPaciente tipoModalidadPaciente = (TipoModalidadPaciente) Utilidad.getObjeto(paciente.getTipoModalidadPaciente(), "TipoModalidadPaciente");
                         spinnerTipoModalidadPacienteModificar.setAdapter(adapter);
-                        spinnerTipoModalidadPacienteModificar.setSelection(buscarPosicionSpinnerTipoModalidadPaciente(listadoTipoModalidadPaciente, tipoModalidadPaciente.getId()));
+                        //comprobar que no sea null ya que en la api estan subidos con null
+                        if(tipoModalidadPaciente!=null){
+                            spinnerTipoModalidadPacienteModificar.setSelection(buscarPosicionSpinnerTipoModalidadPaciente(listadoTipoModalidadPaciente, tipoModalidadPaciente.getId()));
+                        }
+
                     }
                 }
             }

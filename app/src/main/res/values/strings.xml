@@ -24,6 +24,7 @@
     <string name="menu_tipo_alarma">Tipo Alarma</string>
     <string name="menu_clasificacion_alarma">Clasificación Alarma</string>
     <string name="menu_alarma">Alarma</string>
+    <string name="menu_usuarios_servicio">Usuarios del Servicio</string>
     <string name="menu_centro_sanitario_en_alarma">Centro Sanitario en Alarma</string>
     <string name="menu_recursos_comunitarios_en_alarma">Recursos Comunitarios en Alarma</string>
     <string name="menu_persona_de_contacto_en_alarma">Persona de contacto en Alarma</string>
@@ -197,6 +198,7 @@
     <string name="volver">Volver</string>
     <string name="modificar">Modificar datos</string>
     <string name="visualizar">Visualizar datos</string>
+    <string name="nuevo">Nuevo</string>
 
     <!-- Mensajes para AlertDialog. -->
     <string name="error_nombreVacio">El nombre es obligatorio.</string>
@@ -480,6 +482,21 @@
     <string name="contacto_dp">Contacto:</string>
     <string name="recurso_comunitario_dp">Recurso Comunitario:</string>
     <string name="dispositivo_dp">Dispositivo:</string>
+    <!--Pacientes-->
+    <string name="labelNombre">Nombre</string>
+    <string name="labelApellidos">Apellidos</string>
+    <string name="labelDNI">DNI</string>
+    <string name="labelFechaNac">Fecha nacimiento</string>
+    <string name="labelTelfFijo">Nº Telefono Fijo</string>
+    <string name="labelTelfMovil">Telefono Movil</string>
+    <string name="labelLocalidad">Localidad</string>
+    <string name="labelProvincia">Provincia</string>
+    <string name="labelDireccion">Dirección</string>
+    <string name="labelCP">CP</string>
+    <string name="labelNumExpediente">Nº Expediente</string>
+    <string name="caracterInvisible">‎ </string>
+    <string name="botonGuardar">Guardar</string>
+    <string name="labelSexo">Sexo</string>
     <!-- no pisar este bloque -->
 
 </resources>

@@ -66,10 +66,10 @@ public class Constantes {
     /* Se utiliza:
          * "http://localhost:8000/" con dispositivos físicos
          * con el emulador se ha de utilizar "http://10.0.2.2:8000/"
-         * En producción (1): http://api-rest.teleasistencia.iesvjp.es/
+         * En producción (1): https://api-rest-teleasistencia.iesvjp.es/teleasistencia/
          *
          * (1) en próxima convocatoria se añadirá conexión mediante https */
-    public static final String API_BASE_URL = "http://api-rest.teleasistencia.iesvjp.es/";
+    public static final String API_BASE_URL = "http://10.0.2.2:8000/";
     public static final String TOKEN_BEARER = "Bearer ";
     public static final String FORMATEADOR_API = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -218,6 +218,7 @@ public class Constantes {
     public static final String OK = "OK";
     public static final String SIN_ASIGNAR = "Sin Asignar";
     public static final String MIS_ALARMAS = "Mis Alarmas";
+    public static final String RUTA_MODELOS = "com.example.teleappsistencia.modelos.";
 
     /* Constantes Clase AlarmaWebSocketListener */
     public final static String CONEXION_ESTABLECIDA_WEBSOCKET = "Conexión establecida con el WebSocket" ;
