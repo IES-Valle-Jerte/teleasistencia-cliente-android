@@ -7,13 +7,6 @@
     android:background="@drawable/fondo"
     tools:context=".ui.fragments.recursos.RecursosListadoFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineArriba"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
-
     <TextView
         android:id="@+id/textViewTituloRecursosComunitarios"
         android:layout_width="wrap_content"
@@ -27,6 +20,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineArriba"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        app:queryHint="Buscar"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineMedio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineArriba"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineMedio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listRecyclerView"
         android:layout_width="0dp"
@@ -36,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/guidelineAbajo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineArriba" >
+        app:layout_constraintTop_toTopOf="@+id/guidelineMedio" >
 
     </androidx.recyclerview.widget.RecyclerView>
 

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.teleappsistencia.R;
 import com.example.teleappsistencia.modelos.RecursoComunitario;
@@ -30,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecursosListadoFragment extends Fragment implements View.OnClickListener, OpcionesListaFragment.OnButtonClickListener{
+public class RecursosListadoFragment extends Fragment implements View.OnClickListener, OpcionesListaFragment.OnButtonClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,9 +46,11 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
 
     // Atributos de la interfaz de usuario (UI) del fragment.
     private RecyclerView recycler;
-    private RecyclerView.Adapter adapter;
+    private RecursosAdapter adapter;
     private RecyclerView.LayoutManager lManager;
     private TextView tituloFragment;
+
+    private SearchView searchView;
 
     //private Button botonNuevoRecurso;
 
@@ -54,7 +59,9 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
 
     private List<RecursoComunitario> items;
 
-    private List<RecursoComunitario> filtroItems;
+    private List<RecursoComunitario> filtroItemsMenu;
+
+    private List<RecursoComunitario> filtroItemsBusqueda;
 
     // Objeto pasado desde el Main. (id, titulo)
     private Bundle bundle;
@@ -101,6 +108,9 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         tituloFragment = (TextView) root.findViewById(R.id.textViewTituloRecursosComunitarios);
         tituloFragment.setText(Constantes.TITULO_RECURSOS+titulo);
 
+        // Obtener el SearchView
+        searchView = (SearchView) root.findViewById(R.id.search_view);
+
         // Obtener el Recycler.
         recycler = (RecyclerView) root.findViewById(R.id.listRecyclerView);
         recycler.setHasFixedSize(true);
@@ -112,8 +122,28 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         // Se llama al método que lista los recursos comunitarios.
         listarRecursoComunitario();
 
+        // Se llama al método que genera un filtro de busqueda con el SearchView
+        crearFiltroBusqueda();
+
         // Inflate the layout for this fragment
         return root;
+    }
+
+    private void crearFiltroBusqueda() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filtrarBusqueda(s);
+                adapter = new RecursosAdapter(filtroItemsBusqueda);
+                recycler.setAdapter(adapter);
+                return true;
+            }
+        });
     }
 
     private void listarRecursoComunitario() {
@@ -124,7 +154,7 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
             public void onResponse(Call<List<RecursoComunitario>> call, Response<List<RecursoComunitario>> response) {
                 if (response.isSuccessful()) {
                     items = response.body();
-                    filtroItems = new ArrayList<>();
+                    filtroItemsMenu = new ArrayList<>();
 
                     /*
                     Filtro para saber que Recursos son los que tenemos que mostrar
@@ -133,12 +163,12 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
                     for (RecursoComunitario aux : items) {
                         TipoRecursoComunitario auxTRC = (TipoRecursoComunitario) Utilidad.getObjeto(aux.getTipoRecursoComunitario(),"TipoRecursoComunitario");
                         if(auxTRC.getId_clasificacion_recurso_comunitario() == id){
-                            filtroItems.add(aux);
+                            filtroItemsMenu.add(aux);
                         }
                     }
 
                     // Crear un nuevo adaptador.
-                    adapter = new RecursosAdapter(filtroItems);
+                    adapter = new RecursosAdapter(filtroItemsMenu);
                     recycler.setAdapter(adapter);
 
                 } else {
@@ -190,6 +220,28 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         AppCompatActivity activity = (AppCompatActivity) getContext();
         //ConsultarPacienteFragment consultarPacienteFragment = ConsultarPacienteFragment.newInstance(adapter.getPacienteSelecionado());
         //activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarPacienteFragment).addToBackStack(null).commit();
+    }
+
+    /**
+     * Método para generar el filtro de busqueda con el SearchView en el Listado.
+     *
+     * @return
+     */
+    public void filtrarBusqueda(String secuencia) {
+        String cadenaUsuario = secuencia.toLowerCase();
+        filtroItemsBusqueda = new ArrayList<>();
+
+        if(cadenaUsuario.isEmpty()){
+            filtroItemsBusqueda = filtroItemsMenu;
+        }else{
+            List<RecursoComunitario> filtroRecursos = new ArrayList<>();
+            for(RecursoComunitario aux : filtroItemsMenu){
+                if(aux.getNombre().toLowerCase().contains(cadenaUsuario)){
+                    filtroRecursos.add(aux);
+                }
+            }
+            filtroItemsBusqueda = filtroRecursos;
+        }
     }
 
     /* Viene de la clase Adapter
