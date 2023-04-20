@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_centerInParent="false"
     android:background="@drawable/fondo"
     tools:context=".ui.fragments.recursos.RecursosListadoFragment">
 
@@ -31,12 +32,12 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:iconifiedByDefault="false"
-        app:queryHint="Buscar"
+        app:iconifiedByDefault="false"
         app:layout_constraintBottom_toTopOf="@+id/guidelineMedio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineArriba"/>
+        app:layout_constraintTop_toTopOf="@+id/guidelineArriba"
+        app:queryHint="Buscar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineMedio"
@@ -54,7 +55,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/guidelineAbajo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineMedio" >
+        app:layout_constraintTop_toTopOf="@+id/guidelineMedio">
 
     </androidx.recyclerview.widget.RecyclerView>
 

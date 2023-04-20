@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +24,7 @@ import com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFr
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecursosListadoFragment extends Fragment implements View.OnClickListener, OpcionesListaFragment.OnButtonClickListener {
+public class RecursosListadoFragment extends Fragment implements View.OnClickListener, OpcionesListaFragment.OnButtonClickListener, RecursosAdapter.OnItemSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,8 +48,8 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
     private RecursosAdapter adapter;
     private RecyclerView.LayoutManager lManager;
     private TextView tituloFragment;
-
     private SearchView searchView;
+    private OpcionesListaFragment opcionesListaFragment;
 
     //private Button botonNuevoRecurso;
 
@@ -114,6 +113,12 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         // Obtener el Recycler.
         recycler = (RecyclerView) root.findViewById(R.id.listRecyclerView);
         recycler.setHasFixedSize(true);
+
+        // Obtenemos las Opciones.
+        opcionesListaFragment = new OpcionesListaFragment();
+        opcionesListaFragment.setOnButtonClickListener(this);
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainerView, opcionesListaFragment).commit();
+
 
         // Usar un administrador para LinearLayout.
         lManager = new LinearLayoutManager(getContext());
@@ -202,7 +207,13 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onViewDetailsButtonClicked() {
-        showDetailsFragment();
+        int idBotonConsultar = 1;
+        //Pasar el recurso seleccionado al fragment
+        if(adapter.getRecursoSeleccionado() != null){
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(adapter.getRecursoSeleccionado(), idBotonConsultar);
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarRecursoFragment).addToBackStack(null).commit();
+        }
     }
 
     @Override
@@ -212,15 +223,18 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onEditButtonClicked() {
-
-    }
-
-    private void showDetailsFragment() {
-        //Pasar el paciente seleccionado al fragment
+        int idBotonEditar = 2;
+        //Pasar el recurso seleccionado al fragment
         AppCompatActivity activity = (AppCompatActivity) getContext();
-        //ConsultarPacienteFragment consultarPacienteFragment = ConsultarPacienteFragment.newInstance(adapter.getPacienteSelecionado());
-        //activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarPacienteFragment).addToBackStack(null).commit();
+        RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(adapter.getRecursoSeleccionado(), idBotonEditar);
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarRecursoFragment).addToBackStack(null).commit();
     }
+
+    @Override
+    public void onItemSelected(int position) {
+        selectedPosition = position;
+    }
+
 
     /**
      * Método para generar el filtro de busqueda con el SearchView en el Listado.
@@ -229,6 +243,7 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
      */
     public void filtrarBusqueda(String secuencia) {
         String cadenaUsuario = secuencia.toLowerCase();
+        String auxNombre;
         filtroItemsBusqueda = new ArrayList<>();
 
         if(cadenaUsuario.isEmpty()){
@@ -236,19 +251,14 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         }else{
             List<RecursoComunitario> filtroRecursos = new ArrayList<>();
             for(RecursoComunitario aux : filtroItemsMenu){
-                if(aux.getNombre().toLowerCase().contains(cadenaUsuario)){
+                // Guarda en la variable "auxNombre" el nombre del Recurso sin acentos.
+                auxNombre = Normalizer.normalize(aux.getNombre(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+                if(auxNombre.toLowerCase().contains(cadenaUsuario)){
                     filtroRecursos.add(aux);
                 }
             }
             filtroItemsBusqueda = filtroRecursos;
         }
     }
-
-    /* Viene de la clase Adapter
-    @Override
-    public void onItemSelected(int position) {
-        selectedPosition = position;
-    }
-    */
 
 }

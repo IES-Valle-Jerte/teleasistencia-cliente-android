@@ -8,25 +8,28 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
+    <ImageButton
         android:id="@+id/view_details_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="detalles" />
+        android:contentDescription="detalles"
+        android:src="@android:drawable/ic_menu_search" />
 
-    <Button
+    <ImageButton
         android:id="@+id/delete_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="delete" />
+        android:contentDescription="borrar"
+        android:src="@android:drawable/ic_menu_delete" />
 
-    <Button
+    <ImageButton
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="edit" />
+        android:contentDescription="editar"
+        android:src="@android:drawable/ic_menu_edit" />
 
 </LinearLayout>
