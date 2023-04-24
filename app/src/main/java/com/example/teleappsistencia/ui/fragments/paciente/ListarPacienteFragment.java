@@ -1,27 +1,29 @@
 package com.example.teleappsistencia.ui.fragments.paciente;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
-import com.example.teleappsistencia.MainActivity;
 import com.example.teleappsistencia.R;
+import com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFragment;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 import com.example.teleappsistencia.modelos.Paciente;
-import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ import retrofit2.Response;
  * Una clase {@link Fragment} para recoger los listar los pacientes.
  * <p> Esta clase es una subclase de {@link Fragment} y hereda de ella todos sus métodos y atributos.
  */
-public class ListarPacienteFragment extends Fragment {
+public class ListarPacienteFragment extends Fragment implements View.OnClickListener, OpcionesListaFragment.OnButtonClickListener,PacienteAdapter.OnItemSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,12 +45,16 @@ public class ListarPacienteFragment extends Fragment {
 
     // Atributos de la interfaz de usuario (UI) del fragment.
     private RecyclerView recycler;
-    private RecyclerView.Adapter adapter;
+    //private RecyclerView.Adapter adapter;
+    private PacienteAdapter adapter;
     private RecyclerView.LayoutManager lManager;
+    private Button botonNuevoPaciente;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    //Posicion seleccionada en la lista
+    private int selectedPosition = RecyclerView.NO_POSITION;
 
     // Lista de pacientes que se van a mostrar.
     static List<Object> lPacientes;
@@ -98,6 +104,9 @@ public class ListarPacienteFragment extends Fragment {
         //Obtenemos el Recycler
         recycler = (RecyclerView) view.findViewById(R.id.listRecyclerView);
         recycler.setHasFixedSize(true);
+        //Obtenemos el botón
+        botonNuevoPaciente=view.findViewById(R.id.buttonNuevoPaciente);
+        botonNuevoPaciente.setOnClickListener(this);
 
         //Usar un administrador para LinearLayout
         lManager = new LinearLayoutManager(getContext());
@@ -108,6 +117,14 @@ public class ListarPacienteFragment extends Fragment {
         Utilidad.generarCapaEspera(view,dataConstraintLayout);
 
         listarPacientes(view,recycler);
+        //Creamos el fragment inferior con las opciones de la lista
+        OpcionesListaFragment myFragment = new OpcionesListaFragment();
+        //Acciones de los botones del fragment
+        myFragment.setOnButtonClickListener(this);
+        //Cargmaos el fragment en el fragmentContainer
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragmentContainerViewOpcionesListas, myFragment)
+                .commit();
 
         return view;
     }
@@ -159,7 +176,45 @@ public class ListarPacienteFragment extends Fragment {
         lPacientes = listado;
     }
 
+    public void cargarFragmentInsertar(){
+        FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_fragment,new ViewPagerPacientesFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.buttonNuevoPaciente:
+                cargarFragmentInsertar();
+                break;
+        }
+    }
 
+    @Override
+    public void onViewDetailsButtonClicked() {
+        showDetailsFragment();
+    }
 
+    @Override
+    public void onDeleteButtonClicked() {
 
+    }
+
+    @Override
+    public void onEditButtonClicked() {
+
+    }
+
+    @Override
+    public void onItemSelected(int position) {
+        selectedPosition = position;
+    }
+    private void showDetailsFragment() {
+        //Pasar el paciente seleccionado al fragment
+        AppCompatActivity activity = (AppCompatActivity) getContext();
+        ConsultarPacienteFragment consultarPacienteFragment = ConsultarPacienteFragment.newInstance(adapter.getPacienteSelecionado());
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarPacienteFragment).addToBackStack(null).commit();
+    }
 }

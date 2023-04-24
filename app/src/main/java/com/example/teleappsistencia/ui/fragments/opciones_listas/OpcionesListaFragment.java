@@ -8,19 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 import com.example.teleappsistencia.R;
-import com.example.teleappsistencia.ui.fragments.recursos.RecursosListadoFragment;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 
 /**
  * A simple {@link Fragment} subclass.
+<<<<<<< HEAD
  * Use the {@link OpcionesListaFragment} factory method to
+=======
+ * Use the {@link OpcionesListaFragment} factory method to
+>>>>>>> 1c8153348a399274f3fe8f8efa191faf8215a40d
  * create an instance of this fragment.
  */
 public class OpcionesListaFragment extends Fragment {
-
     //Interfaz con las acciones de los botones
     public interface OnButtonClickListener {
         void onViewDetailsButtonClicked();
@@ -41,7 +41,8 @@ public class OpcionesListaFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_opciones_lista, container, false);
 
         // Asignar listeners a los botones
-        ImageButton viewDetailsButton = view.findViewById(R.id.view_details_button);
+        Button viewDetailsButton = view.findViewById(R.id.view_details_button);
+
         viewDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +50,8 @@ public class OpcionesListaFragment extends Fragment {
             }
         });
 
-        ImageButton deleteButton = view.findViewById(R.id.delete_button);
+        Button deleteButton = view.findViewById(R.id.delete_button);
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +59,8 @@ public class OpcionesListaFragment extends Fragment {
             }
         });
 
-        ImageButton editButton = view.findViewById(R.id.edit_button);
+        Button editButton = view.findViewById(R.id.edit_button);
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,4 +73,5 @@ public class OpcionesListaFragment extends Fragment {
     public void setOnButtonClickListener(OnButtonClickListener listener) {
         mListener = listener;
     }
+
 }
