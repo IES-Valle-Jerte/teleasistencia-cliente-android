@@ -29,6 +29,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
     private TextView textViewErrorPedirCodigoPostal;
     private EditText nombreRecursoComunitario;
     private EditText telefonoRecursoComunitario;
+    private EditText editTextTipoRecursoComunitario;
     private EditText localidadRecursoComunitario;
     private EditText provinciaRecursoComunitario;
     private EditText direccionRecursoComunitario;
@@ -46,6 +47,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment ConsultarRecursoComunitario.
      * @param recursoComunitario: Recibe el Recurso Comunitario y el Id del Boton presionado.
      */
@@ -79,7 +81,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
         View root = inflater.inflate(R.layout.fragment_opciones_recursos, container, false);
 
         // Método que muestra los valores del recurso comunitario.
-        TipoRecursoComunitario tipoRecursoComunitario = (TipoRecursoComunitario) Utilidad.getObjeto(recursoComunitario, Constantes.TIPO_RECURSO_COMUNITARIO);
+        TipoRecursoComunitario tipoRecursoComunitario = (TipoRecursoComunitario) Utilidad.getObjeto(recursoComunitario.getTipoRecursoComunitario(), Constantes.TIPO_RECURSO_COMUNITARIO);
         Direccion direccion = (Direccion) Utilidad.getObjeto(this.recursoComunitario.getDireccion(), Constantes.DIRECCION);
 
         // Se inicializan las variables.
@@ -96,6 +98,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
         this.textViewErrorPedirCodigoPostal = (TextView) root.findViewById(R.id.textViewErrorCodigoPostal);
         this.codigoPostalRecursoComunitario = (EditText) root.findViewById(R.id.editTextTextPostalAddressCodigoPostal);
 
+        this.editTextTipoRecursoComunitario = (EditText) root.findViewById(R.id.editTextTipoRecursoComunitario);
         this.spinnerTipoRecursoComunitario = (Spinner) root.findViewById(R.id.spinnerTipoRecursoComunitario);
 
         this.buttonGuardar = (Button) root.findViewById(R.id.buttonGuardar);
@@ -111,11 +114,15 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                 this.provinciaRecursoComunitario.setKeyListener(null);
                 this.direccionRecursoComunitario.setKeyListener(null);
                 this.codigoPostalRecursoComunitario.setKeyListener(null);
+                this.editTextTipoRecursoComunitario.setVisibility(View.VISIBLE);
+                this.editTextTipoRecursoComunitario.setKeyListener(null);
+                this.spinnerTipoRecursoComunitario.setVisibility(View.INVISIBLE);
                 this.buttonGuardar.setVisibility(View.GONE);
                 this.buttonVolver.setOnClickListener(this);
 
                 this.nombreRecursoComunitario.setText(this.recursoComunitario.getNombre());
                 this.telefonoRecursoComunitario.setText(this.recursoComunitario.getTelefono());
+                this.editTextTipoRecursoComunitario.setText(tipoRecursoComunitario.getNombreTipoRecursoComunitario());
                 this.localidadRecursoComunitario.setText(direccion.getLocalidad());
                 this.provinciaRecursoComunitario.setText(direccion.getProvincia());
                 this.direccionRecursoComunitario.setText(direccion.getDireccion());
@@ -133,7 +140,6 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                 this.provinciaRecursoComunitario.setText(direccion.getProvincia());
                 this.direccionRecursoComunitario.setText(direccion.getDireccion());
                 this.codigoPostalRecursoComunitario.setText(direccion.getCodigoPostal());
-
                 break;
 
             // Nuevo.

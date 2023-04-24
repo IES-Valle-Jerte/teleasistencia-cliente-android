@@ -1,6 +1,7 @@
 package com.example.teleappsistencia.ui.fragments.recursos;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class RecursosAdapter extends RecyclerView.Adapter<RecursosAdapter.Recurs
         public Context context;
         private TextView nombreRecursoComunitario;
         private TextView telefonoRecursoComunitario;
+        private TextView tipoRecursoComunitario;
         private TextView direccionRecursoComunitario;
         private RecursoComunitario recursoComunitario;
 
@@ -89,6 +91,7 @@ public class RecursosAdapter extends RecyclerView.Adapter<RecursosAdapter.Recurs
             this.context = v.getContext();
             this.nombreRecursoComunitario = (TextView) v.findViewById(R.id.nombreRecursoComunitario);
             this.telefonoRecursoComunitario = (TextView) v.findViewById(R.id.telefonoRecursoComunitario);
+            this.tipoRecursoComunitario = (TextView) v.findViewById(R.id.tipoRecursoComunitario);
             this.direccionRecursoComunitario = (TextView) v.findViewById(R.id.direccionRecursoComunitario);
         }
     }
@@ -142,10 +145,12 @@ public class RecursosAdapter extends RecyclerView.Adapter<RecursosAdapter.Recurs
     public void onBindViewHolder(RecursoComunitarioViewHolder viewHolder, int i) {
 
         RecursoComunitario recursoComunitario = items.get(i);
+        TipoRecursoComunitario tipoRecursoComunitario = (TipoRecursoComunitario) Utilidad.getObjeto(recursoComunitario.getTipoRecursoComunitario(), Constantes.TIPO_RECURSO_COMUNITARIO);
         Direccion direccion = (Direccion) Utilidad.getObjeto(recursoComunitario.getDireccion(), Constantes.DIRECCION);
 
         viewHolder.nombreRecursoComunitario.setText(items.get(i).getNombre());
         viewHolder.telefonoRecursoComunitario.setText(items.get(i).getTelefono());
+        viewHolder.tipoRecursoComunitario.setText(tipoRecursoComunitario.getNombreTipoRecursoComunitario());
         viewHolder.direccionRecursoComunitario.setText(direccion.getDireccion());
 
         this.recursoComunitarioViewHolder.setRecursoComunitario(items.get(i));
@@ -169,9 +174,17 @@ public class RecursosAdapter extends RecyclerView.Adapter<RecursosAdapter.Recurs
         });
 
         if(selectedPosition == i){
-            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.azul));
+            // Con esta forma, el cardView no pierde la forma (Bordes redondeados y margenes.).
+            viewHolder.itemView.findViewById(R.id.fondo).setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.azul));
+
+            // Con esta forma, el cardView pierde la forma.
+            // viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.azul));
         } else {
-            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white));
+            // Con esta forma, el cardView no pierde la forma (Bordes redondeados y margenes.).
+            viewHolder.itemView.findViewById(R.id.fondo).setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white));
+
+            // Con esta forma, el cardView pierde la forma.
+            // viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white));
         }
     }
 }

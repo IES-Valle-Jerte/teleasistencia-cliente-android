@@ -166,7 +166,7 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
                     según su id en la clasificación de recursos (Submenu).
                      */
                     for (RecursoComunitario aux : items) {
-                        TipoRecursoComunitario auxTRC = (TipoRecursoComunitario) Utilidad.getObjeto(aux.getTipoRecursoComunitario(),"TipoRecursoComunitario");
+                        TipoRecursoComunitario auxTRC = (TipoRecursoComunitario) Utilidad.getObjeto(aux.getTipoRecursoComunitario(), Constantes.TIPO_RECURSO_COMUNITARIO);
                         if(auxTRC.getId_clasificacion_recurso_comunitario() == id){
                             filtroItemsMenu.add(aux);
                         }
@@ -210,6 +210,7 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         int idBotonConsultar = 1;
         //Pasar el recurso seleccionado al fragment
         if(adapter.getRecursoSeleccionado() != null){
+            this.searchView.setQuery("", false);
             AppCompatActivity activity = (AppCompatActivity) getContext();
             RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(adapter.getRecursoSeleccionado(), idBotonConsultar);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarRecursoFragment).addToBackStack(null).commit();
@@ -217,17 +218,20 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
     }
 
     @Override
-    public void onDeleteButtonClicked() {
-
-    }
-
-    @Override
     public void onEditButtonClicked() {
         int idBotonEditar = 2;
         //Pasar el recurso seleccionado al fragment
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(adapter.getRecursoSeleccionado(), idBotonEditar);
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarRecursoFragment).addToBackStack(null).commit();
+        if(adapter.getRecursoSeleccionado() != null){
+            this.searchView.setQuery("", false);
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(adapter.getRecursoSeleccionado(), idBotonEditar);
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarRecursoFragment).addToBackStack(null).commit();
+        }
+    }
+
+    @Override
+    public void onDeleteButtonClicked() {
+
     }
 
     @Override

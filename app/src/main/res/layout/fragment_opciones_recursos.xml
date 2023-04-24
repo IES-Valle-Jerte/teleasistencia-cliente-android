@@ -25,11 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/fondo_bordes_textviews"
-        android:minHeight="25dp"
         android:gravity="center"
-        android:visibility="gone"
+        android:minHeight="25dp"
         android:text="@string/error_nombreVacio"
         android:textColor="@color/black"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/editTextNombre"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDerecha" />
 
@@ -107,6 +107,23 @@
         app:layout_constraintBottom_toTopOf="@+id/spinnerTipoRecursoComunitario"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
         app:layout_constraintTop_toBottomOf="@+id/editTextPhoneTelefono" />
+
+    <EditText
+        android:id="@+id/editTextTipoRecursoComunitario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint=""
+        android:inputType="phone"
+        android:padding="10dp"
+        android:textColorHint="@color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba5"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDerecha"
+        app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+        app:layout_constraintTop_toTopOf="@+id/guidelineArriba4"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <Spinner
         android:id="@+id/spinnerTipoRecursoComunitario"
