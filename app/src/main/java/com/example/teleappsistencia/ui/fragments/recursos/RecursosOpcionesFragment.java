@@ -37,7 +37,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
     private Button buttonGuardar;
     private Button buttonVolver;
     private RecursoComunitario recursoComunitario;
-    private int idBoton;
+    private String opcion;
     private Spinner spinnerTipoRecursoComunitario;
 
     public RecursosOpcionesFragment() {
@@ -51,11 +51,11 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
      * @return A new instance of fragment ConsultarRecursoComunitario.
      * @param recursoComunitario: Recibe el Recurso Comunitario y el Id del Boton presionado.
      */
-    public static RecursosOpcionesFragment newInstance(RecursoComunitario recursoComunitario, int idBoton){
+    public static RecursosOpcionesFragment newInstance(RecursoComunitario recursoComunitario, String opcion){
         RecursosOpcionesFragment fragment = new RecursosOpcionesFragment();
         Bundle args = new Bundle();
         args.putSerializable(Constantes.RECURSO_COMUNITARIO_OBJETO, recursoComunitario);
-        args.putSerializable("idBoton", idBoton);
+        args.putSerializable(Constantes.OPCION_SELECCIONADA, opcion);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,7 +70,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             this.recursoComunitario = (RecursoComunitario) getArguments().getSerializable(Constantes.RECURSO_COMUNITARIO_OBJETO);
-            this.idBoton = (int) getArguments().getSerializable("idBoton");
+            this.opcion = (String) getArguments().getSerializable(Constantes.OPCION_SELECCIONADA);
         }
     }
 
@@ -104,10 +104,10 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
         this.buttonGuardar = (Button) root.findViewById(R.id.buttonGuardar);
         this.buttonVolver = (Button) root.findViewById(R.id.buttonVolver);
 
-        switch (idBoton){
+        switch (opcion){
 
             // Consultar.
-            case 1:
+            case Constantes.CONSULTAR:
                 this.nombreRecursoComunitario.setKeyListener(null);
                 this.telefonoRecursoComunitario.setKeyListener(null);
                 this.localidadRecursoComunitario.setKeyListener(null);
@@ -130,7 +130,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                 break;
 
             // Editar.
-            case 2:
+            case Constantes.MODIFICAR:
                 this.buttonGuardar.setOnClickListener(this);
                 this.buttonVolver.setOnClickListener(this);
 
@@ -143,7 +143,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                 break;
 
             // Nuevo.
-            case 3:
+            case Constantes.NUEVO:
 
                 break;
         }

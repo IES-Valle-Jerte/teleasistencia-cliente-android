@@ -34,15 +34,6 @@ import retrofit2.Response;
 
 public class RecursosListadoFragment extends Fragment implements View.OnClickListener, OpcionesListaFragment.OnButtonClickListener, RecursosAdapter.OnItemSelectedListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     // Atributos de la interfaz de usuario (UI) del fragment.
     private RecyclerView recycler;
     private RecursosAdapter adapter;
@@ -55,6 +46,9 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
 
     //Posicion seleccionada en la lista
     private int selectedPosition = RecyclerView.NO_POSITION;
+
+    //Recurso seleccionado
+    private RecursoComunitario recursoComunitarioSeleccionado;
 
     private List<RecursoComunitario> items;
 
@@ -70,26 +64,6 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
     // Constructor por defecto.
     public RecursosListadoFragment() {
 
-    }
-
-    // TODO: Rename and change types and number of parameters
-    public static RecursosListadoFragment newInstance(String param1, String param2) {
-        RecursosListadoFragment fragment = new RecursosListadoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -207,24 +181,24 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onViewDetailsButtonClicked() {
-        int idBotonConsultar = 1;
+        recursoComunitarioSeleccionado = adapter.getRecursoSeleccionado();
         //Pasar el recurso seleccionado al fragment
-        if(adapter.getRecursoSeleccionado() != null){
-            this.searchView.setQuery("", false);
+        if(recursoComunitarioSeleccionado != null){
+            this.searchView.setQuery(Constantes.STRING_VACIO, false);
             AppCompatActivity activity = (AppCompatActivity) getContext();
-            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(adapter.getRecursoSeleccionado(), idBotonConsultar);
+            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(recursoComunitarioSeleccionado, Constantes.CONSULTAR);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarRecursoFragment).addToBackStack(null).commit();
         }
     }
 
     @Override
     public void onEditButtonClicked() {
-        int idBotonEditar = 2;
+        recursoComunitarioSeleccionado = adapter.getRecursoSeleccionado();
         //Pasar el recurso seleccionado al fragment
-        if(adapter.getRecursoSeleccionado() != null){
-            this.searchView.setQuery("", false);
+        if(recursoComunitarioSeleccionado != null){
+            this.searchView.setQuery(Constantes.STRING_VACIO, false);
             AppCompatActivity activity = (AppCompatActivity) getContext();
-            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(adapter.getRecursoSeleccionado(), idBotonEditar);
+            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(recursoComunitarioSeleccionado, Constantes.MODIFICAR);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarRecursoFragment).addToBackStack(null).commit();
         }
     }

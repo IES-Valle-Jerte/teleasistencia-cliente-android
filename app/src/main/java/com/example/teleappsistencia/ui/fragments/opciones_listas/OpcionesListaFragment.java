@@ -13,11 +13,7 @@ import com.example.teleappsistencia.R;
 
 /**
  * A simple {@link Fragment} subclass.
-<<<<<<< HEAD
  * Use the {@link OpcionesListaFragment} factory method to
-=======
- * Use the {@link OpcionesListaFragment} factory method to
->>>>>>> 1c8153348a399274f3fe8f8efa191faf8215a40d
  * create an instance of this fragment.
  */
 public class OpcionesListaFragment extends Fragment {

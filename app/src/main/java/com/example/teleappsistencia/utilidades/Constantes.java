@@ -288,6 +288,7 @@ public class Constantes {
     public final static String AL_PACIENTE = "ArrayList<Paciente>";
     public final static String AL_ALARMA = "ArrayList<Alarma>";
     public final static String AL_CLASIFICACION_ALARMA= "ArrayList<ClasificacionAlarma>";
+    public final static String AL_CLASIFICACION_RECURSO= "ArrayList<ClasificacionRecurso>";
     public final static String AL_CENTRO_SANITARIO_ALARMA = "ArrayList<CentroSanitarioEnAlarma>";
     public final static String AL_PERSONAS_CONTACTO_EN_ALARMA = "ArrayList<PersonaContactoEnAlarma>";
     public final static String AL_RECURSOS_COMUNITARIOS_EN_ALARMA = "ArrayList<RecursoComunitarioEnAlarma>";
@@ -375,4 +376,10 @@ public class Constantes {
     public static final String TITULO_RECURSOS = "Recursos ";
     public static final String KEY_ID_CLASIFICACION_RECURSOS = "key_id";
     public static final String KEY_NOMBRE_CLASIFICACION_RECURSOS = "key_nombre";
+
+    /* Constantes Opciones Lista */
+    public static final String CONSULTAR = "Consultar";
+    public static final String MODIFICAR = "Modificar";
+    public static final String NUEVO = "Nuevo";
+    public static final String OPCION_SELECCIONADA = "Opcion";
 }

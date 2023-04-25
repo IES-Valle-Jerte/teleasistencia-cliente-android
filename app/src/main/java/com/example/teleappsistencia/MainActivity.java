@@ -621,7 +621,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(response.isSuccessful()){
                     RecursosListadoFragment recursosListadoFragment;
                     List<Object> lObjetos = response.body();
-                    lRecursos = (ArrayList<ClasificacionRecurso>) Utilidad.getObjeto(lObjetos,"ClasificacionRecurso");
+                    lRecursos = (ArrayList<ClasificacionRecurso>) Utilidad.getObjeto(lObjetos,Constantes.AL_CLASIFICACION_RECURSO);
                     for (ClasificacionRecurso auxR : lRecursos) {
                         Bundle bundle = new Bundle();
                         switch (auxR.getId()){
@@ -700,8 +700,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         // En este caso no hay nada que hacer al pulsar en una opción principal.
                     }
                 }*/
+                /* Estas dos lineas de código hacen que siempre que se pulse una
+                opción principal del menú cargue un fragment en blanco.
+
                 DrawerLayout drawer = findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
+                 */
                 return false;
             }
         });
