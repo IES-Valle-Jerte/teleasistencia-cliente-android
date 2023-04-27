@@ -2,8 +2,8 @@ package com.example.teleappsistencia.ui.fragments.usuarios_sistema;
 
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,14 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.teleappsistencia.MainActivity;
 import com.example.teleappsistencia.R;
-import com.example.teleappsistencia.modelos.Paciente;
 import com.example.teleappsistencia.modelos.Usuario;
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFragment;
-import com.example.teleappsistencia.ui.fragments.paciente.PacienteAdapter;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 
@@ -139,13 +136,18 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
     }
 
     private void cargarFragmentNuevoUsuario() {
-        // TODO
+        FragmentManager fragManager = getActivity().getSupportFragmentManager();
+        fragManager.beginTransaction()
+            .replace(R.id.main_fragment, new CrearUsuarioSistemaFragment())
+            .addToBackStack(null).commit();
     }
 
     /**
      * Recarga el fragment padre para mostrar los nuevos contenidos del RecyclerView.
      */
     private void recargarFragment() {
+        this.selectedPosition = RecyclerView.NO_POSITION;
+//        adapter.notifyDataSetChanged();
 //        MainActivity activity = (MainActivity) this.context;
 //        UsuariosSistemaFragment usuarios_fragment = new UsuariosSistemaFragment();
 //        activity.getSupportFragmentManager()
