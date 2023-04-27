@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,6 +73,7 @@ import com.example.teleappsistencia.ui.fragments.tipo_vivienda.InsertarTipoVivie
 import com.example.teleappsistencia.ui.fragments.tipo_vivienda.ListarTipoViviendaFragment;
 import com.example.teleappsistencia.ui.fragments.usuarios.InsertarUsuariosFragment;
 import com.example.teleappsistencia.ui.fragments.usuarios.ListarUsuariosFragment;
+import com.example.teleappsistencia.ui.fragments.usuarios_sistema.UsuariosSistemaFragment;
 import com.example.teleappsistencia.ui.menu.ExpandableListAdapter;
 import com.example.teleappsistencia.ui.menu.MenuModel;
 import com.example.teleappsistencia.utilidades.Constantes;
@@ -242,6 +242,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         childModelsList = new ArrayList<>();
         menuModel = new MenuModel(getResources().getString(R.string.menu_usuarios_servicio), true, true, new ListarPacienteFragment());
         headerList.add(menuModel);
+
+        // Menu Usuarios del Sistema. Solo le aparece a los administradores
+        if(Utilidad.isAdmin()) {
+            menuModel = new MenuModel(getResources().getString(R.string.menu_usuarios_sistema), false, false, new UsuariosSistemaFragment());
+            headerList.add(menuModel);
+        }
 
         // Menu Alarma.
         childModelsList = new ArrayList<>();

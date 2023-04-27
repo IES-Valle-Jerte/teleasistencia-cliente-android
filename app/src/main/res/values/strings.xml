@@ -25,6 +25,7 @@
     <string name="menu_clasificacion_alarma">Clasificación Alarma</string>
     <string name="menu_alarma">Alarma</string>
     <string name="menu_usuarios_servicio">Usuarios del Servicio</string>
+    <string name="menu_usuarios_sistema">Usuarios del Sistema</string>
     <string name="menu_centro_sanitario_en_alarma">Centro Sanitario en Alarma</string>
     <string name="menu_recursos_comunitarios_en_alarma">Recursos Comunitarios en Alarma</string>
     <string name="menu_persona_de_contacto_en_alarma">Persona de contacto en Alarma</string>
@@ -181,6 +182,7 @@
     <string name="titulo_listarDatosTipoCentroSanitario">Tipos de centros sanitarios</string>
     <string name="titulo_listarDatosTipoModalidadPaciente">Tipos de modalidades de pacientes</string>
     <string name="titulo_listarPacientes">Pacientes</string>
+    <string name="titulo_usuarios_sistema">Usuarios del Sistema</string>
     <string name="titulo_listarDatosCentroSanitario">Centros sanitarios</string>
     <string name="titulo_listarDatosTipoRecursoComunitario">Tipos de recursos comunitarios</string>
     <string name="titulo_listarDatosRecursoComunitario">Recursos comunitarios</string>
@@ -192,6 +194,10 @@
     <string name="provincia">Provincia</string>
     <string name="direccion">Dirección</string>
     <string name="codigoPostal">Código Postal</string>
+    <string name="usuario_card_description_imagen">Imagen del Usuario</string>
+    <string name="usuario_card_placeholder_grupos">GRUPOS</string>
+    <string name="usuario_card_placeholder_nom_ape">NOMBRE APPELIDOS</string>
+    <string name="usuario_card_placeholder_username">username</string>
 
     <!-- Mensajes Botones. -->
     <string name="guardar">Guardar</string>

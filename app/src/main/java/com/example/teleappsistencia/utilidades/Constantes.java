@@ -2,7 +2,7 @@ package com.example.teleappsistencia.utilidades;
 
 public class Constantes {
     /* Direcciones */
-    public static final String DIRECCION_WEBSOCKET = "ws://api-rest.teleasistencia.iesvjp.es/ws/socket-server/";
+    public static final String DIRECCION_WEBSOCKET = "ws://10.0.2.2:8000/ws/socket-server/";
 
     /* Constantes comunes */
     public final static String BEARER_ESPACIO = "Bearer ";
@@ -286,6 +286,7 @@ public class Constantes {
     public final static String AL_TIPO_ALARMA = "ArrayList<TipoAlarma>";
     public final static String AL_TERMINAL = "ArrayList<Terminal>";
     public final static String AL_PACIENTE = "ArrayList<Paciente>";
+    public final static String AL_USUARIOS_SISTEMA = "ArrayList<Usuario>";
     public final static String AL_ALARMA = "ArrayList<Alarma>";
     public final static String AL_CLASIFICACION_ALARMA= "ArrayList<ClasificacionAlarma>";
     public final static String AL_CENTRO_SANITARIO_ALARMA = "ArrayList<CentroSanitarioEnAlarma>";

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="150dp"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+app:cardCornerRadius="4dp"
+app:cardElevation="4dp"
+app:cardUseCompatPadding="true"
+tools:context=".ui.fragments.usuarios_sistema.usuario_card" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- IMAGEN USUARIO -->
+        <ImageView
+            android:id="@+id/cardIV_imagen"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/usuario_card_description_imagen"
+            android:src="@drawable/default_user"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineIzquierda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="150dp" />
+
+        <!-- DATOS USUARIO -->
+        <TextView
+            android:id="@+id/cardTV_groups"
+            android:text="@string/usuario_card_placeholder_grupos"
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1" />
+
+        <TextView
+            android:id="@+id/cardTV_nom_ape"
+            android:text="@string/usuario_card_placeholder_nom_ape"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardTV_groups" />
+
+        <TextView
+            android:id="@+id/cardTV_username"
+            android:text="@string/usuario_card_placeholder_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardTV_nom_ape" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

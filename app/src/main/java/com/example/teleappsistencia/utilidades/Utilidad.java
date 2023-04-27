@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -40,6 +41,8 @@ import com.example.teleappsistencia.websocket.AlarmaWebSocketListener;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
@@ -183,7 +186,24 @@ public class Utilidad {
         }, 2500);
     }
 
-    /*
+    public static void cargarImagen(String urlImagen, ImageView imageView) {
+        if (urlImagen != null && !urlImagen.isEmpty() && imageView != null) {
+            // Conectar
+            OkHttpClient client = new OkHttpClient();
+            Picasso picasso = new Picasso.Builder(imageView.getContext())
+                .downloader(new OkHttp3Downloader(client))
+                .build();
+
+            // Cargar imagen en el ImageView
+            picasso.load(urlImagen)
+                .fit().centerInside()
+                .placeholder(R.drawable.ic_menu_gallery) // Placeholder mientras carga
+                .error(R.drawable.ic_menu_gallery) // Imagen si no carga bien
+                .into(imageView);
+        }
+    }
+
+    /**
      * Este método devuelve un String con Sí cuando le pasamos un true, y No si es false
      * @param condicion
      * @return
