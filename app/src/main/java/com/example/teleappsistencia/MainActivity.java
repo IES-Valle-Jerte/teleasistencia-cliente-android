@@ -165,26 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             textView_email_usuarioLogged.setText(usuario.getEmail());
 
             if(usuario.getImagen() != null) {  // Si el usuario cuenta con una imagen.
-                String img_url = usuario.getImagen().getUrl(); // Recogo la imagen del usuario.
-
-                Picasso.get()       // LLamo a Picasso para poder asignar una imagen por URL.
-                        .load(img_url)  // Cargo la URL.
-                        .error(R.drawable.rounded_default_user) // Si sucede un error se utiliza la imagen por defecto.
-                        .resize(78, 80)
-                        .centerCrop()
-                        .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.OFFLINE)
-                        .into(imageView_fotoPerfil, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                System.out.println("\nPerfe\n");
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                System.out.println("\nError\n");
-                                e.printStackTrace();
-                            }
-                        }); // Carga la imagen en el imageView.
+                Utilidad.cargarImagen(usuario.getImagen().getUrl(), imageView_fotoPerfil);
             }
         }
     }
