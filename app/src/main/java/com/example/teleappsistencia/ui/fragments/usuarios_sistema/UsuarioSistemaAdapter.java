@@ -93,50 +93,6 @@ public class UsuarioSistemaAdapter extends RecyclerView.Adapter<UsuarioSistemaAd
          */
         public void setUsuario(Usuario usuario) {
             this.usuario = usuario;
-            // Actualizar GUI con los datos del usuario
-            if (usuario != null) {
-                // Cargar textos
-                if (usuario.getGroups() != null) {
-                    StringBuilder roles = new StringBuilder("");
-                    List<Object> grupos = (ArrayList) usuario.getGroups();
-
-                    if (!grupos.isEmpty()) {
-                        grupos.forEach(g -> {
-                            Grupo _g = (Grupo) Utilidad.getObjeto(g, Constantes.GRUPO);
-                            String nombre = _g.getName();
-                            nombre = nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
-                            roles.append(nombre).append(", ");
-                        });
-                        // Eliminar comas sobrantes
-                        roles.delete(roles.length() - 2, roles.length());
-
-                        cardTV_groups.setText(roles.toString());
-                    } else {
-                        cardTV_groups.setText(R.string.usuario_card_placeholder_grupos);
-                    }
-                } else {
-                    cardTV_groups.setText(R.string.usuario_card_placeholder_grupos);
-                }
-                if (usuario.getFirstName() != null && usuario.getLastName() != null) {
-                    StringBuilder nom_ape = new StringBuilder("");
-
-                    nom_ape.append(usuario.getFirstName()).append(' ');
-                    nom_ape.append(usuario.getLastName());
-
-                    cardTV_nom_ape.setText(nom_ape.toString());
-                } else {
-                    cardTV_nom_ape.setText(R.string.usuario_card_placeholder_nom_ape);
-                }
-                if (usuario.getUsername() != null && !usuario.getUsername().isEmpty()) {
-                    cardTV_username.setText(usuario.getUsername());
-                } else {
-                    cardTV_username.setText(R.string.usuario_card_placeholder_username);
-                }
-                // Intentar cargar la imagen
-                if (usuario.getImagen() != null) {
-                    Utilidad.cargarImagen(usuario.getImagen().getUrl(), cardIV_imagen);
-                }
-            }
         }
     }
 
@@ -175,24 +131,10 @@ public class UsuarioSistemaAdapter extends RecyclerView.Adapter<UsuarioSistemaAd
         View v = LayoutInflater.from(viewGroup.getContext())
             .inflate(R.layout.fragment_usuario_sistema_card, viewGroup, false);
 
-        UsuarioSistemaViewHolder usuarioViewHolder = new UsuarioSistemaViewHolder(v);
-        return usuarioViewHolder;
-    }
-
-
-    /**
-     * Método que configura el texto a mostrar dentro de la CardView.
-     *
-     * @param viewHolder El ViewHolder que debe actualizarse para representar el contenido del elemento
-     *                   en la posición dada en el conjunto de datos.
-     * @param i          La posición del elemento en el conjunto de datos del adaptador.
-     */
-    @Override
-    public void onBindViewHolder(UsuarioSistemaViewHolder viewHolder, int i) {
-        viewHolder.setUsuario(items.get(i));
+        UsuarioSistemaViewHolder viewHolder = new UsuarioSistemaViewHolder(v);
 
         // Establecer un click listener para ViewHolder
-        viewHolder.itemView.setOnClickListener(v -> {
+        viewHolder.itemView.setOnClickListener(_v -> {
             // Actualizar la posición seleccionada y notificar al adapter
             int previousSelectedPosition = selectedPosition;
             selectedPosition = viewHolder.getAdapterPosition();
@@ -205,6 +147,68 @@ public class UsuarioSistemaAdapter extends RecyclerView.Adapter<UsuarioSistemaAd
             }
             selectedItem = viewHolder.usuario;
         });
+
+        return viewHolder;
+    }
+
+
+    /**
+     * Método que configura el texto a mostrar dentro de la CardView.
+     *
+     * @param viewHolder El ViewHolder que debe actualizarse para representar el contenido del elemento
+     *                   en la posición dada en el conjunto de datos.
+     * @param i          La posición del elemento en el conjunto de datos del adaptador.
+     */
+    @Override
+    public void onBindViewHolder(UsuarioSistemaViewHolder viewHolder, int i) {
+        Usuario usuario = items.get(i);
+        viewHolder.setUsuario(usuario);
+
+        // Actualizar GUI con los datos del usuario
+        // Cargar textos
+        if (usuario.getGroups() != null) {
+            StringBuilder roles = new StringBuilder("");
+            List<Object> grupos = (ArrayList) usuario.getGroups();
+
+            if (!grupos.isEmpty()) {
+                grupos.forEach(g -> {
+                    Grupo _g = (Grupo) Utilidad.getObjeto(g, Constantes.GRUPO);
+                    String nombre = _g.getName();
+                    nombre = nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
+                    roles.append(nombre).append(", ");
+                });
+                // Eliminar comas sobrantes
+                roles.delete(roles.length() - 2, roles.length());
+
+                viewHolder.cardTV_groups.setText(roles.toString());
+            } else {
+                viewHolder.cardTV_groups.setText(R.string.usuario_card_placeholder_grupos);
+            }
+        } else {
+            viewHolder.cardTV_groups.setText(R.string.usuario_card_placeholder_grupos);
+        }
+        if (usuario.getFirstName() != null && usuario.getLastName() != null) {
+            StringBuilder nom_ape = new StringBuilder("");
+
+            nom_ape.append(usuario.getFirstName()).append(' ');
+            nom_ape.append(usuario.getLastName());
+
+            viewHolder.cardTV_nom_ape.setText(nom_ape.toString());
+        } else {
+            viewHolder.cardTV_nom_ape.setText(R.string.usuario_card_placeholder_nom_ape);
+        }
+        if (usuario.getUsername() != null && !usuario.getUsername().isEmpty()) {
+            viewHolder.cardTV_username.setText(usuario.getUsername());
+        } else {
+            viewHolder.cardTV_username.setText(R.string.usuario_card_placeholder_username);
+        }
+        // Intentar cargar la imagen
+        if (usuario.getImagen() != null) {
+            Utilidad.cargarImagen(usuario.getImagen().getUrl(), viewHolder.cardIV_imagen);
+        } else {
+            viewHolder.cardIV_imagen.setImageResource(R.drawable.default_user);
+        }
+
 
         // Establecer el color de fondo del ViewHolder en función de si está seleccionado o no
         if (selectedPosition == i) {
