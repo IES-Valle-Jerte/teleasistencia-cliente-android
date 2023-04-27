@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,9 +61,8 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     //Parámetros de inicio
     private Alarma alarma;
     private int color;
-    private String nombrePaciente;
     private String numeroTelefono;
-    private List<Object> lContactos;
+    private List<Object> lContactosCercanos;
     private Terminal terminal;
     private Paciente paciente;
 
@@ -96,6 +96,23 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     private List<RelacionUsuarioCentro> lCentrosSanitarios;
     private List<RelacionTerminalRecursoComunitario> lRecursosComunitarios;
 
+    // Elementos para movimiento dinamico
+
+    private Button boton_nivel_1;
+
+    private Button boton_nivel_2;
+
+    private Button boton_nivel_3;
+
+    private LinearLayout layout_nivel1;
+
+    private LinearLayout layout_nivel2;
+
+    private LinearLayout layout_nivel3;
+
+    private Boolean desplegado_nivel2;
+
+    private Boolean desplegado_nivel3;
 
     public GestionAlarmaFragment() {
         // Required empty public constructor
@@ -137,9 +154,7 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         /* Si tenemos argumentos, los recogemos (comprobación por seguridad), sugerencia de Android Studio */
         if (getArguments() != null) {
             alarma = (Alarma) getArguments().getSerializable(Constantes.ARG_ALARMA);
-            nombrePaciente = getArguments().getString(Constantes.ARG_NOMBREPACIENTE);
-            numeroTelefono = getArguments().getString(Constantes.ARG_NUMEROTELEFONO);
-            lContactos = (ArrayList<Object>) getArguments().getSerializable(Constantes.ARG_LCONTACTOS);
+//          lContactos = (ArrayList<Object>) getArguments().getSerializable(Constantes.ARG_LCONTACTOS);
             paciente = (Paciente) getArguments().getSerializable(Constantes.ARG_PACIENTE);
             terminal = (Terminal) getArguments().getSerializable(Constantes.ARG_TERMINAL);
             color = getArguments().getInt(Constantes.ARG_COLOR);
@@ -155,6 +170,9 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
 
         /* Capturar los elementos del layout */
         capturarElementos(view);
+
+        /* Pliega los niveles 2 y 3 */
+        ocultarNivelesDefault();
 
         /* Asignamos el listener a los botones */
         asignarListener();
@@ -178,8 +196,6 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      */
     private void capturarElementos(View view){
         //TextView
-        this.textViewNombre = (TextView) view.findViewById(R.id.textViewNombrePacienteGestion);
-        this.textViewTelefono = (TextView) view.findViewById(R.id.textViewTelefonoPacienteGestion);
 
         //TextInputEditText
         this.editTextObservaciones = (TextInputEditText) view.findViewById(R.id.textInputEditTextObservaciones);
@@ -203,12 +219,20 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         this.buttonCrearAgenda = (Button) view.findViewById(R.id.buttonCrearAgenda);
         this.buttonFinalizar = (Button) view.findViewById(R.id.buttonFinalizar);
         this.buttonCancelar = (Button) view.findViewById(R.id.buttonCancelar);
+        this.boton_nivel_1 = (Button) view.findViewById(R.id.btn_nivel1);
+        this.boton_nivel_2 = (Button) view.findViewById(R.id.btn_nivel2);
+        this.boton_nivel_3 = (Button) view.findViewById(R.id.btn_nivel3);
 
         //ImageButton (Info)
         this.imageButtonInfoPaciente = (ImageButton) view.findViewById(R.id.imageButtonInfoPaciente);
         this.imageButtonInfoContacto = (ImageButton) view.findViewById(R.id.imageButtonInfoContacto);
         this.imageButtonInfoCentroSanitario = (ImageButton) view.findViewById(R.id.imageButtonInfoCentroSanitario);
         this.imageButtonInfoRecursoComunitario = (ImageButton) view.findViewById(R.id.imageButtonInfoRecursoComunitario);
+
+        //Layout
+        this.layout_nivel1 = (LinearLayout) view.findViewById(R.id.layout_nivel1);
+        this.layout_nivel2 = (LinearLayout) view.findViewById(R.id.layout_nivel2);
+        this.layout_nivel3 = (LinearLayout) view.findViewById(R.id.layout_nivel3);
     }
 
 
@@ -228,6 +252,9 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         this.imageButtonInfoRecursoComunitario.setOnClickListener(this);
         this.buttonFinalizar.setOnClickListener(this);
         this.buttonCancelar.setOnClickListener(this);
+        this.boton_nivel_1.setOnClickListener(this);
+        this.boton_nivel_2.setOnClickListener(this);
+        this.boton_nivel_3.setOnClickListener(this);
     }
 
 
@@ -241,12 +268,13 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      * una lista de Object y queremos pasarla a un ArrayList de Contactos.
      */
     private void extraerDatos(){
-        this.lContactosParseada = (ArrayList<Contacto>) Utilidad.getObjeto(lContactos, Constantes.AL_CONTACTOS);
+////        extraerContactos(paciente.getId());
+////        this.lContactosParseada = (ArrayList<Contacto>) Utilidad.getObjeto(lContactosCercanos, Constantes.AL_CONTACTOS);
 
         /* Estos métodos además cargarán los datos de sus Spinner correspondiente, ya que las operaciones
          *  de extracción y carga deben ir anidadas para hacerlo de forma síncrona y no falle. */
-        cargarSpinnerContactos();
-        recuperarListaCentrosSanitarios();
+////        cargarSpinnerContactos();
+////        recuperarListaCentrosSanitarios();
         recuperarListaRecursosComunitarios();
     }
 
@@ -255,8 +283,6 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      * Este método carga los datos del paciente
      */
     private void cargarDatos(){
-        this.textViewNombre.setText(this.nombrePaciente);
-        this.textViewTelefono.setText(this.numeroTelefono);
         cambiarColorbotones();
     }
 
@@ -770,6 +796,29 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         });
     }
 
+    // obtiene los contactos cercanos del paciente
+    private void extraerContactos(int idPaciente) {
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Object>> call = apiService.getContactosbyIdPaciente(idPaciente, Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<List<Object>>() {
+            @Override
+            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+                if (response.isSuccessful()) {
+                    List<Object> contactos = response.body();
+                    lContactosCercanos.addAll(contactos);
+                    // Aquí puedes hacer algo con la lista de contactos
+                } else {
+                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Object>> call, Throwable t) {
+                Toast.makeText(getContext(), Constantes.ERROR_NO_CONTACTOS, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
     /**
      * Este método carga el fragment del listado de alarmas
@@ -780,6 +829,70 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
                 .replace(R.id.main_fragment, listarAlarmasFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    // Este método solo muestra desplegado el nivel 1 inicalmente
+    public void ocultarNivelesDefault(){
+        this.desplegado_nivel2 = false;
+        this.desplegado_nivel3 = false;
+
+        // Convertir la altura de dp a píxeles
+        int heightInDp = 50; // altura deseada en dp
+        float scale = getResources().getDisplayMetrics().density;
+        int heightInPx = (int) (heightInDp * scale + 0.5f);
+
+        // Crear un objeto LayoutParams con la nueva altura y establecerlo en la vista del layout
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, // ancho = MATCH_PARENT
+                heightInPx // altura en píxeles
+        );
+
+        this.layout_nivel2.setLayoutParams(layoutParams);
+        this.layout_nivel3.setLayoutParams(layoutParams);
+    }
+
+    // despliega la altura de los layour de niveles a wrap_content
+    public void mostrarInformacionNiveles(LinearLayout layout){
+        switch (layout.getId()){
+            case R.id.layout_nivel2:
+                this.desplegado_nivel2 = true;
+                break;
+            case R.id.layout_nivel3:
+                this.desplegado_nivel3 = true;
+                break;
+        }
+
+        // Crear un objeto LayoutParams con la nueva altura y establecerlo en la vista del layout
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, // ancho = MATCH_PARENT
+                LinearLayout.LayoutParams.WRAP_CONTENT // altura = WRAP_CONTENT
+        );
+
+        layout.setLayoutParams(layoutParams);
+    }
+
+    public void plegarInformacionNiveles(LinearLayout layout){
+        switch (layout.getId()){
+            case R.id.layout_nivel2:
+                this.desplegado_nivel2 = false;
+                break;
+            case R.id.layout_nivel3:
+                this.desplegado_nivel2 = false;
+                break;
+        }
+
+        // Convertir la altura de dp a píxeles
+        int heightInDp = 50; // altura deseada en dp
+        float scale = getResources().getDisplayMetrics().density;
+        int heightInPx = (int) (heightInDp * scale + 0.5f);
+
+        // Crear un objeto LayoutParams con la nueva altura y establecerlo en la vista del layout
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, // ancho = MATCH_PARENT
+                heightInPx // altura en píxeles
+        );
+
+        layout.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -817,6 +930,23 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
                 break;
             case R.id.buttonCancelar:
                 volver();
+                break;
+            case R.id.btn_nivel1:
+                break;
+            case R.id.btn_nivel2:
+                if(Boolean.FALSE.equals(desplegado_nivel2)){
+                    mostrarInformacionNiveles(layout_nivel2);
+                }else{
+                    plegarInformacionNiveles(layout_nivel2);
+                }
+
+                break;
+            case R.id.btn_nivel3:
+                if(Boolean.FALSE.equals(desplegado_nivel3)){
+                    mostrarInformacionNiveles(layout_nivel3);
+                }else{
+                    plegarInformacionNiveles(layout_nivel3);
+                }
                 break;
         }
     }

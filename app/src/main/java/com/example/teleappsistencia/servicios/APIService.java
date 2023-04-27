@@ -704,7 +704,7 @@ public interface APIService {
     public Call<List<Object>> getTerminales(@Header("Authorization") String token);
 
     // Peticiones Relacion Paciente - Persona
-    @GET("/api-rest/relacion_paciente_persona")
+    @GET("/api-rest/relacion_paciente_persona/")
     public Call<List<Object>> getContactosbyIdPaciente(@Query("id_paciente") int id, @Header("Authorization") String token);
 
     // Peticiones Relacion Usuario - Centro

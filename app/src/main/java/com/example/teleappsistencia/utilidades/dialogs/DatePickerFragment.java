@@ -17,6 +17,33 @@ public class DatePickerFragment extends DialogFragment {
      * Listener OnDateSetListener del DatePickerDialog.
      */
     private DatePickerDialog.OnDateSetListener listener;
+    private int day;
+    private int month;
+    private int year;
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 
     /**
      * Método para crear una nueva instancia del DatePickerFragment.
@@ -29,11 +56,11 @@ public class DatePickerFragment extends DialogFragment {
         return fragment;
     }
 
-    /**
-     * Setter para asignar el listener.
-     * @param listener
-     */
-    private void setListener(DatePickerDialog.OnDateSetListener listener) {
+    public DatePickerDialog.OnDateSetListener getListener() {
+        return listener;
+    }
+
+    public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;
     }
 
@@ -41,11 +68,14 @@ public class DatePickerFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Se utiliza la fecha actual como valor por defecto.
         final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+
 
         // Crea una nueva instancia del DatePicketDialog y lo devuelve.
         return new DatePickerDialog(getActivity(), listener, year, month, day);
+
+
     }
 }

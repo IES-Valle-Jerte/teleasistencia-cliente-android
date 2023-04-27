@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Alarma implements Serializable {
+public class Alarma implements Serializable, Comparable<Alarma>{
 
     @SerializedName("id")
     private int id;
@@ -96,5 +96,20 @@ public class Alarma implements Serializable {
 
     public void setId_terminal(Object id_terminal) {
         this.id_terminal = id_terminal;
+    }
+
+    /**
+     * Este método compara la alarma con otra alarma por su estado y en caso de que el estado sea el mismo lo
+     * compara por su fecha y hora de registro
+     * @param otraAlarma
+     * @return
+     */
+    @Override
+    public int compareTo(Alarma otraAlarma) {
+        int resultado = this.getEstado_alarma().compareTo(otraAlarma.getEstado_alarma());
+        if (resultado == 0) {
+            resultado = this.getFecha_registro().compareTo(otraAlarma.getFecha_registro());
+        }
+        return resultado;
     }
 }

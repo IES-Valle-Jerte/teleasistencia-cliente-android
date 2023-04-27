@@ -2,7 +2,7 @@ package com.example.teleappsistencia.utilidades;
 
 public class Constantes {
     /* Direcciones */
-    public static final String DIRECCION_WEBSOCKET = "ws://api-rest.teleasistencia.iesvjp.es/ws/socket-server/";
+    public static final String DIRECCION_WEBSOCKET = "http://10.0.2.2:8000/ws/socket-server/";
 
     /* Constantes comunes */
     public final static String BEARER_ESPACIO = "Bearer ";
@@ -69,7 +69,7 @@ public class Constantes {
          * En producción (1): http://api-rest.teleasistencia.iesvjp.es/
          *
          * (1) en próxima convocatoria se añadirá conexión mediante https */
-    public static final String API_BASE_URL = "http://api-rest.teleasistencia.iesvjp.es/";
+    public static final String API_BASE_URL = "http://10.0.2.2:8000/";
     public static final String TOKEN_BEARER = "Bearer ";
     public static final String FORMATEADOR_API = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -92,7 +92,7 @@ public class Constantes {
     public static final String TIPO_VIVIENDA = "Tipo vivienda";
     public static final String USUARIO = "Usuario";
     public static final String TERMINAL = "Terminal";
-    public static final String TIPO_ALARMA = "Tipo alarma";
+    public static final String TIPO_ALARMA = "TipoAlarma";
 
     /**
      * Constantes con los nombres de los submenus.
@@ -259,12 +259,16 @@ public class Constantes {
     public static final String CENTRO_DP_SP = "Centro: ";
     public static final String RECURSO_COMUNITARIO_DP_SP = "Recurso Comunitario: ";
     public static final String NOMBRE_DP_SP = "Nombre: ";
+
+    public static final String APELLIDOS_DP_SP = "Apellidos: ";
     public static final String CODIGO_DP_SP = "Código: ";
     public static final String DISPOSITIVO_DP_SP = "Dispositivo: ";
     public static final String CLASIFICACION_DP_SP = "Clasificación: ";
     public static final String ID_TERMINAL_DP_SP = "ID Terminal: ";
     public static final String PACIENTE_DP_SP = "Paciente: ";
     public static final String TELEFONO_DP_SP = "Teléfono: ";
+
+    public static final String TIPO_ALARMA_DP_SP = "Tipo alarma: ";
 
     /* Constantes Simbolos Varios */
     public final static String ESPACIO_GUION_ESPACIO = " - ";
@@ -274,6 +278,8 @@ public class Constantes {
     public final static String SLASH = "/";
     public static final String GUION = "-";
     public static final String VACIO = "";
+
+    public static final String PUNTOS_DOBLES = ":";
     public static final String SALTO_LINEA = "\n";
 
     /* Nombres de los Modelos */
@@ -286,6 +292,8 @@ public class Constantes {
     public final static String AL_TERMINAL = "ArrayList<Terminal>";
     public final static String AL_PACIENTE = "ArrayList<Paciente>";
     public final static String AL_ALARMA = "ArrayList<Alarma>";
+
+    public final static String AL_USUARIO = "ArrayList<Usuario>";
     public final static String AL_CLASIFICACION_ALARMA= "ArrayList<ClasificacionAlarma>";
     public final static String AL_CENTRO_SANITARIO_ALARMA = "ArrayList<CentroSanitarioEnAlarma>";
     public final static String AL_PERSONAS_CONTACTO_EN_ALARMA = "ArrayList<PersonaContactoEnAlarma>";
@@ -369,4 +377,6 @@ public class Constantes {
     public static final String TERMINAL_DP_SP = "Terminal: ";
     public static final String ALARMAS_DE_HOY = "Alarmas de hoy";
     public static final String ALARMAS_SIN_ASIGNAR = "Alarmas sin asignar";
+
+    public static final String RUTA_MODELOS = "com.example.teleappsistencia.modelos.";
 }

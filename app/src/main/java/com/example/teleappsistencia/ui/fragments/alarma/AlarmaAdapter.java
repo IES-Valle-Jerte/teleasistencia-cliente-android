@@ -1,13 +1,18 @@
 package com.example.teleappsistencia.ui.fragments.alarma;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teleappsistencia.MainActivity;
@@ -29,6 +34,31 @@ import retrofit2.Response;
 
 public class AlarmaAdapter extends RecyclerView.Adapter<AlarmaAdapter.AlarmaViewHolder> {
     private List<Alarma> items;
+
+    private AlarmaViewHolder alarmaViewHolder;
+
+    private Alarma alarmaSeleccionada;
+
+    private OnItemSelectedListener listener;
+
+    private int selectedPosition = RecyclerView.NO_POSITION;
+
+    /**
+     * Una clase {@link RecyclerView.ViewHolder} para recoger los datos a mostrar dentro de la tarjeta Paciente del RecyclerView.
+     * <p> Esta clase es una subclase de {@link RecyclerView.ViewHolder} y hereda de ella todos sus métodos y atributos.
+     */
+    public interface OnItemSelectedListener {
+        void onItemSelected(int position);
+    }
+
+    //devuelve la alarma seleccionada
+    public Alarma getAlarmaSeleccionada() {
+        return alarmaSeleccionada;
+    }
+    // Define el método getItemAtPosition para obtener el elemento en la posición indicada
+    public Alarma getItemAtPosition(int position) {
+        return items.get(position);
+    }
 
     public static class AlarmaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -62,24 +92,27 @@ public class AlarmaAdapter extends RecyclerView.Adapter<AlarmaAdapter.AlarmaView
             this.imageButtonBorrarAlarma.setOnClickListener(this);
         }
 
+        /**
+         * Recogemos los onClickListeners de los imageButtons en el RecyclerView
+         *
+         * @param view La vista en la que se hizo clic.
+         */
         @Override
         public void onClick(View view) {
-            MainActivity activity = (MainActivity) context;
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+
             switch (view.getId()) {
-                case R.id.imageButtonVerAlarma:
-                    ConsultarAlarmaFragment consultarAlarmaFragment = ConsultarAlarmaFragment.newInstance(this.alarma);
-                    activity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, consultarAlarmaFragment)
-                            .addToBackStack(null)
-                            .commit();
-                    break;
+                // Modificar alarma.
                 case R.id.imageButtonModificarAlarma:
                     ModificarAlarmaFragment modificarAlarmaFragment = ModificarAlarmaFragment.newInstance(this.alarma);
-                    activity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, modificarAlarmaFragment)
-                            .addToBackStack(null)
-                            .commit();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, modificarAlarmaFragment).addToBackStack(null).commit();
                     break;
+                // Ver Alarma.
+                case R.id.imageButtonVerAlarma:
+                    ConsultarAlarmaFragment consultarAlarmaFragment = ConsultarAlarmaFragment.newInstance(this.alarma);
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarAlarmaFragment).addToBackStack(null).commit();
+                    break;
+                // Borrar Alarma.
                 case R.id.imageButtonBorrarAlarma:
                     borrarAlarma();
                     break;
@@ -119,13 +152,15 @@ public class AlarmaAdapter extends RecyclerView.Adapter<AlarmaAdapter.AlarmaView
          */
         private void volver(){
             MainActivity activity = (MainActivity) this.context;
-            ListarAlarmasFragment listarAlarmasFragment = new ListarAlarmasFragment();
+            ListarAlarmasOrdenadasFragment listarAlarmasOrdenadasFragment = new ListarAlarmasOrdenadasFragment();
             activity.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, listarAlarmasFragment)
+                    .replace(R.id.main_fragment, listarAlarmasOrdenadasFragment)
                     .addToBackStack(null)
                     .commit();
         }
     }
+
+
 
     /**
      * Se le carga la lista de items al Adapter, en este caso de Alarmas
@@ -156,7 +191,46 @@ public class AlarmaAdapter extends RecyclerView.Adapter<AlarmaAdapter.AlarmaView
         TipoAlarma tipo = (TipoAlarma) Utilidad.getObjeto(alarma.getId_tipo_alarma(), Constantes.TIPOALARMA);
         viewHolder.idAlarma.setText(Constantes.ID_ALARMA_DP_SP + String.valueOf(alarma.getId()));
         viewHolder.txtCardEstadoAlarma.setText(Constantes.ESTADO_DP_SP + alarma.getEstado_alarma());
+
+        ColorDrawable colorFondo = new ColorDrawable(Color.argb((int)(0.08*255), 255, 0, 0));
+        if(alarma.getEstado_alarma().toString().equalsIgnoreCase("Abierta")){ // mostrar abiertas en rojo y cerradas en verde
+            viewHolder.itemView.setBackground(new ColorDrawable(Color.argb((int)(0.08*255), 255, 0, 0)));
+        }else{
+            viewHolder.itemView.setBackground(new ColorDrawable(Color.argb((int)(0.08*255), 64, 255, 0)));
+        }
         viewHolder.txtCardFechaRegistroAlarma.setText(Constantes.FECHA_DP_SP + alarma.getFecha_registro());
-        viewHolder.txtCardTipoAlarma.setText(Constantes.TIPO_DP_SP + tipo.getNombre());
+        if(tipo != null){ // Control de error si el nombre es nulo.
+            viewHolder.txtCardTipoAlarma.setText(Constantes.TIPO_DP_SP + tipo.getNombre());
+        }else{
+            viewHolder.txtCardTipoAlarma.setText(Constantes.TIPO_DP_SP + Constantes.ESPACIO_EN_BLANCO);
+        }
+
+        // Establece un click listener para ViewHolder
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Actualizar la posición seleccionada y notificar al adapter
+                int previousSelectedPosition = selectedPosition;
+                selectedPosition = viewHolder.getAdapterPosition();
+                notifyItemChanged(previousSelectedPosition);
+                notifyItemChanged(selectedPosition);
+
+                // Llamar al método onItemSelected de OnItemSelectedListener
+                if (listener != null) {
+                    listener.onItemSelected(selectedPosition);
+                }
+                alarmaSeleccionada= viewHolder.alarma;
+            }
+        });
+
+        // Establecer el color de fondo del ViewHolder en función de si está seleccionado o no
+        if (selectedPosition == i) {
+            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.azul));
+        }/* else {
+            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), android.R.color.white));
+        }*/
+
     }
+
+
 }

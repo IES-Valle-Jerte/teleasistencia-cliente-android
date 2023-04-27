@@ -12,11 +12,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.teleappsistencia.modelos.Usuario;
 import com.example.teleappsistencia.servicios.APIService;
+import com.example.teleappsistencia.ui.fragments.acercaDe.AcercaDeFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.InsertarAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasDeHoyFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasFragment;
+import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasOrdenadasFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasSinAsignarFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarMisAlarmasFragment;
 import com.example.teleappsistencia.ui.fragments.centroSanitarioEnAlarma.InsertarCentroSanitarioEnAlarmaFragment;
@@ -233,6 +239,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String[] childNames = {Constantes.SUBMENU_INSERTAR, Constantes.SUBMENU_LISTAR, Constantes.SUBMENU_MODIFICAR}; // Nombres de las sub-opciones
         List<MenuModel> childModelsList; // Lista para las sub-opciones
         MenuModel menuModel; // Modelo de la opción.
+
+
+        // Menu Alarmas.
+        // Las alarmas están ordenadas por abiertas y por hora de registro
+        menuModel = new MenuModel(getResources().getString(R.string.menu_alarmas), false, false, new ListarAlarmasOrdenadasFragment());
+        headerList.add(menuModel);
+
+
 
         // Menu Alarma.
         childModelsList = new ArrayList<>();
@@ -571,6 +585,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+
+        // Menu Acerca De.
+        menuModel = new MenuModel(getResources().getString(R.string.menu_acercaDe), false, false, new AcercaDeFragment());
+        headerList.add(menuModel);
+
     }
 
     /**
@@ -581,22 +600,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         expandableListAdapter = new ExpandableListAdapter(this, headerList, childList);
         expandableListView.setAdapter(expandableListAdapter);
 
-        /*
+
         // Aquí se define que pasará cuando el usuario pulse en una de las opciones principales.
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                MenuModel menuModel = headerList.get(groupPosition);
+                Fragment fragment = menuModel.getFragment();
 
-                if (headerList.get(groupPosition).isGroup()) {
+                // Carga el fragmento si existe
+                if (fragment != null) {
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.main_fragment, fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+                /*if (headerList.get(groupPosition).isGroup()) {
                     if (!headerList.get(groupPosition).hasChildren()) {
                         // En este caso no hay nada que hacer al pulsar en una opción principal.
                     }
-                }
-
+                }*/
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
                 return false;
             }
         });
-        */
+
 
         // Aquí se define que pasará cuando el usuario pulse en una de las sub-opciones.
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {

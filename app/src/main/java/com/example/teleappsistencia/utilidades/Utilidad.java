@@ -47,6 +47,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -102,153 +104,41 @@ public class Utilidad {
      * @param tipo
      * @return
      */
-    public static Object getObjeto(Object lTM, String tipo) {
+    public static Object getObjeto(Object lTM, String tipo){
         Gson gson = new Gson();
         Type type = null;
         Object objeto = null;
-        switch (tipo) {
-            case Constantes.GRUPO:
-                type = new TypeToken<Grupo>() {
-                }.getType();
-                break;
-            case Constantes.TELEOPERADOR:
-                type = new TypeToken<Teleoperador>() {
-                }.getType();
-                break;
-            case Constantes.TIPO_SITUACION:
-                type = new TypeToken<TipoSituacion>() {
-                }.getType();
-                break;
-            case Constantes.TIPOALARMA:
-                type = new TypeToken<TipoAlarma>() {
-                }.getType();
-                break;
-            case Constantes.CLASIFICACION_ALARMA:
-                type = new TypeToken<ClasificacionAlarma>() {
-                }.getType();
-                break;
-            case Constantes.CONTACTO:
-                type = new TypeToken<Contacto>() {
-                }.getType();
-                break;
-            case Constantes.AL_CONTACTOS:
-                type = new TypeToken<ArrayList<Contacto>>() {
-                }.getType();
-                break;
-            case Constantes.AL_RECURSOS_COMUNITARIOS:
-                type = new TypeToken<ArrayList<RecursoComunitario>>() {
-                }.getType();
-                break;
-            case Constantes.RELACION_USUARIO_CENTRO:
-                type = new TypeToken<ArrayList<RelacionUsuarioCentro>>() {
-                }.getType();
-                break;
-            case Constantes.AL_RELACION_TERMINAL_RECURSO_COMUNITARIO:
-                type = new TypeToken<ArrayList<RelacionTerminalRecursoComunitario>>() {
-                }.getType();
-                break;
-            case Constantes.AL_ALARMA:
-                type = new TypeToken<ArrayList<Alarma>>() {
-                }.getType();
-                break;
-            case Constantes.AL_CENTRO_SANITARIO_ALARMA:
-                type = new TypeToken<ArrayList<CentroSanitarioEnAlarma>>() {
-                }.getType();
-                break;
-            case Constantes.AL_TIPO_ALARMA:
-                type = new TypeToken<ArrayList<TipoAlarma>>() {
-                }.getType();
-                break;
-            case Constantes.AL_TERMINAL:
-                type = new TypeToken<ArrayList<Terminal>>() {
-                }.getType();
-                break;
-            case Constantes.AL_PACIENTE:
-                type = new TypeToken<ArrayList<Paciente>>() {
-                }.getType();
-                break;
-            case Constantes.ALARMA:
-                type = new TypeToken<Alarma>() {
-                }.getType();
-                break;
-            case Constantes.AL_CLASIFICACION_ALARMA:
-                type = new TypeToken<ArrayList<ClasificacionAlarma>>() {
-                }.getType();
-                break;
-            case Constantes.AL_PERSONAS_CONTACTO_EN_ALARMA:
-                type = new TypeToken<ArrayList<PersonaContactoEnAlarma>>() {
-                }.getType();
-                break;
-            case Constantes.AL_RECURSOS_COMUNITARIOS_EN_ALARMA:
-                type = new TypeToken<ArrayList<RecursoComunitarioEnAlarma>>() {
-                }.getType();
-                break;
-            case "Paciente":
-                type = new TypeToken<Paciente>() {
-                }.getType();
-                break;
-            case "RelacionPacientePersonaViewholder":
-                type = new TypeToken<RelacionPacientePersona>() {
-                }.getType();
-                break;
-            case "CentroSanitario":
-                type = new TypeToken<CentroSanitario>() {
-                }.getType();
-                break;
-            case "TipoCentroSanitario":
-                type = new TypeToken<TipoCentroSanitario>() {
-                }.getType();
-                break;
-            case "TipoRecursoComunitario":
-                type = new TypeToken<TipoRecursoComunitario>() {
-                }.getType();
-                break;
-            case "Direccion":
-                type = new TypeToken<Direccion>() {
-                }.getType();
-                break;
-            case "Persona":
-                type = new TypeToken<Persona>() {
-                }.getType();
-                break;
-            case "RelacionTerminalRecursoComunitario":
-                type = new TypeToken<RelacionTerminalRecursoComunitario>() {
-                }.getType();
-                break;
-            case "Terminal":
-                type = new TypeToken<Terminal>() {
-                }.getType();
-                break;
-            case "Usuario":
-                type = new TypeToken<Usuario>() {
-                }.getType();
-                break;
-            case "TipoModalidadPaciente":
-                type = new TypeToken<TipoModalidadPaciente>() {
-                }.getType();
-                break;
-            case "RecursoComunitario":
-                type = new TypeToken<RecursoComunitario>() {
-                }.getType();
-                break;
-            case "ArrayList<TipoCentroSanitario>":
-                type = new TypeToken<ArrayList<TipoCentroSanitario>>() {
-                }.getType();
-                break;
-            case "ArrayList<TipoRecursoComunitario>":
-                type = new TypeToken<ArrayList<TipoRecursoComunitario>>() {
-                }.getType();
-                break;
-            case "RelacionUsuarioCentro":
-                type = new TypeToken<RelacionUsuarioCentro>() {
-                }.getType();
-                break;
-            case "TipoVivienda":
-                type = new TypeToken<TipoVivienda>() {
-                }.getType();
-                break;
+        boolean isLista=false; // Indica si el tipo pasado como objeto es una lista o no
+
+        // Este bloque de código extrae la clase del String tipo en caso de que este sea un ArrayList
+        Pattern pattern = Pattern.compile("<(\\w+)>"); // Buscar la subcadena entre '<' y '>'
+        Matcher matcher = pattern.matcher(tipo); // Comprobar que existe la cadena a buscar
+        String subcadena=tipo; // Cadena resultante con la clase
+        if (matcher.find()) { // Si se a encontrado que tipo cumple con ArrayList<clase>
+            isLista=true; // tipo es una lista
+            subcadena= matcher.group(1); // Obtener la subcadena con la clase
+        }
+        // En caso de que que tipo solo contenga el nombre de la calse y no un ArrayList subacadena sera igual a tipo
+
+        Class<?> clazz = null;
+        String ruta=Constantes.RUTA_MODELOS+subcadena;
+        try {
+            clazz = Class.forName(ruta); // Creamos una clase con la ruta indicada
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (clazz != null) {
+            // Si la clase existe se comprueba si es una lista o un objeto
+            if(isLista){
+                // En caso de lista
+                type = TypeToken.getParameterized(ArrayList.class, clazz).getType();
+            }else{
+                // En caso de objeto
+                type = TypeToken.getParameterized(clazz).getType();
+            }
         }
         if (type != null) {
+            // Si type tiene algun valor se obtiene el objeto buscado
             objeto = gson.fromJson(gson.toJson(lTM), type);
         }
         return objeto;

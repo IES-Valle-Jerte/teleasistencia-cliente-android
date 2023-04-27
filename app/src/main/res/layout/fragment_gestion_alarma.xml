@@ -14,6 +14,7 @@
 
 
         <LinearLayout
+            android:id="@+id/layout_global"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -35,21 +36,14 @@
                     android:layout_weight="90">
 
                     <TextView
-                        android:id="@+id/textViewNombrePacienteGestion"
+                        android:id="@+id/textViewInforme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16sp"
                         android:layout_marginVertical="8sp"
-                        android:text="@string/paciente_dp"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/textViewTelefonoPacienteGestion"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16sp"
-                        android:layout_marginVertical="8sp"
-                        android:text="@string/telefono_dp"
+                        android:text="@string/informe"
+                        android:textAllCaps="true"
+                        android:textAlignment="center"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -70,6 +64,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16sp"
                 android:hint="@string/observaciones">
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_nivel1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btn_nivel1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nivel_sp_1"
+                    android:layout_marginHorizontal="16sp">
+
+                </Button>
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextObservaciones"
@@ -78,41 +87,143 @@
                     android:gravity="top"
                     android:inputType="textMultiLine"
                     android:lines="6"
+                    android:layout_marginHorizontal="16dp"
+                    android:hint="@string/motivo_dp"
                     android:overScrollMode="always"
                     android:scrollbarStyle="insideInset"
                     android:scrollbars="vertical"
                     android:scrollHorizontally="false">
 
                 </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.widget.Button
-                android:id="@+id/buttonRegistrarLlamadaPaciente"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16sp"
-                android:layout_marginTop="16sp"
-                android:layout_marginEnd="16sp"
-                android:layout_marginBottom="20sp"
-                android:background="@drawable/button_shape"
-                android:text="@string/registrar_llamada"
-                android:textColor="@color/white" />
-
+                <android.widget.Button
+                    android:id="@+id/buttonRegistrarLlamadaPaciente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16sp"
+                    android:layout_marginTop="16sp"
+                    android:layout_marginEnd="16sp"
+                    android:layout_marginBottom="20sp"
+                    android:background="@drawable/button_shape"
+                    android:text="@string/registrar_llamada"
+                    android:textColor="@color/white" />
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="#E6E6E6" />
 
-
-            <TextView
-                android:id="@+id/textViewLlamarContacto"
+            <LinearLayout
+                android:id="@+id/layout_nivel2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16sp"
-                android:layout_marginTop="16sp"
-                android:layout_marginBottom="8sp"
-                android:text="@string/llamar_a_una_persona_de_contacto_dp"
-                android:textSize="20sp" />
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btn_nivel2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nivel_sp_2"
+                    android:layout_marginHorizontal="16sp"
+                    >
+
+                </Button>
+
+                <TextView
+                    android:id="@+id/textViewLlamarContacto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16sp"
+                    android:layout_marginTop="16sp"
+                    android:layout_marginBottom="8sp"
+                    android:text="@string/llamar_a_una_persona_de_contacto_dp"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="16sp"
+                    android:layout_marginVertical="8sp">
+
+                    <ImageButton
+                        android:id="@+id/imageButtonInfoContacto"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:backgroundTint="#00FFFFFF"
+                        android:src="@drawable/ic_baseline_info_24_30" />
+
+                    <Spinner
+                        android:id="@+id/spinnerContactos"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="90" />
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16sp"
+                    android:hint="@string/acuerdo_alcanzado">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputEditTextAcuerdoContacto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <android.widget.Button
+                    android:id="@+id/buttonRegistrarLlamadaContacto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16sp"
+                    android:layout_marginTop="16sp"
+                    android:layout_marginEnd="16sp"
+                    android:layout_marginBottom="20sp"
+                    android:background="@drawable/button_shape"
+                    android:text="@string/registrar_llamada"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="#E6E6E6" />
+
+            <LinearLayout
+                android:id="@+id/layout_nivel3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btn_nivel3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nivel_sp_3"
+                    android:layout_marginHorizontal="16sp"
+                    >
+
+                </Button>
+
+                <TextView
+                    android:id="@+id/textViewLlamarCentroSanitario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16sp"
+                    android:layout_marginTop="16sp"
+                    android:layout_marginBottom="8sp"
+                    android:text="@string/llamar_a_centro_sanitario_dp"
+                    android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -122,7 +233,7 @@
                 android:layout_marginVertical="8sp">
 
                 <ImageButton
-                    android:id="@+id/imageButtonInfoContacto"
+                    android:id="@+id/imageButtonInfoCentroSanitario"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
@@ -130,233 +241,161 @@
                     android:src="@drawable/ic_baseline_info_24_30" />
 
                 <Spinner
-                    android:id="@+id/spinnerContactos"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="90" />
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16sp"
-                android:hint="@string/acuerdo_alcanzado">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextAcuerdoContacto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:lines="3"
-                    android:overScrollMode="always"
-                    android:scrollbarStyle="insideInset"
-                    android:scrollbars="vertical"
-                    android:scrollHorizontally="false">
-
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <android.widget.Button
-                android:id="@+id/buttonRegistrarLlamadaContacto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16sp"
-                android:layout_marginTop="16sp"
-                android:layout_marginEnd="16sp"
-                android:layout_marginBottom="20sp"
-                android:background="@drawable/button_shape"
-                android:text="@string/registrar_llamada"
-                android:textColor="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="#E6E6E6" />
-
-            <TextView
-                android:id="@+id/textViewLlamarCentroSanitario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16sp"
-                android:layout_marginTop="16sp"
-                android:layout_marginBottom="8sp"
-                android:text="@string/llamar_a_centro_sanitario_dp"
-                android:textSize="20sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="16sp"
-            android:layout_marginVertical="8sp">
-
-            <ImageButton
-                android:id="@+id/imageButtonInfoCentroSanitario"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="10"
-                android:backgroundTint="#00FFFFFF"
-                android:src="@drawable/ic_baseline_info_24_30" />
-
-            <Spinner
-                android:id="@+id/spinnerCentrosSanitarios"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="90" />
-
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16sp"
-                android:hint="@string/persona_que_atendi_la_llamada">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextPersonaLlamadaCentroSanitario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:inputType="text"
-                    android:overScrollMode="always"
-                    android:scrollbarStyle="insideInset"
-                    android:scrollbars="vertical"
-                    android:scrollHorizontally="false">
-
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16sp"
-                android:hint="@string/acuerdo_alcanzado">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextAcuerdoCentroSanitario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:lines="3"
-                    android:overScrollMode="always"
-                    android:scrollbarStyle="insideInset"
-                    android:scrollbars="vertical"
-                    android:scrollHorizontally="false">
-
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <android.widget.Button
-                android:id="@+id/buttonRegistrarLlamadaCentroSanitario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16sp"
-                android:layout_marginTop="16sp"
-                android:layout_marginEnd="16sp"
-                android:layout_marginBottom="20sp"
-                android:background="@drawable/button_shape"
-                android:text="@string/registrar_llamada"
-                android:textColor="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="#E6E6E6" />
-
-
-            <TextView
-                android:id="@+id/textViewLlamarRecursoComunitario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16sp"
-                android:layout_marginTop="16sp"
-                android:layout_marginBottom="8sp"
-                android:text="@string/llamar_a_un_recurso_comunitario_dp"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="16sp"
-                android:layout_marginVertical="8sp">
-
-                <ImageButton
-                    android:id="@+id/imageButtonInfoRecursoComunitario"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:backgroundTint="#00FFFFFF"
-                    android:src="@drawable/ic_baseline_info_24_30" />
-
-                <Spinner
-                    android:id="@+id/spinnerRecursosComunitarios"
+                    android:id="@+id/spinnerCentrosSanitarios"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="90" />
 
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16sp"
+                    android:hint="@string/persona_que_atendi_la_llamada">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputEditTextPersonaLlamadaCentroSanitario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:inputType="text"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16sp"
+                    android:hint="@string/acuerdo_alcanzado">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputEditTextAcuerdoCentroSanitario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <android.widget.Button
+                    android:id="@+id/buttonRegistrarLlamadaCentroSanitario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16sp"
+                    android:layout_marginTop="16sp"
+                    android:layout_marginEnd="16sp"
+                    android:layout_marginBottom="20sp"
+                    android:background="@drawable/button_shape"
+                    android:text="@string/registrar_llamada"
+                    android:textColor="@color/white" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="#E6E6E6" />
+
+
+                <TextView
+                    android:id="@+id/textViewLlamarRecursoComunitario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16sp"
+                    android:layout_marginTop="16sp"
+                    android:layout_marginBottom="8sp"
+                    android:text="@string/llamar_a_un_recurso_comunitario_dp"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="16sp"
+                    android:layout_marginVertical="8sp">
+
+                    <ImageButton
+                        android:id="@+id/imageButtonInfoRecursoComunitario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:backgroundTint="#00FFFFFF"
+                        android:src="@drawable/ic_baseline_info_24_30" />
+
+                    <Spinner
+                        android:id="@+id/spinnerRecursosComunitarios"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="90" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16sp"
+                    android:hint="@string/persona_que_atendi_la_llamada">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputEditTextPersonaLlamadaRecursoComunitario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:inputType="text"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16sp"
+                    android:hint="@string/acuerdo_alcanzado">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputEditTextAcuerdoRecursoComunitario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <android.widget.Button
+                    android:id="@+id/buttonRegistrarRecursosComunitarios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16sp"
+                    android:background="@drawable/button_shape"
+                    android:text="@string/registrar_llamada"
+                    android:textColor="@color/white" />
             </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16sp"
-                android:hint="@string/persona_que_atendi_la_llamada">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextPersonaLlamadaRecursoComunitario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:inputType="text"
-                    android:overScrollMode="always"
-                    android:scrollbarStyle="insideInset"
-                    android:scrollbars="vertical"
-                    android:scrollHorizontally="false">
-
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16sp"
-                android:hint="@string/acuerdo_alcanzado">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextAcuerdoRecursoComunitario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:lines="3"
-                    android:overScrollMode="always"
-                    android:scrollbarStyle="insideInset"
-                    android:scrollbars="vertical"
-                    android:scrollHorizontally="false">
-
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <android.widget.Button
-                android:id="@+id/buttonRegistrarRecursosComunitarios"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16sp"
-                android:background="@drawable/button_shape"
-                android:text="@string/registrar_llamada"
-                android:textColor="@color/white" />
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
