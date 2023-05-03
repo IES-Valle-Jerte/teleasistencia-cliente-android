@@ -1,5 +1,6 @@
 package com.example.teleappsistencia.ui.fragments.gestionAlarmasFragments;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -49,6 +50,7 @@ import retrofit2.Response;
  */
 public class AlarmAlertFragment extends DialogFragment implements View.OnClickListener {
 
+    private Context context;
     private static final String ARG_ALARMANOTIFICADA = "Alarma";
     private Alarma alarmaNotificada;
 
@@ -110,6 +112,8 @@ public class AlarmAlertFragment extends DialogFragment implements View.OnClickLi
 
         /* Inflamos el layout del fragment */
         View view = inflater.inflate(R.layout.fragment_alarm_alert, container, false);
+
+        this.context = view.getContext();
 
         /* Capturar los elementos del layout */
         capturarElementos(view);
@@ -239,15 +243,15 @@ public class AlarmAlertFragment extends DialogFragment implements View.OnClickLi
                     if(teleoperador == null){
                         modificarAlarma(alarmaRecibida);
                     }else{
-                        Toast.makeText(getContext(), Constantes.ERROR_ALARMA_YA_ASIGNADA, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, Constantes.ERROR_ALARMA_YA_ASIGNADA, Toast.LENGTH_LONG).show();
                     }
                 } else{
-                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, Constantes.ERROR_, Toast.LENGTH_LONG).show();
                 }
             }
             @Override
             public void onFailure(Call<Alarma> callAlarma, Throwable t) {
-                Toast.makeText(getContext(), Constantes.ERROR_ + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, Constantes.ERROR_ + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -261,29 +265,6 @@ public class AlarmAlertFragment extends DialogFragment implements View.OnClickLi
         /* Siempre que hagamos un PUT tenemos que darle a la petición los datatos de la forma
            que requiere. En este caso, idTeleoperador SIEMPRE tiene que ser un intger. */
         alarmaRecibida.setId_teleoperador(Utilidad.getUserLogged().getPk());
-        /*APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-        Call<ResponseBody> call = apiService.actualizarAlarma(alarmaRecibida.getId(), Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess(), alarmaRecibida);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.isSuccessful()){
-                    InfoGestionAlarmaFragment iGAF = InfoGestionAlarmaFragment.newInstance(alarmaRecibida);
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.main_fragment, iGAF)
-                            .addToBackStack(null)
-                            .commit();
-                    dismiss();
-                }
-                else{
-                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getContext(), Constantes.ERROR_CARGAR_DATOS, Toast.LENGTH_LONG).show();
-            }
-        });*/
     }
 
 

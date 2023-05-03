@@ -268,13 +268,13 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      * una lista de Object y queremos pasarla a un ArrayList de Contactos.
      */
     private void extraerDatos(){
-////        extraerContactos(paciente.getId());
-////        this.lContactosParseada = (ArrayList<Contacto>) Utilidad.getObjeto(lContactosCercanos, Constantes.AL_CONTACTOS);
+        extraerContactos(paciente.getId());
+        this.lContactosParseada = (ArrayList<Contacto>) Utilidad.getObjeto(lContactosCercanos, Constantes.AL_CONTACTOS);
 
         /* Estos métodos además cargarán los datos de sus Spinner correspondiente, ya que las operaciones
          *  de extracción y carga deben ir anidadas para hacerlo de forma síncrona y no falle. */
-////        cargarSpinnerContactos();
-////        recuperarListaCentrosSanitarios();
+        cargarSpinnerContactos();
+        recuperarListaCentrosSanitarios();
         recuperarListaRecursosComunitarios();
     }
 
@@ -449,12 +449,12 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
 
         if(!acuerdoAlcanzado.isEmpty() && acuerdoAlcanzado.length() >= 10){ //TODO: estas comprobaciones pueden mejorarse
             contacto = (Contacto) this.spinnerContactos.getSelectedItem();
-            personaEnContacto = (Persona) Utilidad.getObjeto(contacto.getPersonaEnContacto(), Constantes.PERSONA);
+////            personaEnContacto = (Persona) Utilidad.getObjeto(contacto.getPersonaEnContacto(), Constantes.PERSONA);
 
             personaContactoEnAlarma = new PersonaContactoEnAlarma();
             personaContactoEnAlarma.setFechaRegistro(Utilidad.getStringFechaNowYYYYMMDD());
             personaContactoEnAlarma.setIdAlarma(this.alarma.getId());
-            personaContactoEnAlarma.setIdPersonaContacto(personaEnContacto.getId());
+////            personaContactoEnAlarma.setIdPersonaContacto(personaEnContacto.getId());
             personaContactoEnAlarma.setAcuerdoAlcanzado(acuerdoAlcanzado);
 
             // LLamamos al método que hace la petición POST
@@ -657,24 +657,23 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      */
     private void dialogoInfoContacto(){
         Contacto contacto = (Contacto) this.spinnerContactos.getSelectedItem();
-        Persona personaEnContacto = (Persona) Utilidad.getObjeto(contacto.getPersonaEnContacto(), Constantes.PERSONA);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(Constantes.INFORMACION_CONTACTO);
-        builder.setMessage(Constantes.NOMBRE_DP_SP + personaEnContacto.getNombre() + Constantes.ESPACIO + personaEnContacto.getApellidos() + Constantes.SALTO_LINEA +
-                           Constantes.TELEFONO_MOVIL_DP_SP + personaEnContacto.getTelefonoMovil() + Constantes.SALTO_LINEA +
-                           Constantes.TELEFONO_FIJO_DP_SP + personaEnContacto.getTelefonoFijo() + Constantes.SALTO_LINEA +
-                           Constantes.RELACION_CON_PACIENTE_DP_SP + contacto.getTipo_relacion() + Constantes.SALTO_LINEA +
-                           Constantes.DISPONIBILIDAD_DP_SP + contacto.getDisponibilidad() + Constantes.SALTO_LINEA +
-                           Constantes.OBSERVACIONES_DP_SP + contacto.getObservaciones() + Constantes.SALTO_LINEA +
-                           Constantes.INTERR_TIENE_LLAVES_DP_SP + Utilidad.trueSifalseNo(contacto.isTiene_llaves_vivienda()));
-        builder.setNeutralButton(Constantes.OK, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.show();
-    }
+////        Persona personaEnContacto = (Persona) Utilidad.getObjeto(contacto.getPersonaEnContacto(), Constantes.PERSONA);
+////        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+////        builder.setTitle(Constantes.INFORMACION_CONTACTO);
+////        builder.setMessage(Constantes.NOMBRE_DP_SP + personaEnContacto.getNombre() + Constantes.ESPACIO + personaEnContacto.getApellidos() + Constantes.SALTO_LINEA +
+////                           Constantes.TELEFONO_MOVIL_DP_SP + personaEnContacto.getTelefonoMovil() + Constantes.SALTO_LINEA +
+////                           Constantes.TELEFONO_FIJO_DP_SP + personaEnContacto.getTelefonoFijo() + Constantes.SALTO_LINEA +
+////                           Constantes.RELACION_CON_PACIENTE_DP_SP + contacto.getTipo_relacion() + Constantes.SALTO_LINEA +
+////                           Constantes.DISPONIBILIDAD_DP_SP + contacto.getDisponibilidad() + Constantes.SALTO_LINEA +////                   Constantes.OBSERVACIONES_DP_SP + contacto.getObservaciones() + Constantes.SALTO_LINEA +
+////                       Constantes.INTERR_TIENE_LLAVES_DP_SP + Utilidad.trueSifalseNo(contacto.isTiene_llaves_vivienda()));
+////        builder.setNeutralButton(Constantes.OK, new DialogInterface.OnClickListener() {
+////            @Override
+////            public void onClick(DialogInterface dialogInterface, int i) {
+////                dialogInterface.dismiss();
+////            }
+////        });
+////        builder.show();
+}
 
 
     /**
@@ -803,11 +802,10 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         call.enqueue(new Callback<List<Object>>() {
             @Override
             public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
-                if (response.isSuccessful()) {
-                    List<Object> contactos = response.body();
-                    lContactosCercanos.addAll(contactos);
-                    // Aquí puedes hacer algo con la lista de contactos
-                } else {
+                if(response.isSuccessful()){
+                    lContactosCercanos = (ArrayList<Object>) response.body();
+                }
+                else{
                     Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
                 }
             }

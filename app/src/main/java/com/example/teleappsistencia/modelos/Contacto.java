@@ -12,6 +12,15 @@ public class Contacto implements Serializable {
 
     @SerializedName("id")
     private int idContacto;
+
+    @SerializedName("nombre")
+    private String nombre;
+
+    @SerializedName("apellidos")
+    private String apellidos;
+
+    @SerializedName("telefono")
+    private String telefono;
     @SerializedName("tipo_relacion")
     private String tipo_relacion;
     @SerializedName("tiene_llaves_vivienda")
@@ -22,10 +31,14 @@ public class Contacto implements Serializable {
     private String observaciones;
     @SerializedName("prioridad")
     private int prioridad;
+
+    @SerializedName("es_conviviente")
+    private boolean es_conviviente;
+
+    @SerializedName("tiempo_domicilio")
+    private int tiempo_domicilio;
     @SerializedName("id_paciente")
     private Object id_paciente;
-    @SerializedName("id_persona")
-    private Object personaEnContacto;
 
     public int getIdContacto() {
         return idContacto;
@@ -83,23 +96,48 @@ public class Contacto implements Serializable {
         this.id_paciente = id_paciente;
     }
 
-    public Object getPersonaEnContacto() {
-        return personaEnContacto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setPersonaEnContacto(Object personaEnContacto) {
-        this.personaEnContacto = personaEnContacto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public boolean isEs_conviviente() {
+        return es_conviviente;
+    }
+
+    public void setEs_conviviente(boolean es_conviviente) {
+        this.es_conviviente = es_conviviente;
+    }
+
+    public int getTiempo_domicilio() {
+        return tiempo_domicilio;
+    }
+
+    public void setTiempo_domicilio(int tiempo_domicilio) {
+        this.tiempo_domicilio = tiempo_domicilio;
     }
 
     /**
      * Se retorna el nombre de la persona de contacto para identificarla en los ListView, Spinners, etc
      * @return
      */
-    @NonNull
-    @Override
-    public String toString() {
-        Persona persona = (Persona) Utilidad.getObjeto(this.getPersonaEnContacto(), Constantes.PERSONA);
-        String nombreContacto = persona.getNombre() + Constantes.ESPACIO +persona.getApellidos();
-        return nombreContacto;
-    }
 }

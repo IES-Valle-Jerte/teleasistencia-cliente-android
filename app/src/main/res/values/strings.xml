@@ -194,6 +194,8 @@
     <string name="codigoPostal">Código Postal</string>
     <string name="nombre_y_apellidos_pUsuariop">Nombre y apellidos (usuario)</string>
     <string name="texto_prioridad">Prioridad</string>
+    <string name="descripcion">Descripción</string>
+    <string name="convocatoria">Convocatoria</string>
 
     <!-- Mensajes Botones. -->
     <string name="guardar">Guardar</string>

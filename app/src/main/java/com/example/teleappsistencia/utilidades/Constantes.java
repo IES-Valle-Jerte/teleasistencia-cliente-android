@@ -246,6 +246,10 @@ public class Constantes {
     public static final String ARG_TERMINAL = "Terminal";
     public static final String ARG_COLOR = "Color";
 
+    public static final String ARG_DESARROLLADOR = "Desarrollador";
+
+    public static final String ARG_AL_DESARROLLADOR = "AL_Desarrollador";
+
     /* Constantes ADAPTERS y Fragments */
     public final static String ID_ALARMA_DP_SP = "ID Alarma: ";
     public final static String ESTADO_DP_SP = "Estado: ";
@@ -298,6 +302,25 @@ public class Constantes {
     public final static String AL_CENTRO_SANITARIO_ALARMA = "ArrayList<CentroSanitarioEnAlarma>";
     public final static String AL_PERSONAS_CONTACTO_EN_ALARMA = "ArrayList<PersonaContactoEnAlarma>";
     public final static String AL_RECURSOS_COMUNITARIOS_EN_ALARMA = "ArrayList<RecursoComunitarioEnAlarma>";
+
+    public final static String AL_DESARROLLADOR = "ArrayList<Desarrollador>";
+
+    public final static String AL_TECNOLOGIA = "ArrayList<Tecnologia>";
+
+    public final static String AL_CONVOCATORIA = "ArrayList<Convocatoria>";
+
+    public final static String AL_DESAROLLADOR = "ArrayList<Desarrollador>";
+
+    public final static String AL_RELACION_DESARROLLADOR_TECNOLOGIA = "ArrayList<RelacionDesarrolladorTecnologia>";
+
+    public final static String RELACION_DESARROLLADOR_TECNOLOGIA = "RelacionDesarrolladorTecnologia";
+
+    public final static String DESARROLLADOR = "Desarrollador";
+
+    public final static String DESARROLLADORREL = "DesarrolladorRel";
+    public final static String CONVOCATORIA_DESARROLLADOR = "ConvocatoriaDesarrollador";
+    public final static String TECNOLOGIAREL = "TecnologiaRel";
+
     public static final String ALARMA = "Alarma";
     public static final String CLASIFICACION_ALARMA = "ClasificacionAlarma";
     public static final String CONTACTO = "Contacto";

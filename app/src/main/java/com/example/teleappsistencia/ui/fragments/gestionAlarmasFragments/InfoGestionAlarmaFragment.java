@@ -250,9 +250,9 @@ public class InfoGestionAlarmaFragment extends Fragment {
         else{
             for(Object object : lContactos){
                 contacto = (Contacto) Utilidad.getObjeto(object, Constantes.CONTACTO);
-                persona = (Persona) Utilidad.getObjeto(contacto.getPersonaEnContacto(), Constantes.PERSONA);
-                datoContacto = persona.getNombre() + Constantes.ESPACIO + persona.getApellidos() + Constantes.ESPACIO_PARENTESIS_AP + contacto.getTipo_relacion()+ Constantes.PARENTESIS_CIERRE;
-                lDatosContactos.add(datoContacto);
+////                persona = (Persona) Utilidad.getObjeto(contacto.getPersonaEnContacto(), Constantes.PERSONA);
+////                datoContacto = persona.getNombre() + Constantes.ESPACIO + persona.getApellidos() + Constantes.ESPACIO_PARENTESIS_AP + contacto.getTipo_relacion()+ Constantes.PARENTESIS_CIERRE;
+////                lDatosContactos.add(datoContacto);
             }
         }
 

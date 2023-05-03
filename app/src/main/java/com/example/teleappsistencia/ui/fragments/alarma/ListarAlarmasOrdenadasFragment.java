@@ -101,8 +101,6 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
         this.btn_add_alerta.setOnClickListener(this);
         this.context = root.getContext();
 
-        // TODO cambiar a solo para admin
-
         if(Utilidad.isAdmin()){ // Se muestra el botón solo para administradores
             this.btn_add_alerta.setVisibility(View.VISIBLE);
             this.btn_add_alerta.setEnabled(true);
