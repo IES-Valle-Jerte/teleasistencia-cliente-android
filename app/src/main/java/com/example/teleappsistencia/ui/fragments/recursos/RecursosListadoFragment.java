@@ -79,7 +79,7 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
 
         // Obtener el titulo
         tituloFragment = (TextView) root.findViewById(R.id.textViewTituloRecursosComunitarios);
-        tituloFragment.setText(Constantes.TITULO_RECURSOS+titulo);
+        tituloFragment.setText(titulo);
 
         // Obtener el SearchView
         searchView = (SearchView) root.findViewById(R.id.search_view);
@@ -186,7 +186,7 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         if(recursoComunitarioSeleccionado != null){
             this.searchView.setQuery(Constantes.STRING_VACIO, false);
             AppCompatActivity activity = (AppCompatActivity) getContext();
-            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(recursoComunitarioSeleccionado, Constantes.CONSULTAR);
+            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(recursoComunitarioSeleccionado, Constantes.CONSULTAR, this.id);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarRecursoFragment).addToBackStack(null).commit();
         }
     }
@@ -198,7 +198,7 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         if(recursoComunitarioSeleccionado != null){
             this.searchView.setQuery(Constantes.STRING_VACIO, false);
             AppCompatActivity activity = (AppCompatActivity) getContext();
-            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(recursoComunitarioSeleccionado, Constantes.MODIFICAR);
+            RecursosOpcionesFragment consultarRecursoFragment = RecursosOpcionesFragment.newInstance(recursoComunitarioSeleccionado, Constantes.MODIFICAR, this.id);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarRecursoFragment).addToBackStack(null).commit();
         }
     }

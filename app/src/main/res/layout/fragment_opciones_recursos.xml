@@ -104,7 +104,7 @@
         android:layout_height="wrap_content"
         android:text="@string/tipoRecursoComunitario"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerTipoRecursoComunitario"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTipoRecursoComunitario"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
         app:layout_constraintTop_toBottomOf="@+id/editTextPhoneTelefono" />
 
@@ -115,10 +115,10 @@
         android:background="@color/white"
         android:ems="10"
         android:hint=""
-        android:inputType="phone"
+        android:inputType="textPersonName"
         android:padding="10dp"
         android:textColorHint="@color/black"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/guidelineArriba5"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDerecha"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
@@ -128,13 +128,14 @@
     <Spinner
         android:id="@+id/spinnerTipoRecursoComunitario"
         android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/guidelineArriba5"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDerecha"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
-        app:layout_constraintTop_toTopOf="@+id/guidelineArriba4"
-        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toTopOf="@+id/guidelineArriba4" />
 
     <TextView
         android:id="@+id/textViewErrorPedirLocalidad"

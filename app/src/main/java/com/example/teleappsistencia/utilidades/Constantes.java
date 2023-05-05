@@ -135,6 +135,7 @@ public class Constantes {
     public static final String INFO_ALERTDIALOG_MODIFICADO_GRUPO = "Se ha modificado correctamente el grupo.";
     public static final String INFO_ALERTDIALOG_MODIFICADO_DISPOSITIVO_AUXILIAR = "Se ha modificado correctamente el dispositivo auxiliar en terminal.";
     public static final String INFO_ALERTDIALOG_MODIFICADO_DIRECCION = "Se ha modificado correctamente la dirección.";
+    public static final String INFO_ALERTDIALOG_MODIFICADO_RECURSO = "Se ha modificado correctamente el recurso comunitario.";
 
     public static final String INFO_ALERTDIALOG_ELIMINADO_USUARIO = "Se ha eliminado correctamente el usuario.";
     public static final String INFO_ALERTDIALOG_ELIMINADO_TIPO_VIVIENDA = "Se ha eliminado correctamente el tipo de vivienda.";
@@ -376,10 +377,12 @@ public class Constantes {
     public static final String TITULO_RECURSOS = "Recursos ";
     public static final String KEY_ID_CLASIFICACION_RECURSOS = "key_id";
     public static final String KEY_NOMBRE_CLASIFICACION_RECURSOS = "key_nombre";
+    public static final String KEY_OPCION_SELECCIONADA = "key_opcion";
+    public static final String KEY_RECURSO_COMUNITARIO = "key_recurso";
 
     /* Constantes Opciones Lista */
     public static final String CONSULTAR = "Consultar";
     public static final String MODIFICAR = "Modificar";
     public static final String NUEVO = "Nuevo";
-    public static final String OPCION_SELECCIONADA = "Opcion";
+
 }
