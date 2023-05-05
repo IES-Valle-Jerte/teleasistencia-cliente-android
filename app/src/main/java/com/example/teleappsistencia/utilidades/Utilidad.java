@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Patterns;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -43,6 +46,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
@@ -55,6 +59,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
@@ -187,20 +192,96 @@ public class Utilidad {
     }
 
     public static void cargarImagen(String urlImagen, ImageView imageView) {
+        cargarImagen(urlImagen, imageView, null, null);
+    }
+    public static void cargarImagen(String urlImagen, ImageView imageView, Integer radiousDP) {
+        cargarImagen(urlImagen, imageView, radiousDP, null);
+    }
+    public static void cargarImagen(String urlImagen, ImageView imageView, Integer radiousDP, Integer marginDP) {
         if (urlImagen != null && !urlImagen.isEmpty() && imageView != null) {
             // Conectar
             OkHttpClient client = new OkHttpClient();
             Picasso picasso = new Picasso.Builder(imageView.getContext())
-                .downloader(new OkHttp3Downloader(client))
-                .build();
+                    .downloader(new OkHttp3Downloader(client))
+                    .build();
+
+            // Comprobaciones para los campos opcionales (y hacer paso de DP a Pixeles)
+            int radious = 0, margin = 0;
+            if (radiousDP != null) {
+                radious = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, radiousDP,
+                        // Sacar dimensiones de pantalla
+                        imageView.getContext().getResources().getDisplayMetrics()
+                );
+            }
+            if (marginDP != null) {
+                margin = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, marginDP,
+                        // Sacar dimensiones de pantalla
+                        imageView.getContext().getResources().getDisplayMetrics()
+                );
+            }
 
             // Cargar imagen en el ImageView
             picasso.load(urlImagen)
+                // Centrar
                 .fit().centerInside()
-                .placeholder(R.drawable.ic_menu_gallery) // Placeholder mientras carga
-                .error(R.drawable.ic_menu_gallery) // Imagen si no carga bien
+                // Redondear si es necesario
+                .transform(new RoundedCornersTransformation(radious, margin))
+                // Placeholder mientras carga e Imagen si no carga bien
+                .placeholder(R.drawable.ic_menu_gallery)
+                .error(R.drawable.ic_menu_gallery)
+                // View donde cargar la imagen final
                 .into(imageView);
         }
+    }
+
+    public static void cargarImagen(int resourceIdImagen, ImageView imageView) {
+        cargarImagen(resourceIdImagen, imageView, null, null);
+    }
+    public static void cargarImagen(int resourceIdImagen, ImageView imageView, Integer radiousDP) {
+        cargarImagen(resourceIdImagen, imageView, radiousDP, null);
+    }
+    public static void cargarImagen(Integer resourceIdImagen, ImageView imageView, Integer radiousDP, Integer marginDP) {
+        if (resourceIdImagen != null && imageView != null) {
+            Picasso picasso = new Picasso.Builder(imageView.getContext()).build();
+
+            // Comprobaciones para los campos opcionales (y hacer paso de DP a Pixeles)
+            int radious = 0, margin = 0;
+            if (radiousDP != null) {
+                radious = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, radiousDP,
+                        // Sacar dimensiones de pantalla
+                        imageView.getContext().getResources().getDisplayMetrics()
+                );
+            }
+            if (marginDP != null) {
+                margin = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, marginDP,
+                        // Sacar dimensiones de pantalla
+                        imageView.getContext().getResources().getDisplayMetrics()
+                );
+            }
+
+            // Cargar imagen en el ImageView
+            picasso.load(resourceIdImagen)
+                // Centrar
+                .fit().centerInside()
+                // Redondear si es necesario
+                .transform(new RoundedCornersTransformation(radious, margin))
+                // Placeholder mientras carga e Imagen si no carga bien
+                .placeholder(R.drawable.ic_menu_gallery)
+                .error(R.drawable.ic_menu_gallery)
+                // View donde cargar la imagen final
+                .into(imageView);
+        }
+    }
+
+    public static boolean validarFormatoEmail(EditText editText) {
+        // Sacamos el texto sin espacios sobrantes
+        CharSequence input = editText.getText().toString().trim();
+        // Si no está vacio y cumple el regex, el email es valido
+        return !TextUtils.isEmpty(input) && Patterns.EMAIL_ADDRESS.matcher(input).matches();
     }
 
     /**

@@ -204,9 +204,9 @@ public class UsuarioSistemaAdapter extends RecyclerView.Adapter<UsuarioSistemaAd
         }
         // Intentar cargar la imagen
         if (usuario.getImagen() != null) {
-            Utilidad.cargarImagen(usuario.getImagen().getUrl(), viewHolder.cardIV_imagen);
+            Utilidad.cargarImagen(usuario.getImagen().getUrl(), viewHolder.cardIV_imagen, Constantes.IMG_PERFIL_RADIOUS);
         } else {
-            viewHolder.cardIV_imagen.setImageResource(R.drawable.default_user);
+            Utilidad.cargarImagen(R.drawable.default_user, viewHolder.cardIV_imagen, Constantes.IMG_PERFIL_RADIOUS);
         }
 
 

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context=".ModificarPerfilActivity"
+    android:background="@drawable/fondo">
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:text="@string/modificar_perfil_tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Imagen de perfil -->
+    <ImageView
+        android:id="@+id/ivFotoPerfil"
+        android:src="@drawable/default_user"
+        android:layout_width="225dp"
+        android:layout_height="225dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUsername" />
+
+    <ImageButton
+        android:id="@+id/btnCargarFoto"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_menu_camera"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toTopOf="@+id/ivFotoPerfil"
+        app:layout_constraintBottom_toBottomOf="@+id/ivFotoPerfil"
+        app:layout_constraintStart_toStartOf="@+id/ivFotoPerfil"
+        app:layout_constraintEnd_toEndOf="@+id/ivFotoPerfil" />
+
+    <!-- Datos Usuario -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivFotoPerfil" >
+
+        <!-- Tags Nombre y Apellidos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <TextView
+                android:text="@string/modificar_perfil_tvNombre"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+            <TextView
+                android:text="@string/modificar_perfil_tvApellidos"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!-- Campos Nombre y Apellidos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <EditText
+                android:id="@+id/edtNombre"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="40dp"
+                android:text="Juan Antonio"
+                android:ems="10"
+                android:inputType="text"
+                android:gravity="center_horizontal"
+                android:textSize="16sp" />
+            <EditText
+                android:id="@+id/edtApellidos"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="40dp"
+                android:text="Sanchez Sahnchex"
+                android:ems="10"
+                android:inputType="text"
+                android:gravity="center_horizontal"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Email -->
+        <TextView
+            android:text="@string/modificar_perfil_tvEmail"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:gravity="center_horizontal"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Guardado -->
+    <Button
+        android:id="@+id/btnGuardarCambios"
+        android:text="@string/modificar_perfil_btnGuardar"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

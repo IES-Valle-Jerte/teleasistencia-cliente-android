@@ -154,6 +154,14 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <!-- Activity Modifical Perfil -->
+    <string name="modificar_perfil_tvUsername">username</string>
+    <string name="modificar_perfil_tvNombre">Nombre</string>
+    <string name="modificar_perfil_tvApellidos">Apellidos</string>
+    <string name="modificar_perfil_tvEmail">Correo Electrónico</string>
+    <string name="modificar_perfil_btnGuardar">Guardar Cambios</string>
+
+
     <!-- Datos Login. -->
     <string name="login_nombre">Aarón Martín Jiménez</string>
     <string name="login_correo">martinjimenezaaron@gmail.com</string>

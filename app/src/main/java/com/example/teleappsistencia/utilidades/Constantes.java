@@ -109,6 +109,13 @@ public class Constantes {
     public static final String ESPACIO_EN_BLANCO = " ";
 
     /**
+     * Constantes referentes a los Perfiles de Usuario del Sistema
+     */
+    public static final int IMG_PERFIL_RADIOUS = 20;
+    public static final String TOAST_MODPERFIL_SUCCES = "Tu perfil se ha actualizado correctamente";
+    public static final String TOAST_MODPERFIL_ERROR  = "Ha habido un error al actualizar tu perfil";
+
+    /**
      * Constantes para los infoAlertDialogs
      */
     public static final String ELIMINAR_ELEMENTO = "Eliminar datos";

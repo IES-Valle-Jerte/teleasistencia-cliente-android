@@ -16,6 +16,13 @@
         android:theme="@style/Theme.Teleappsistencia"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ModificarPerfilActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".PruebaActivity"
             android:exported="false">
             <meta-data
