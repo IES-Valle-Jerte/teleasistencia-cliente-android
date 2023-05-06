@@ -1,6 +1,7 @@
 package com.example.teleappsistencia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
@@ -34,6 +35,9 @@ public class ModificarPerfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modificar_perfil);
+        // Toolbar de la aplicación
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // TODO: Ocultar ciertos campos si usuario no pertenece al grupo "administrador"
         // Extraer referencias

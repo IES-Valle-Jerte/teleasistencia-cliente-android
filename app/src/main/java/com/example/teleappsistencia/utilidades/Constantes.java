@@ -111,7 +111,7 @@ public class Constantes {
     /**
      * Constantes referentes a los Perfiles de Usuario del Sistema
      */
-    public static final int IMG_PERFIL_RADIOUS = 20;
+    public static final int IMG_PERFIL_RADIOUS = 1000;
     public static final String TOAST_MODPERFIL_SUCCES = "Tu perfil se ha actualizado correctamente";
     public static final String TOAST_MODPERFIL_ERROR  = "Ha habido un error al actualizar tu perfil";
 

@@ -3,6 +3,7 @@ package com.example.teleappsistencia.utilidades;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -48,6 +49,7 @@ import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
@@ -191,40 +193,100 @@ public class Utilidad {
         }, 2500);
     }
 
-    public static void cargarImagen(String urlImagen, ImageView imageView) {
-        cargarImagen(urlImagen, imageView, null, null);
+    // ! ================================== IMAGENES CON PICASSO ===================================
+    // Mediante urlImagen
+    /**
+     * @see Utilidad#cargarImagen(String, ImageView, Integer, Integer)
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(String urlImagen, ImageView imageView) {
+        return cargarImagen( urlImagen, imageView, null, null);
     }
-    public static void cargarImagen(String urlImagen, ImageView imageView, Integer radiousDP) {
-        cargarImagen(urlImagen, imageView, radiousDP, null);
+
+    /**
+     * @see Utilidad#cargarImagen(String, ImageView, Integer, Integer)
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(String urlImagen, ImageView imageView, Integer radiousDP) {
+        return cargarImagen( urlImagen, imageView, radiousDP, null);
     }
-    public static void cargarImagen(String urlImagen, ImageView imageView, Integer radiousDP, Integer marginDP) {
-        if (urlImagen != null && !urlImagen.isEmpty() && imageView != null) {
-            // Conectar
-            OkHttpClient client = new OkHttpClient();
-            Picasso picasso = new Picasso.Builder(imageView.getContext())
-                    .downloader(new OkHttp3Downloader(client))
-                    .build();
+
+    /**
+     * Implementación del método cargarImagen para cargar imágenes con Picasso mediante un ResourceID.
+     *
+     * @param {@link Integer} representando el Resource ID del drawable.
+     * @param imageView ImageView en el que insertará la imagen.
+     * @param radiousDP [Opcional] Radio del borde para bordes redondeados, no afecta si 0 o null.
+     * @param marginDP [Opcional] wMargen respecto al borde, no afecta si 0 o null.
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(String urlImagen, ImageView imageView, Integer radiousDP, Integer marginDP) {
+        return cargarImagen((Object) urlImagen, imageView, radiousDP, marginDP);
+    }
+
+    // Mediante Resource ID de la imagen
+    /**
+     * @see Utilidad#cargarImagen(Integer, ImageView, Integer, Integer)
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(Integer resourceIdImagen, ImageView imageView) {
+        return cargarImagen( resourceIdImagen, imageView, null, null);
+    }
+    /**
+     * @see Utilidad#cargarImagen(Integer, ImageView, Integer, Integer)
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(Integer resourceIdImagen, ImageView imageView, Integer radiousDP) {
+        return cargarImagen(resourceIdImagen, imageView, radiousDP, null);
+    }
+    /**
+     * Implementación del método cargarImagen para cargar imágenes con Picasso mediante un ResourceID.
+     *
+     * @param {@link Integer} representando el Resource ID del drawable.
+     * @param imageView ImageView en el que insertará la imagen.
+     * @param radiousDP [Opcional] Radio del borde para bordes redondeados, no afecta si 0 o null.
+     * @param marginDP [Opcional] wMargen respecto al borde, no afecta si 0 o null.
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(Integer resourceIdImagen, ImageView imageView, Integer radiousDP, Integer marginDP) {
+        return cargarImagen((Object) resourceIdImagen, imageView, radiousDP, marginDP);
+    }
+
+    /**
+     * Implementación del método cargarImagen para reutilizar código y poder cargar imágenes de todas
+     * las formas que Picasso puede cargarlas.
+     *
+     * @param imagen Uno de los sigieintes:
+     *      {@link Integer} representando el Resource ID del drawable,
+     *      {@link String}/{@link Uri} representando la URL del fichero para descargarla,
+     *      o un {@link File} referenciando al fichero de la imagen.
+     *
+     * @param imageView ImageView en el que insertará la imagen
+     * @param radiousDP [Opcional] Radio del borde para bordes redondeados, no afecta si 0 o null
+     * @param marginDP [Opcional] wMargen respecto al borde, no afecta si 0 o null
+     */
+    private static boolean cargarImagen(Object imagen, ImageView imageView, Integer radiousDP, Integer marginDP) {
+        if (imagen != null && imageView != null) {
+            OkHttpClient client; Picasso picasso;
+
+            // Inicializar picaso para acceso web
+            if (imagen instanceof String || imagen instanceof Uri) {
+                client = new OkHttpClient();
+                picasso = new Picasso.Builder(imageView.getContext())
+                        .downloader(new OkHttp3Downloader(client)).build();
+            // Inicializar picaso para acceso a recurso local
+            } else if (imagen instanceof Integer || imagen instanceof File) {
+                picasso = new Picasso.Builder(imageView.getContext()).build();
+
+            // Si la imagen es de cualquier otro tipo no soportado, nos detenemos
+            } else return false;
 
             // Comprobaciones para los campos opcionales (y hacer paso de DP a Pixeles)
-            int radious = 0, margin = 0;
-            if (radiousDP != null) {
-                radious = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, radiousDP,
-                        // Sacar dimensiones de pantalla
-                        imageView.getContext().getResources().getDisplayMetrics()
-                );
-            }
-            if (marginDP != null) {
-                margin = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, marginDP,
-                        // Sacar dimensiones de pantalla
-                        imageView.getContext().getResources().getDisplayMetrics()
-                );
-            }
+            int radious = pasarDPaPX(radiousDP, imageView);
+            int margin = pasarDPaPX(marginDP, imageView);
 
-            // Cargar imagen en el ImageView
-            picasso.load(urlImagen)
-                // Centrar
+            // Cargar imagen en el ImageView (metodo para simplificar los imputs)
+            picassoLoad(picasso, imagen)
                 .fit().centerInside()
                 // Redondear si es necesario
                 .transform(new RoundedCornersTransformation(radious, margin))
@@ -233,50 +295,48 @@ public class Utilidad {
                 .error(R.drawable.ic_menu_gallery)
                 // View donde cargar la imagen final
                 .into(imageView);
+
+            return true;
+        // Si la imagen o el imageView es nulo, no podemos cargar ninguna imagen.
+        } else return false;
+    }
+
+    private static RequestCreator picassoLoad(Picasso picasso, Object imagen) {
+        if (imagen instanceof String) {
+            return picasso.load((String) imagen);
+        } else if (imagen instanceof Integer) {
+            return picasso.load((Integer) imagen);
+        } else if (imagen instanceof Uri) {
+            return picasso.load((Uri) imagen);
+        } else if (imagen instanceof File) {
+            return picasso.load((File) imagen);
         }
+
+        return null;
     }
 
-    public static void cargarImagen(int resourceIdImagen, ImageView imageView) {
-        cargarImagen(resourceIdImagen, imageView, null, null);
-    }
-    public static void cargarImagen(int resourceIdImagen, ImageView imageView, Integer radiousDP) {
-        cargarImagen(resourceIdImagen, imageView, radiousDP, null);
-    }
-    public static void cargarImagen(Integer resourceIdImagen, ImageView imageView, Integer radiousDP, Integer marginDP) {
-        if (resourceIdImagen != null && imageView != null) {
-            Picasso picasso = new Picasso.Builder(imageView.getContext()).build();
-
-            // Comprobaciones para los campos opcionales (y hacer paso de DP a Pixeles)
-            int radious = 0, margin = 0;
-            if (radiousDP != null) {
-                radious = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, radiousDP,
-                        // Sacar dimensiones de pantalla
-                        imageView.getContext().getResources().getDisplayMetrics()
-                );
-            }
-            if (marginDP != null) {
-                margin = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, marginDP,
-                        // Sacar dimensiones de pantalla
-                        imageView.getContext().getResources().getDisplayMetrics()
-                );
-            }
-
-            // Cargar imagen en el ImageView
-            picasso.load(resourceIdImagen)
-                // Centrar
-                .fit().centerInside()
-                // Redondear si es necesario
-                .transform(new RoundedCornersTransformation(radious, margin))
-                // Placeholder mientras carga e Imagen si no carga bien
-                .placeholder(R.drawable.ic_menu_gallery)
-                .error(R.drawable.ic_menu_gallery)
-                // View donde cargar la imagen final
-                .into(imageView);
-        }
+    /**
+     * Función que hace el paso de unidades en Density Independent Pixels (DP) a Pixels (PX).
+     * Util para hacer que ciertos valores como los redondeos de las imágenes se vean igual en todas las pantallas.
+     *
+     * @param densityPixels La cantidad en DP.
+     * @param vistaDeReferencia Una View cualquiera proveniente del layout en el que vaya a ser usado el valor calculado.
+     * @return La cantidad de DP pasada a PX.
+     */
+    public static int pasarDPaPX(Integer densityPixels, View vistaDeReferencia) {
+        if (null == densityPixels) return 0;
+        else return (int) TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, densityPixels,
+            // Sacar dimensiones de pantalla
+            vistaDeReferencia.getContext().getResources().getDisplayMetrics()
+        );
     }
 
+    /**
+     * Verifica si el contenido de un EditText es una dirección de correo y es válida.
+     * @param editText EditText a comprobar
+     * @return Devolverá true solo si es una dirección de correo válida.
+     */
     public static boolean validarFormatoEmail(EditText editText) {
         // Sacamos el texto sin espacios sobrantes
         CharSequence input = editText.getText().toString().trim();
