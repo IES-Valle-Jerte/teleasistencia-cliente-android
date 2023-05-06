@@ -1,6 +1,7 @@
 package com.example.teleappsistencia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +40,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Toolbar de la aplicación
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         this.btn_iniciar_sesion = findViewById(R.id.btn_iniciar_sesion);
         this.editText_usuario = findViewById(R.id.editText_usuario);
         this.editText_password = findViewById(R.id.editText_password);
