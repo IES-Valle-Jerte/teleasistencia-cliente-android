@@ -200,7 +200,7 @@ public class Utilidad {
      * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
      */
     public static boolean cargarImagen(String urlImagen, ImageView imageView) {
-        return cargarImagen( urlImagen, imageView, null, null);
+        return cargarImagen(urlImagen, imageView, null, null);
     }
 
     /**
@@ -208,7 +208,7 @@ public class Utilidad {
      * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
      */
     public static boolean cargarImagen(String urlImagen, ImageView imageView, Integer radiousDP) {
-        return cargarImagen( urlImagen, imageView, radiousDP, null);
+        return cargarImagen(urlImagen, imageView, radiousDP, null);
     }
 
     /**
@@ -230,7 +230,7 @@ public class Utilidad {
      * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
      */
     public static boolean cargarImagen(Integer resourceIdImagen, ImageView imageView) {
-        return cargarImagen( resourceIdImagen, imageView, null, null);
+        return cargarImagen(resourceIdImagen, imageView, null, null);
     }
     /**
      * @see Utilidad#cargarImagen(Integer, ImageView, Integer, Integer)
@@ -252,6 +252,37 @@ public class Utilidad {
         return cargarImagen((Object) resourceIdImagen, imageView, radiousDP, marginDP);
     }
 
+    // Mediante File de la imagen
+    /**
+     * @see Utilidad#cargarImagen(File, ImageView, Integer, Integer)
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(File fileImagen, ImageView imageView) {
+        return cargarImagen(fileImagen, imageView, null, null);
+    }
+
+    /**
+     * @see Utilidad#cargarImagen(File, ImageView, Integer, Integer)
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(File fileImagen, ImageView imageView, Integer radiousDP) {
+        return cargarImagen(fileImagen, imageView, radiousDP, null);
+    }
+
+    /**
+     * Implementación del método cargarImagen para cargar imágenes con Picasso mediante un ResourceID.
+     *
+     * @param fileImagen {@link File} File de una imagen.
+     * @param imageView ImageView en el que insertará la imagen.
+     * @param radiousDP [Opcional] Radio del borde para bordes redondeados, no afecta si 0 o null.
+     * @param marginDP [Opcional] wMargen respecto al borde, no afecta si 0 o null.
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(File fileImagen, ImageView imageView, Integer radiousDP, Integer marginDP) {
+        return cargarImagen((Object) fileImagen, imageView, radiousDP, marginDP);
+    }
+
+    // Implementación
     /**
      * Implementación del método cargarImagen para reutilizar código y poder cargar imágenes de todas
      * las formas que Picasso puede cargarlas.
