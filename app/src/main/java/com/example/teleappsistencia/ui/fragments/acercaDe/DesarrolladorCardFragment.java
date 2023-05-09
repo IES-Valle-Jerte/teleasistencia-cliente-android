@@ -4,33 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.teleappsistencia.R;
-import com.example.teleappsistencia.modelos.Convocatoria;
-import com.example.teleappsistencia.modelos.Desarrollador;
-import com.example.teleappsistencia.modelos.DesarrolladorRel;
-import com.example.teleappsistencia.modelos.Desarrollador_tecnologia;
-import com.example.teleappsistencia.modelos.Tecnologia;
-import com.example.teleappsistencia.modelos.TecnologiaRel;
-import com.example.teleappsistencia.servicios.APIService;
-import com.example.teleappsistencia.servicios.ClienteRetrofit;
-import com.example.teleappsistencia.utilidades.Constantes;
-import com.example.teleappsistencia.utilidades.Utilidad;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.

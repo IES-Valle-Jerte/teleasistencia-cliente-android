@@ -13,7 +13,7 @@ public class Tecnologia implements Serializable {
     private String nombre;
 
     @SerializedName("imagen")
-    private String url_imagen;
+    private String imagen;
 
     public int getId() {
         return id;
@@ -31,11 +31,11 @@ public class Tecnologia implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getUrl_imagen() {
-        return url_imagen;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setUrl_imagen(String url_imagen) {
-        this.url_imagen = url_imagen;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }

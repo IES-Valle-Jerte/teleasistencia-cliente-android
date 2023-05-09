@@ -6,29 +6,17 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Desarrollador implements Serializable {
-
-    @SerializedName("id")
-    private int id;
     @SerializedName("desarrollador_tecnologias")
     private List<Object> lDesarrollador_tecnologia;
-    @SerializedName("nombre")
-    private String nombre;
-    @SerializedName("descripcion")
-    private String descripcion;
-    @SerializedName("imagen")
-    private String imagen;
     @SerializedName("es_profesor")
     private boolean es_profesor;
-    @SerializedName("id_convocatoria_proyecto")
-    private Object id_convocatoria_proyecto;
+    @SerializedName("descripcion")
+    private String descripcion;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    @SerializedName("imagen")
+    private String imagen;
+    @SerializedName("nombre")
+    private String nombre;
 
     public List<Object> getlDesarrollador_tecnologia() {
         return lDesarrollador_tecnologia;
@@ -70,11 +58,4 @@ public class Desarrollador implements Serializable {
         this.es_profesor = es_profesor;
     }
 
-    public Object getId_convocatoria_proyecto() {
-        return id_convocatoria_proyecto;
-    }
-
-    public void setId_convocatoria_proyecto(Object id_convocatoria_proyecto) {
-        this.id_convocatoria_proyecto = id_convocatoria_proyecto;
-    }
 }

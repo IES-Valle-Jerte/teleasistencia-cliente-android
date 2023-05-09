@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.teleappsistencia.R;
-import com.example.teleappsistencia.modelos.ConvocatoriaDesarrollador;
 import com.example.teleappsistencia.modelos.Desarrollador;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
@@ -78,10 +77,6 @@ public class ConsultarDesarrolladorFragment extends Fragment {
     }
 
     public void cargarDatos(){
-        this.textViewIdDesarrollador.setText(String.valueOf(desarrollador.getId()));
-        this.textViewNombreDesarrollador.setText(desarrollador.getNombre());
-        this.textViewDescripcionDesarrollador.setText(desarrollador.getDescripcion());
-        ConvocatoriaDesarrollador convocatoriaDesarrollador = (ConvocatoriaDesarrollador) Utilidad.getObjeto(desarrollador.getId_convocatoria_proyecto(), Constantes.CONVOCATORIA_DESARROLLADOR);
-        this.textViewConvocatoriaDesarrollador.setText(String.valueOf(convocatoriaDesarrollador.getId()));
+
     }
 }

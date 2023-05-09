@@ -3,7 +3,6 @@ package com.example.teleappsistencia.ui.fragments.acercaDe;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,18 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.teleappsistencia.R;
-import com.example.teleappsistencia.modelos.Alarma;
 import com.example.teleappsistencia.modelos.Convocatoria;
 import com.example.teleappsistencia.modelos.Desarrollador;
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
-import com.example.teleappsistencia.ui.fragments.alarma.AlarmaAdapter;
-import com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFragment;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,7 +32,7 @@ import retrofit2.Response;
  * Use the {@link AcercaDeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AcercaDeFragment extends Fragment implements View.OnClickListener, AcercaDeAdapter.OnItemSelectedListener {
+public class AcercaDeFragment extends Fragment implements View.OnClickListener, DesarrolladorAdapter.OnItemSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,8 +41,9 @@ public class AcercaDeFragment extends Fragment implements View.OnClickListener, 
 
     private List<Desarrollador> lDesarrolladores;
     private RecyclerView recycler;
-    private AcercaDeAdapter adapter;
+    private DesarrolladorAdapter adapter;
     private RecyclerView.LayoutManager lManager;
+
     private Context context;
 
     // TODO: Rename and change types of parameters
@@ -102,7 +98,7 @@ public class AcercaDeFragment extends Fragment implements View.OnClickListener, 
 
         //Cargamos un adaptador vacío mientras se carga la lista desde la API REST
         this.lDesarrolladores = new ArrayList<>();
-        adapter = new AcercaDeAdapter(lDesarrolladores);
+        adapter = new DesarrolladorAdapter(lDesarrolladores);
         recycler.setAdapter(adapter);
 
         //Cargamos lista desde la API REST
@@ -128,14 +124,12 @@ public class AcercaDeFragment extends Fragment implements View.OnClickListener, 
                     for (int i = 0; i < lConvocatorias.size(); i++) {
                         //recorro los desarrolladores y los almaceno en una lista de tipo object auxiliar
                         for (int j = 0; j < lConvocatorias.get(i).getlDesarrolladores().size(); j++) {
-                            lObjetosAux.add(lConvocatorias.get(i).getlDesarrolladores().get(j));
-
+                            Desarrollador desarrolladorAux = (Desarrollador) Utilidad.getObjeto(lConvocatorias.get(i).getlDesarrolladores().get(j), Constantes.DESARROLLADOR);
+                            lDesarrolladores.add(desarrolladorAux);
                         }
                     }
 
-                    lDesarrolladores = (List<Desarrollador>) Utilidad.getObjeto(lObjetosAux, Constantes.AL_DESARROLLADOR);
-
-                    adapter = new AcercaDeAdapter(lDesarrolladores);
+                    adapter = new DesarrolladorAdapter(lDesarrolladores);
                     recycler.setAdapter(adapter);
                 }else{
                     Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
