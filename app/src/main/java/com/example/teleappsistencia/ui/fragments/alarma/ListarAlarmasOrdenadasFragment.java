@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,6 +63,8 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
     private String mParam2;
 
     private int selectedPosition = RecyclerView.NO_POSITION;
+    private List<Object> lContactos;
+
 
     public ListarAlarmasOrdenadasFragment() {
         // Required empty public constructor
@@ -122,8 +126,16 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
         adapter = new AlarmaAdapter(lAlarmas);
         recycler.setAdapter(adapter);
 
+        extraerContactos();
+
         //Cargamos lista desde la API REST
         cargarLista();
+
+        OpcionesListaFragment myFragment = new OpcionesListaFragment();
+        myFragment.setOnButtonClickListener(this);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragmentContainerViewOpciones, myFragment)
+                .commit();
 
 
         return root;
@@ -180,18 +192,19 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
     // Estos métodos son los que hacen las funciones del layout de interación con los cardviews
     @Override
     public void onViewDetailsButtonClicked() {
-        //showAlarmDetails();
-        Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+        showAlarmDetails();
+
     }
 
     @Override
     public void onDeleteButtonClicked() {
+        borrarAlarma();
 
     }
 
     @Override
     public void onEditButtonClicked() {
-
+        modificarAlarma();
     }
 
     public void showAlarmDetails(){
@@ -203,8 +216,69 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
                 .commit();
     }
 
+    public void modificarAlarma(){
+        AppCompatActivity activity = (AppCompatActivity) getContext();
+        ModificarAlarmaFragment modificarAlarmaFragment = ModificarAlarmaFragment.newInstance(adapter.getAlarmaSeleccionada());
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, modificarAlarmaFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void borrarAlarma(){
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<ResponseBody> call = apiService.deleteAlarmabyId(this.adapter.getAlarmaSeleccionada().getId(), Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(context, Constantes.ALARMA_BORRADA, Toast.LENGTH_LONG).show();
+                    volver();
+                }else{
+                    Toast.makeText(context, Constantes.ERROR_BORRADO + response.message(), Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(context, Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void volver(){
+        MainActivity activity = (MainActivity) this.context;
+        ListarAlarmasOrdenadasFragment listarAlarmasOrdenadasFragment = new ListarAlarmasOrdenadasFragment();
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, listarAlarmasOrdenadasFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
     @Override
     public void onItemSelected(int position) {
         this.selectedPosition = position;
+    }
+
+    public void extraerContactos(){
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Object>> call = apiService.getContactosbyIdPaciente(1, Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<List<Object>>() {
+            @Override
+            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+                if(response.isSuccessful()){
+                    lContactos = response.body();
+                }else{
+                    //Toast.makeText(getContext(), "pruebas", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Object>> call, Throwable t) {
+                //Toast.makeText(getContext(), "pruebas", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

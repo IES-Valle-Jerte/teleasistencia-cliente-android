@@ -126,7 +126,7 @@ public class InsertarAlarmaFragment extends Fragment implements View.OnClickList
         cargarDatosSpinners();
 
         //Oculta los campos de programar alarmas
-        //ocultarCamposProgramarAlarma();
+        ocultarCamposProgramarAlarma();
 
         // Próxima entrega quitar comentarios de la siguiente línea
 

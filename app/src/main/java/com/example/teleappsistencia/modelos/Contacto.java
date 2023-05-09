@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class Contacto implements Serializable {
 
     @SerializedName("id")
-    private int idContacto;
+    private int id;
 
     @SerializedName("nombre")
     private String nombre;
@@ -40,12 +40,12 @@ public class Contacto implements Serializable {
     @SerializedName("id_paciente")
     private Object id_paciente;
 
-    public int getIdContacto() {
-        return idContacto;
+    public int getId() {
+        return id;
     }
 
-    public void setIdContacto(int idContacto) {
-        this.idContacto = idContacto;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTipo_relacion() {

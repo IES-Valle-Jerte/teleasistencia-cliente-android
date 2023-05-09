@@ -9,7 +9,7 @@ public class Desarrollador implements Serializable {
 
     @SerializedName("id")
     private int id;
-    @SerializedName("desarrolador_tecnologias")
+    @SerializedName("desarrollador_tecnologias")
     private List<Object> lDesarrollador_tecnologia;
     @SerializedName("nombre")
     private String nombre;

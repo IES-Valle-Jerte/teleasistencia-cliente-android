@@ -313,7 +313,7 @@ public class Constantes {
 
     public final static String AL_RELACION_DESARROLLADOR_TECNOLOGIA = "ArrayList<RelacionDesarrolladorTecnologia>";
 
-    public final static String RELACION_DESARROLLADOR_TECNOLOGIA = "RelacionDesarrolladorTecnologia";
+    public final static String DESARROLLADOR_TECNOLOGIA = "Desarrollador_tecnologia";
 
     public final static String DESARROLLADOR = "Desarrollador";
 

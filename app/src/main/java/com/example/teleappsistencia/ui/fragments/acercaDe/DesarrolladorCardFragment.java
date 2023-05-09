@@ -42,19 +42,11 @@ public class DesarrolladorCardFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private List<TecnologiaRel> lTecnologiaRel;
-    private RecyclerView recycler;
-    private DesarrolladorAdapter adapter;
-    private RecyclerView.LayoutManager lManager;
-
     private Context context;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private TextView nombre;
-    private String nombreString;
 
     public DesarrolladorCardFragment() {
         // Required empty public constructor
@@ -93,68 +85,7 @@ public class DesarrolladorCardFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_desarrollador_card, container, false);
 
-        // Obtener el Recycler.
-        recycler = (RecyclerView) root.findViewById(R.id.recycler_view_tecnologias);
-        recycler.setHasFixedSize(true);
-
-        // Usar un administrador para LinearLayout.
-        lManager = new LinearLayoutManager(getContext());
-        recycler.setLayoutManager(lManager);
-
-        //Cargamos un adaptador vacío mientras se carga la lista desde la API REST
-        this.lTecnologiaRel = new ArrayList<>();
-        adapter = new DesarrolladorAdapter(lTecnologiaRel);
-        recycler.setAdapter(adapter);
-
-        this.nombre = root.findViewById(R.id.textViewNombreDesarrolladorCard);
-        this.nombreString = nombre.getText().toString();
-
-        this.lTecnologiaRel = new ArrayList<>();
-        cargarLista();
-
         return root;
-    }
-
-    private void cargarLista(){
-        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-        Call<List<Object>> call = apiService.getDesarrolladores(Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
-        call.enqueue(new Callback<List<Object>>() {
-            List<Convocatoria> lConvocatorias = new ArrayList<>();
-            List<Desarrollador> lDesarrolladorAux = new ArrayList<>();
-            @Override
-            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
-                if(response.isSuccessful()){
-                    List<Object> lObjetos = response.body();
-                    lConvocatorias = (ArrayList<Convocatoria>) Utilidad.getObjeto(lObjetos, Constantes.AL_CONVOCATORIA);
-
-                    //recorro las 2 convocatorias
-                    for (int i = 0; i < lConvocatorias.size(); i++) {
-                        //recorro los desarrolladores y los almaceno en una lista de tipo object auxiliar
-                        for (int j = 0; j < lConvocatorias.get(i).getlDesarrolladores().size(); j++) {
-                            lDesarrolladorAux.add((Desarrollador) Utilidad.getObjeto(lConvocatorias.get(i).getlDesarrolladores().get(j),Constantes.DESARROLLADOR));
-                            for (int k = 0; k < lDesarrolladorAux.size(); k++) {
-                                TecnologiaRel tecnologiaRelAux = (TecnologiaRel) Utilidad.getObjeto(lDesarrolladorAux.get(k), Constantes.TECNOLOGIAREL);
-                                DesarrolladorRel desarrolladorRel = (DesarrolladorRel) Utilidad.getObjeto(lDesarrolladorAux.get(k), Constantes.DESARROLLADORREL);
-                                if(desarrolladorRel.getNombre().equals(nombreString)){
-                                    lTecnologiaRel.add(tecnologiaRelAux);
-                                }
-                            }
-                        }
-                    }
-
-
-                    adapter = new DesarrolladorAdapter(lTecnologiaRel);
-                    recycler.setAdapter(adapter);
-                }else{
-                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Object>> call, Throwable t) {
-                Toast.makeText(getContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
 

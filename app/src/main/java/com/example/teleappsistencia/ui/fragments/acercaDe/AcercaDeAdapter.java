@@ -1,6 +1,8 @@
 package com.example.teleappsistencia.ui.fragments.acercaDe;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +21,17 @@ import com.example.teleappsistencia.R;
 import com.example.teleappsistencia.modelos.Alarma;
 import com.example.teleappsistencia.modelos.Desarrollador;
 import com.example.teleappsistencia.modelos.Desarrollador_tecnologia;
+import com.example.teleappsistencia.modelos.TecnologiaRel;
 import com.example.teleappsistencia.ui.fragments.alarma.AlarmaAdapter;
 import com.example.teleappsistencia.ui.fragments.alarma.ConsultarAlarmaFragment;
 import com.example.teleappsistencia.utilidades.Constantes;
+import com.example.teleappsistencia.utilidades.Utilidad;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
+import java.time.temporal.ValueRange;
 import java.util.List;
 
 public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.AcercaDeViewHolder> {
@@ -60,6 +67,12 @@ public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.Acerca
 
         private ImageView foto_perfil;
 
+        private ImageView imagen_tecnologia1;
+
+        private ImageView imagen_tecnologia2;
+
+        private ImageView imagen_tecnologia3;
+
         private Desarrollador desarrollador;
 
         public AcercaDeViewHolder(View v){
@@ -67,6 +80,9 @@ public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.Acerca
             this.context = v.getContext();
             this.textViewNombreDesarrollador = (TextView) v.findViewById(R.id.textViewNombreDesarrolladorCard);
             this.foto_perfil = (ImageView) v.findViewById(R.id.imagenPerfilDesarrolladorCard);
+            this.imagen_tecnologia1 = (ImageView) v.findViewById(R.id.tecnologia_uno);
+            this.imagen_tecnologia2 = (ImageView) v.findViewById(R.id.tecnologia_dos);
+            this.imagen_tecnologia3 = (ImageView) v.findViewById(R.id.tecnologia_tres);
         }
 
         @Override
@@ -123,7 +139,31 @@ public class AcercaDeAdapter extends RecyclerView.Adapter<AcercaDeAdapter.Acerca
         viewHolder.setDesarrollador(desarrollador);
 
         viewHolder.textViewNombreDesarrollador.setText(desarrollador.getNombre());
+
         Picasso.get().load(desarrollador.getImagen()).into(viewHolder.foto_perfil);
+
+
+        //Desarrollador_tecnologia desarrollador_tecnologia = (Desarrollador_tecnologia) Utilidad.getObjeto(desarrollador.getlDesarrollador_tecnologia().get(0), Constantes.DESARROLLADOR_TECNOLOGIA);
+        //TecnologiaRel tecnologiaRel = (TecnologiaRel) Utilidad.getObjeto(desarrollador_tecnologia.getId_tecnologia(), Constantes.TECNOLOGIAREL);
+
+        //Picasso.get().load(tecnologiaRel.getImagen()).resize(150, 150).into(viewHolder.imagen_tecnologia);
+        for (int j = 0; j < desarrollador.getlDesarrollador_tecnologia().size(); j++) {
+            if(desarrollador.getlDesarrollador_tecnologia().get(j) != null){
+                Desarrollador_tecnologia desarrollador_tecnologia = (Desarrollador_tecnologia) Utilidad.getObjeto(desarrollador.getlDesarrollador_tecnologia().get(j), Constantes.DESARROLLADOR_TECNOLOGIA);
+                TecnologiaRel tecnologiaRel = (TecnologiaRel) Utilidad.getObjeto(desarrollador_tecnologia.getId_tecnologia(), Constantes.TECNOLOGIAREL);
+                switch (j){
+                    case 0:
+                        Picasso.get().load(tecnologiaRel.getImagen()).resize(150, 150).into(viewHolder.imagen_tecnologia1);
+                        break;
+                    case 1:
+                        Picasso.get().load(tecnologiaRel.getImagen()).resize(150, 150).into(viewHolder.imagen_tecnologia2);
+                        break;
+                    case 2:
+                        Picasso.get().load(tecnologiaRel.getImagen()).resize(150, 150).into(viewHolder.imagen_tecnologia3);
+                        break;
+                }
+            }
+        }
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

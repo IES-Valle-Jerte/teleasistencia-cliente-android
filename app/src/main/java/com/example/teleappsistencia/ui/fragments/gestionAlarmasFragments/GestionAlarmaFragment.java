@@ -20,6 +20,8 @@ import com.example.teleappsistencia.modelos.Alarma;
 import com.example.teleappsistencia.modelos.CentroSanitario;
 import com.example.teleappsistencia.modelos.CentroSanitarioEnAlarma;
 import com.example.teleappsistencia.modelos.Contacto;
+import com.example.teleappsistencia.modelos.Convocatoria;
+import com.example.teleappsistencia.modelos.Desarrollador;
 import com.example.teleappsistencia.modelos.Direccion;
 import com.example.teleappsistencia.modelos.Paciente;
 import com.example.teleappsistencia.modelos.Persona;
@@ -32,6 +34,7 @@ import com.example.teleappsistencia.modelos.Teleoperador;
 import com.example.teleappsistencia.modelos.Terminal;
 import com.example.teleappsistencia.modelos.Token;
 import com.example.teleappsistencia.servicios.APIService;
+import com.example.teleappsistencia.ui.fragments.acercaDe.AcercaDeAdapter;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasFragment;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.utilidades.Constantes;
@@ -62,7 +65,6 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     private Alarma alarma;
     private int color;
     private String numeroTelefono;
-    private List<Object> lContactosCercanos;
     private Terminal terminal;
     private Paciente paciente;
 
@@ -113,6 +115,9 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     private Boolean desplegado_nivel2;
 
     private Boolean desplegado_nivel3;
+
+    private List<Object> lContactosPeticion;
+    private List<Object> lContactosPrueba;
 
     public GestionAlarmaFragment() {
         // Required empty public constructor
@@ -268,8 +273,8 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      * una lista de Object y queremos pasarla a un ArrayList de Contactos.
      */
     private void extraerDatos(){
-        extraerContactos(paciente.getId());
-        this.lContactosParseada = (ArrayList<Contacto>) Utilidad.getObjeto(lContactosCercanos, Constantes.AL_CONTACTOS);
+        extraerContactos();
+        this.lContactosParseada = (ArrayList<Contacto>) Utilidad.getObjeto(lContactosPeticion, Constantes.AL_CONTACTOS);
 
         /* Estos métodos además cargarán los datos de sus Spinner correspondiente, ya que las operaciones
          *  de extracción y carga deben ir anidadas para hacerlo de forma síncrona y no falle. */
@@ -311,7 +316,7 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     private void cargarSpinnerContactos(){
         /* Si la lista de contactos está vacía, inhabilitamos el botón de registrar llamada al Contacto
          * y  escondemos el botón de ver información del Contacto */
-        if(lContactosParseada.isEmpty()){
+        if(lContactosPeticion.isEmpty()){
             this.imageButtonInfoContacto.setVisibility(View.INVISIBLE);
             this.btnRegistrarLlamadaContacto.setEnabled(false);
         }
@@ -321,6 +326,29 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
             this.spinnerContactos.setAdapter(adapter);
         }
 
+    }
+    // obtiene los contactos cercanos del paciente
+    public void extraerContactos(){
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Object>> call = apiService.getContactosbyIdPaciente(1, Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<List<Object>>() {
+            @Override
+            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+                if(response.isSuccessful()){
+                    lContactosPrueba = response.body();
+                }else{
+                    //Toast.makeText(getContext(), "pruebas", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Object>> call, Throwable t) {
+                //Toast.makeText(getContext(), "pruebas", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
@@ -795,27 +823,6 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         });
     }
 
-    // obtiene los contactos cercanos del paciente
-    private void extraerContactos(int idPaciente) {
-        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-        Call<List<Object>> call = apiService.getContactosbyIdPaciente(idPaciente, Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
-        call.enqueue(new Callback<List<Object>>() {
-            @Override
-            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
-                if(response.isSuccessful()){
-                    lContactosCercanos = (ArrayList<Object>) response.body();
-                }
-                else{
-                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Object>> call, Throwable t) {
-                Toast.makeText(getContext(), Constantes.ERROR_NO_CONTACTOS, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 
 
     /**
