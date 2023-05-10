@@ -85,10 +85,6 @@ import com.example.teleappsistencia.ui.menu.MenuModel;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -166,10 +162,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (Activity.RESULT_OK == resultCode) {
                     // Cambios guardados correctamente
                     Toast.makeText(this, Constantes.TOAST_MODPERFIL_SUCCES, Toast.LENGTH_SHORT).show();
-                    // Recargar imagen perfil
-                    cargarImagenUsuarioLoggeado();
-                } else if (Activity.RESULT_CANCELED == resultCode) {
-                    // Ha fallado algo
+                    // Recargar datos del usuario
+                    cargarDatosUsuarioLoggeado();
+                } else if (Constantes.RESULT_MODPERFIL_ERROR == resultCode) {
                     Toast.makeText(this, Constantes.TOAST_MODPERFIL_ERROR, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -193,23 +188,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textView_email_usuarioLogged = (TextView) navigationHeader.findViewById(R.id.textView_email_usuarioLogged);
         imageView_fotoPerfil = (ImageView) navigationHeader.findViewById(R.id.imageView_usuario);
 
-        Usuario usuario = Utilidad.getUserLogged();    // Recogo el usuario de la clase Utils.
-        if (usuario != null) {  // Si existe el usuario.
-            // Le asigno el nombre y apellidos.
-            textView_nombre_usuarioLogged.setText(usuario.getFirstName() + Constantes.ESPACIO_EN_BLANCO + usuario.getLastName());
-            textView_email_usuarioLogged.setText(usuario.getEmail());
-
-            cargarImagenUsuarioLoggeado();
-        }
+        cargarDatosUsuarioLoggeado();
 
         // Conectar evento para cargar la actividad de modificar perfil del usuario
         imageView_fotoPerfil.setOnClickListener(_v -> cargarActivityModificarPerfil());
     }
 
-    public void cargarImagenUsuarioLoggeado() {
-        Usuario usuario = Utilidad.getUserLogged();
-        if(usuario.getImagen() != null) {  // Si el usuario cuenta con una imagen.
-            Utilidad.cargarImagen( usuario.getImagen().getUrl(), imageView_fotoPerfil, Constantes.IMG_PERFIL_RADIOUS);
+    public void cargarDatosUsuarioLoggeado() {
+        Usuario usuario = Utilidad.getUserLogged();    // Recogo el usuario de la clase Utils.
+        if (usuario != null) { // Si existe el usuario.
+            // Le asigno el nombre y apellidos.
+            textView_nombre_usuarioLogged.setText(usuario.getFirstName() + Constantes.ESPACIO_EN_BLANCO + usuario.getLastName());
+            textView_email_usuarioLogged.setText(usuario.getEmail());
+            textView_nombre_usuarioLogged.setText(usuario.getFirstName() + Constantes.ESPACIO_EN_BLANCO + usuario.getLastName());
+            textView_email_usuarioLogged.setText(usuario.getEmail());
+
+            if (usuario.getImagen() != null) {  // Si el usuario cuenta con una imagen.
+                Utilidad.cargarImagen(usuario.getImagen().getUrl(), imageView_fotoPerfil, Constantes.IMG_PERFIL_RADIOUS);
+            } else {
+                Utilidad.cargarImagen(R.drawable.default_user, imageView_fotoPerfil, Constantes.IMG_PERFIL_RADIOUS);
+            }
         }
     }
 
