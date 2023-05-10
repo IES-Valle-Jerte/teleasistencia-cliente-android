@@ -58,7 +58,7 @@ public class ModificarPerfilActivity extends AppCompatActivity {
     Button btnGuardarNuevaPassword, btnCancelarCambioPassword;
 
     // Elementos necesarios para el funcionamiento de la clase
-    Usuario usuario; ProfilePatch patches;
+    Usuario usuario; ProfilePatch patches; ProfilePatch passwordPatch;
     ActivityResultLauncher<Intent> getImagenLauncher;
 
     // Permisos necesarios
@@ -90,6 +90,7 @@ public class ModificarPerfilActivity extends AppCompatActivity {
         btnGuardarCambios.setOnClickListener(_v -> guardarCambiosDatos());
         btnCambiarPassword.setOnClickListener(_v -> alternarPanelesVisibles());
 
+        btnGuardarNuevaPassword.setOnClickListener(_v -> guardarNuevaPassword());
         btnCancelarCambioPassword.setOnClickListener(_v -> {
             Toast.makeText(this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_CANCELADO, Toast.LENGTH_SHORT).show();
             alternarPanelesVisibles();
@@ -252,7 +253,7 @@ public class ModificarPerfilActivity extends AppCompatActivity {
             File tempFile = Utilidad.extraerFicheroTemporal(this, patches.getNuevaFotoPerfil());
 
             // Llamar a la API
-            Call<Usuario> call = patches.createFullPatchAPICall(tempFile);
+            Call<Usuario> call = patches.createMultipartPatchAPICall(tempFile);
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -275,6 +276,69 @@ public class ModificarPerfilActivity extends AppCompatActivity {
             pedirPermisos();
         }
     };
+
+    /**
+     * Intenta confirmar los contraseñas y enviarlos al servidor
+     */
+    private void guardarNuevaPassword() {
+        // Si los campos son validos procedemos
+        if (validarNuevaPassword()) {
+            passwordPatch = new ProfilePatch(usuario);
+            passwordPatch.setNuevaPassword(edtNuevaPassword.getText().toString());
+
+            enviarCambioPassword();
+        }
+    }
+
+    /**
+     * Intenta validar los EditText de las contaseñas nuevas.
+     *
+     * @return true si son válidas.
+     * @see Utilidad#validatePassword(EditText)
+     */
+    private boolean validarNuevaPassword() {
+        boolean valid = false;
+        String pass1 = edtNuevaPassword.getText().toString(),
+               pass2 = edtRepetirNuevaPassword.getText().toString();
+
+        if (pass1.trim().isEmpty() && pass2.trim().isEmpty()) {
+            Toast.makeText(this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_INVALID_NOPASS, Toast.LENGTH_SHORT).show();
+        }
+        else if (!pass1.equals(pass2)) {
+            Toast.makeText(this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_INVALID_DIFFERENT, Toast.LENGTH_SHORT).show();
+        }
+        else if (!Utilidad.validatePassword(edtNuevaPassword) || !Utilidad.validatePassword(edtRepetirNuevaPassword)) {
+            Toast.makeText(this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_INVALID, Toast.LENGTH_SHORT).show();
+        }
+        else valid = true;
+
+        return valid;
+    }
+
+    /**
+     * Intenta enviar los datos al servidor, una vez se complete la petición se volverá al panel de datos.
+     */
+    private void enviarCambioPassword() {
+        // Llamar a la API
+        Call<Usuario> call = passwordPatch.createPatchAPICall();
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (response.isSuccessful()) {
+                    alternarPanelesVisibles();
+                    Toast.makeText(ModificarPerfilActivity.this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_CORRECTO, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ModificarPerfilActivity.this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_INVALID, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Toast.makeText(ModificarPerfilActivity.this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_API_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     // Salida de la activity
     /**

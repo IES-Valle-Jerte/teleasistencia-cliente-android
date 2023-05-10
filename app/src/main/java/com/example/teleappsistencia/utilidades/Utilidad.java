@@ -410,6 +410,32 @@ public class Utilidad {
     }
 
     /**
+     * Verifica si el contenido de un EditText es una contraseña válida.
+     *
+     * <ul><b>Condiciones de validación</b>
+     *     <li>[SERVIDOR] No puede ser demasiado similar a otra información personal.</li>
+     *     <li>[SERVIDOR] No puede ser una contraseña comúnmente utilizadaTener al menos 8 caracteres.</li>
+     *     <li>Tener al menos 8 caracteres.</li>
+     *     <li>No puede ser completamente numérica.</li>
+     *     <li>Los campos no pueden estar vacios.</li>
+     * </ul>
+     *
+     * <b>NOTA</b>: Ciertos cambios en la política de validación del servidor pueden hacer
+     * que la contraseña se considere invalida igualmente.
+     *
+     * @param editText EditText a comprobar
+     * @return Devolverá true solo si es una contraseña valida.
+     */
+    public static boolean validatePassword(EditText editText) {
+        final Pattern pattern = Pattern.compile(Constantes.TOAST_MODPERFIL_CAMBIOPASS_REGEX);
+        String password = editText.getText().toString().trim();
+
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+
+    /**
      * Crea un fichero temporal a partir de un recurso local.
      * Este recurso local será obtenido normalmente mediante un file picker Intent o similar.
      *

@@ -78,7 +78,7 @@ public class ProfilePatch implements Serializable {
         return campos;
     }
 
-    public Call<Usuario> createFullPatchAPICall(File imageFile) {
+    public Call<Usuario> createMultipartPatchAPICall(File imageFile) {
         MultipartBody.Part imagenPart = null;
 
         APIService servicio = ClienteRetrofit.getInstance().getAPIService();
@@ -93,7 +93,7 @@ public class ProfilePatch implements Serializable {
         }
 
         // Cargar los cambios en la petición
-        call = servicio.patchPerfil(
+        call = servicio.patchPerfilMultipart(
                 usuarioAsociado.getPk(), this.asPartMap(), imagenPart,
                 Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
 
@@ -101,10 +101,10 @@ public class ProfilePatch implements Serializable {
         return call;
     }
 
-    public Call<Usuario> createPassowordPatchAPICall() {
+    public Call<Usuario> createPatchAPICall() {
         APIService servicio = ClienteRetrofit.getInstance().getAPIService();
-        return servicio.patchPerfilPassword(
-                usuarioAsociado.getPk(), this.nuevaPassword,
+        return servicio.patchPerfil(
+                usuarioAsociado.getPk(), this,
                 Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
     }
 }

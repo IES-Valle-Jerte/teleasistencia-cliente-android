@@ -122,13 +122,9 @@ public class Constantes {
     public static final String TOAST_MODPERFIL_CAMBIOPASS_CORRECTO = "Tu contraseña se ha cambiado correctamente";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_API_ERROR = "Ha habido un error al cambiar tu contraseña";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID_DIFFERENT = "Las contraseñas no coinciden...";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID_NOPASS = "Introduzca una contraseña por favor";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID = "La contraseña no cumple con los requisitos";
-    public static final String TOAST_MODPERFIL_CAMBIOPASS_REQUISITOS =
-            "Tu contraseña no puede ser demasiado similar a otra datos personales.\n"
-            +"Tu contraseña debe tener al menos 8 caracteres.\n"
-            +"Tu contraseña no puede ser comúnmente utilizada.\n"
-            +"Tu contraseña no puede ser completamente numérica.";
-    public static final String TOAST_MODPERFIL_CAMBIOPASS_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?!.*(.)\\1\\1)[A-Za-z\\d@$!%*?&]{8,}$\n";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_REGEX = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,}$";
 
 
 

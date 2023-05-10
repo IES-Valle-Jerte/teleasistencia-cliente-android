@@ -182,22 +182,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <!-- Cambio de contraseña -->
-
-        <!-- Cambio de contraseña -->
-
         <LinearLayout
             android:id="@+id/editTexts"
-            android:layout_width="300dp"
+            android:layout_width="325dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
+            app:layout_constraintVertical_bias="0.25"
             app:layout_constraintBottom_toTopOf="@+id/btnGuardarNuevaPassword"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.414"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" >
 
+            <!-- Header y requisitos -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -206,11 +203,36 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/modificar_perfil_requisitosPassword1"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modificar_perfil_requisitosPassword2"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modificar_perfil_requisitosPassword3"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modificar_perfil_requisitosPassword4"
+                android:textSize="18sp" />
+
             <!-- Nueva Contraseña -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="50dp"
                 android:gravity="center_horizontal"
                 android:text="@string/modificar_perfil_tvNuevaPass"
                 android:textSize="20sp"
@@ -221,32 +243,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:hint="@string/modificar_perfil_tvNuevaPass"
                 android:inputType="textPassword"
                 android:textSize="18sp" />
 
-            <!-- Nueva Contraseña -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:gravity="center_horizontal"
-                android:text="@string/modificar_perfil_tvRepetirNuevaPass"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
+            <!-- Repetir Nueva Contraseña -->
             <EditText
                 android:id="@+id/edtRepetirNuevaPassword"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:hint="@string/modificar_perfil_tvRepetirNuevaPass"
                 android:inputType="textPassword"
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <!-- Guardado -->
         <Button
             android:id="@+id/btnGuardarNuevaPassword"
-            android:layout_width="300dp"
+            android:layout_width="325dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="@string/modificar_perfil_btnGuardarNuevaPassword"
@@ -259,7 +275,7 @@
         <!-- Cancelar -->
         <Button
             android:id="@+id/btnCancelarCambioPassword"
-            android:layout_width="300dp"
+            android:layout_width="325dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:text="@string/modificar_perfil_btnCancelarCambioPassword"
