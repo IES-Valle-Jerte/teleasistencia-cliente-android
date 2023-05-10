@@ -50,6 +50,10 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
@@ -406,6 +410,54 @@ public class Utilidad {
     }
 
     /**
+     * Crea un fichero temporal a partir de un recurso local.
+     * Este recurso local será obtenido normalmente mediante un file picker Intent o similar.
+     *
+     * NOTA: El fichero temporal se almacenará en la Caché de la aplicación y se eliminará cuando
+     * se cierre la aplicación, ya que está marcado con y está marcado con {@link File#deleteOnExit()}.
+     *
+     * @param uriRecursoLocal {@link Uri} al recurso local. Vease un Fichero convencional o una Imagen.
+     * @return {@link File} temporal con el contenido del recurso local. Valido hasta que se cierre la Aplicación.
+     *
+     * @throws SecurityException EACCES (Permission denied) en caso de que no se tengan los permisos necesarios.
+     * @see File#deleteOnExit()
+     */
+    public static File extraerFicheroTemporal(Context context, Uri uriRecursoLocal) throws IOException {
+        File tempFile = null;
+        InputStream is = null; FileOutputStream fos = null;
+
+        // No hacer nada si los parametros son nulos
+        if (null == context || null == uriRecursoLocal) return null;
+
+        try {
+            // Abrir el recurso y hacer dump a un fichero temporal (almacenado en caché)
+            is = context.getContentResolver().openInputStream(uriRecursoLocal);
+            tempFile = File.createTempFile("temp", null, context.getCacheDir());
+            fos = new FileOutputStream(tempFile);
+
+            // Buffer para leer los datos
+            int length; byte[] buffer = new byte[1024]; // 1MB
+
+            while ((length = is.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+            fos.flush();
+
+        // Cerrar los Streams y marcar el fichero para que sea borrado.
+        } catch (FileNotFoundException fnfe) {
+            tempFile = null;
+        } finally {
+            try {
+                if (fos != null) fos.close();
+                if (is != null)  is.close();
+                // Marcar el fichero temporal para que se borre cuando la app se cierre
+                if (tempFile != null)  tempFile.deleteOnExit();
+            } catch (IOException ex) {}
+        }
+
+        return tempFile;
+    }
+
     /**
      * Alterna la visibilidad de una View entre {@link View#VISIBLE} y {@link View#GONE}
      * @param v
