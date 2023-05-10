@@ -114,19 +114,19 @@ public class Constantes {
     public static final int RESULT_MODPERFIL_ERROR = -2;
     public static final int IMG_PERFIL_RADIOUS = 1000;
     public static final String TOAST_MODPERFIL_SUCCES = "Tu perfil se ha actualizado correctamente";
-    public static final String TOAST_MODPERFIL_ERROR  = "Ha habido un error al actualizar tu perfil";
+    public static final String TOAST_MODPERFIL_API_ERROR = "Ha habido un error al actualizar tu perfil";
     public static final String TOAST_MODPERFIL_CORREO_INVALIDO = "El correo no es un correo válido";
     public static final String TOAST_MODPERFIL_PERMISO_NECESARIO = "No puedes realizar esta acción sin dar el permiso de leer el almacenamiento";
     // Cambios de contraseña
-    public static final String TOAST_MODPERFIL_CAMBIOPASS_CANCELADO = "Cancelado";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_CANCELADO = "Cambio de contraseña cancelado";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_CORRECTO = "Tu contraseña se ha cambiado correctamente";
-    public static final String TOAST_MODPERFIL_CAMBIOPASS_ERROR = "Ha habido un error al cambiar tu contraseña";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_API_ERROR = "Ha habido un error al cambiar tu contraseña";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID_DIFFERENT = "Las contraseñas no coinciden...";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID = "La contraseña no cumple con los requisitos";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_REQUISITOS =
-            "Tu contraseña no puede ser demasiado similar a otra información personal tuya.\n"
+            "Tu contraseña no puede ser demasiado similar a otra datos personales.\n"
             +"Tu contraseña debe tener al menos 8 caracteres.\n"
-            +"Tu contraseña no puede ser una contraseña comúnmente utilizada.\n"
+            +"Tu contraseña no puede ser comúnmente utilizada.\n"
             +"Tu contraseña no puede ser completamente numérica.";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?!.*(.)\\1\\1)[A-Za-z\\d@$!%*?&]{8,}$\n";
 

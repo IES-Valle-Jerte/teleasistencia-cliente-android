@@ -1,7 +1,6 @@
 package com.example.teleappsistencia.servicios;
 
 import com.example.teleappsistencia.modelos.CentroSanitario;
-import com.example.teleappsistencia.modelos.ProfilePatch;
 import com.example.teleappsistencia.modelos.RecursoComunitario;
 import com.example.teleappsistencia.modelos.TipoModalidadPaciente;
 import com.example.teleappsistencia.modelos.TipoRecursoComunitario;
@@ -144,7 +143,11 @@ public interface APIService {
 
     @PATCH("/api-rest/profile/{id_usuario}")
     @Multipart
-    Call<Usuario> patchImagenPerfil(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
+    Call<Usuario> patchPerfil(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
+
+    @PATCH("/api-rest/profile/{id_usuario}")
+    Call<Usuario> patchPerfilPassword(@Path("id_usuario") int id_usuario, @Body String nuevaPassword, @Header("Authorization") String token);
+
 
     // Peticiones de Direccion
 

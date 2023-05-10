@@ -28,9 +28,6 @@ import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -90,7 +87,7 @@ public class ModificarPerfilActivity extends AppCompatActivity {
 
         // Conectar acciones
         btnCargarFoto.setOnClickListener(_v -> pedirFoto());
-        btnGuardarCambios.setOnClickListener(_v -> enviarDatos());
+        btnGuardarCambios.setOnClickListener(_v -> guardarCambiosDatos());
         btnCambiarPassword.setOnClickListener(_v -> alternarPanelesVisibles());
 
         btnCancelarCambioPassword.setOnClickListener(_v -> {
@@ -218,9 +215,9 @@ public class ModificarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Intenta enviar los cambios al Servidor
+     * Intenta confirmar los cambios y enviarlos al servidor
      */
-    private void enviarDatos() {
+    private void guardarCambiosDatos() {
         // Si los campos son validos procedemos
         if (validarDatos()) {
             // Cargar los cambios para enviarlos
@@ -255,7 +252,7 @@ public class ModificarPerfilActivity extends AppCompatActivity {
             File tempFile = Utilidad.extraerFicheroTemporal(this, patches.getNuevaFotoPerfil());
 
             // Llamar a la API
-            Call<Usuario> call = patches.createAPIServiceCall(tempFile);
+            Call<Usuario> call = patches.createFullPatchAPICall(tempFile);
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {

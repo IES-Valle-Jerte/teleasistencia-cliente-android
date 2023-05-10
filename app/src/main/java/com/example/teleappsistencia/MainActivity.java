@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     // Recargar datos del usuario
                     cargarDatosUsuarioLoggeado();
                 } else if (Constantes.RESULT_MODPERFIL_ERROR == resultCode) {
-                    Toast.makeText(this, Constantes.TOAST_MODPERFIL_ERROR, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, Constantes.TOAST_MODPERFIL_API_ERROR, Toast.LENGTH_SHORT).show();
                 }
             }
         );

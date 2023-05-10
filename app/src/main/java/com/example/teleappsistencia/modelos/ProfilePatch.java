@@ -1,10 +1,6 @@
 package com.example.teleappsistencia.modelos;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
@@ -13,8 +9,6 @@ import com.example.teleappsistencia.utilidades.Utilidad;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +26,7 @@ public class ProfilePatch implements Serializable {
     @SerializedName("email")
     private String nuevoEmail;
     @SerializedName("password")
-    private String nuevaContrasenia;
+    private String nuevaPassword;
 
     private transient Usuario usuarioAsociado;
     private transient Uri nuevaFotoPerfil;
@@ -40,13 +34,13 @@ public class ProfilePatch implements Serializable {
     // Inicializamos a nulo para asegurarnos de que el servidor lo interpreta bien
     public ProfilePatch(Usuario usuarioAsociado) {
         this.usuarioAsociado = usuarioAsociado;
-        nuevoEmail = null; nuevaContrasenia = null;
+        nuevoEmail = null; nuevaPassword = null;
         nuevaFotoPerfil = null;
     }
 
     // Getters
     public String getNuevoEmail() { return nuevoEmail; }
-    public String getNuevaContrasenia() { return nuevaContrasenia; }
+    public String getNuevaPassword() { return nuevaPassword; }
     public Uri getNuevaFotoPerfil() { return nuevaFotoPerfil; }
 
     // Setters
@@ -54,8 +48,8 @@ public class ProfilePatch implements Serializable {
         if (!usuarioAsociado.getEmail().equals(nuevoEmail))
             this.nuevoEmail = nuevoEmail;
     }
-    public void setNuevaContrasenia(String nuevaContrasenia) {
-        this.nuevaContrasenia = nuevaContrasenia;
+    public void setNuevaPassword(String nuevaPassword) {
+        this.nuevaPassword = nuevaPassword;
     }
     public void setNuevaFotoPerfil(Uri nuevaFotoPerfil) {
         this.nuevaFotoPerfil = nuevaFotoPerfil;
@@ -64,7 +58,7 @@ public class ProfilePatch implements Serializable {
     // Utilidad para facilitar usar el Cliente Retrofit
     public boolean hasPatches() {
         return (nuevoEmail != null && !nuevoEmail.isEmpty())
-            || (nuevaContrasenia != null && !nuevaContrasenia.isEmpty())
+            || (nuevaPassword != null && !nuevaPassword.isEmpty())
             || nuevaFotoPerfil != null;
     };
 
@@ -77,14 +71,14 @@ public class ProfilePatch implements Serializable {
         if (nuevoEmail != null) campos.put(
             "email", RequestBody.create(nuevoEmail, MediaType.parse("text/plain"))
         );
-        if (nuevaContrasenia != null) campos.put(
-            "password", RequestBody.create(nuevaContrasenia, MediaType.parse("text/plain"))
+        if (nuevaPassword != null) campos.put(
+            "password", RequestBody.create(nuevaPassword, MediaType.parse("text/plain"))
         );
 
         return campos;
     }
 
-    public Call<Usuario> createAPIServiceCall(File imageFile) {
+    public Call<Usuario> createFullPatchAPICall(File imageFile) {
         MultipartBody.Part imagenPart = null;
 
         APIService servicio = ClienteRetrofit.getInstance().getAPIService();
@@ -99,11 +93,18 @@ public class ProfilePatch implements Serializable {
         }
 
         // Cargar los cambios en la petición
-        call = servicio.patchImagenPerfil(
+        call = servicio.patchPerfil(
                 usuarioAsociado.getPk(), this.asPartMap(), imagenPart,
                 Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
 
         // Devolver la petición
         return call;
+    }
+
+    public Call<Usuario> createPassowordPatchAPICall() {
+        APIService servicio = ClienteRetrofit.getInstance().getAPIService();
+        return servicio.patchPerfilPassword(
+                usuarioAsociado.getPk(), this.nuevaPassword,
+                Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
     }
 }
