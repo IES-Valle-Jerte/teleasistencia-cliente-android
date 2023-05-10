@@ -121,7 +121,7 @@ public class InsertarRelacionPacientePersonaFragment extends Fragment implements
         String personaSeleccionada = spinnerPersonaInsertar.getSelectedItem().toString();
         String[] personaSplit = personaSeleccionada.split("-");
         personaSeleccionada = personaSplit[0].replaceAll("\\s+", "");
-        relacionPacientePersonaInsertar.setIdPersona(personaSeleccionada);
+        //relacionPacientePersonaInsertar.setIdPersona(personaSeleccionada);
         //Obtenemos el resto de atributos de los editText
         if (editTextTieneLlaveViviendaInsertar.getText().toString().equals("Sí") || editTextTieneLlaveViviendaInsertar.getText().toString().equals("Si")) {
             relacionPacientePersonaInsertar.setTieneLlavesVivienda(true);

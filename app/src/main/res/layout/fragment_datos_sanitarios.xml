@@ -1,23 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragments.paciente.DatosSanitariosFragment">
+    tools:context=".ui.fragments.paciente.DatosSanitariosFragment"
+    android:background="@drawable/fondo"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="datos sanitarios" />
 
-    <Button
-        android:id="@+id/buttonGuardarDatosPersonales"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:orientation="vertical"
+    android:layout_weight="1">
+
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/datos_sanitarios"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nuss" />
+
+    <EditText
+        android:id="@+id/editTextNUSS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:background="@color/white"
+        android:ems="6"
+        android:hint="@string/caracterInvisible"
+        android:inputType="number"
+        android:minHeight="48dp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Spinner
+            android:id="@+id/spinnerRecursos"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            android:layout_weight="60"
+            android:contentDescription="@string/caracterInvisible" />
+
+        <ImageButton
+            android:id="@+id/imageButtonAdd"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="15"
+            android:contentDescription="@string/bearer"
+            android:src="@drawable/plusicon" />
+
+        <ImageButton
+            android:id="@+id/imageButtonEliminar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="15"
+            android:contentDescription="@string/bearer"
+            android:src="@android:drawable/ic_menu_delete" />
+
+        <EditText
+            android:layout_weight="40"
+            android:id="@+id/editTextTiempo"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:ems="10"
+
+            android:background="@color/white"
+            android:hint="@string/tiempo"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listaRecursos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+
+    </ListView>
+</LinearLayout>
+    <LinearLayout
+        android:layout_weight="0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/buttonGuardar"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:text="@string/guardar" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/buttonVolver"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/volver" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

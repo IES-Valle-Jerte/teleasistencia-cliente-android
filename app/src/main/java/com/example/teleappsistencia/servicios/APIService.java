@@ -277,7 +277,9 @@ public interface APIService {
     @GET("api-rest/paciente")
     Call<List<Object>> getPacientes(@Header("Authorization") String token);
 
-    
+
+    @GET("/api-rest/paciente")
+    public Call<Paciente> getPacientesPorNumSeguridadSocial(@Query("numero_seguridad_social") String numero_seguridad_social, @Header("Authorization") String token);
     /**
      * Esta función enviará una solicitud POST a la URL "api-rest/paciente" siendo el cuerpo de la
      * solicitud el objeto Paciente pasado como parámetro. La función también enviará el token pasado

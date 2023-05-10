@@ -82,13 +82,13 @@ public class ConsultarRelacionPacientePersonaFragment extends Fragment {
         } else {
             textViewConsultarNumeroSeguridadSocialPaciente.setText("");
         }
-        Persona persona = (Persona) Utilidad.getObjeto(relacionPacientePersona.getIdPersona(), "Persona");
+       /* Persona persona = (Persona) Utilidad.getObjeto(relacionPacientePersona.getIdPersona(), "Persona");
         if (persona != null) {
             textViewConsultarNombrePersona.setText(persona.getNombre()+" "+persona.getApellidos());
         } else {
             textViewConsultarNombrePersona.setText("");
         }
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment*/
         return root;
     }
 

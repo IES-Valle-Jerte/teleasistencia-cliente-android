@@ -179,7 +179,8 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
     public void cargarFragmentInsertar(){
         FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_fragment,new ViewPagerPacientesFragment());
+        //fragmentTransaction.replace(R.id.main_fragment,new ViewPagerPacientesFragment());
+        fragmentTransaction.replace(R.id.main_fragment,new DatosPersonalesFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

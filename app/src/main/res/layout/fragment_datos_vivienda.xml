@@ -1,22 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo"
+    android:orientation="vertical"
     tools:context=".ui.fragments.paciente.DatosViviendaFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="vivienda" />
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="0dp"
+     android:orientation="vertical"
+     android:padding="20dp"
+     android:layout_weight="1">
+     <TextView
+         android:id="@+id/textView18"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/vivienda"
+         android:textAlignment="center"
+         android:textSize="24sp"
+         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/buttonGuardarDatosPersonales"
-        android:layout_width="wrap_content"
+     <TextView
+         android:id="@+id/textView19"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/menu_tipo_vivienda" />
+
+     <Spinner
+         android:id="@+id/spinnerTipoVivienda"
+         android:layout_width="match_parent"
+         android:background="@color/white"
+         android:layout_height="wrap_content"
+         android:minHeight="48dp"
+         android:layout_marginBottom="50dp"/>
+
+     <TextView
+         android:id="@+id/textView20"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/acceso_vivienda" />
+
+     <EditText
+         android:id="@+id/editTextAccesoVivienda"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:background="@color/white"
+         android:ems="10"
+         android:gravity="start|top"
+         android:hint="@string/caracterInvisible"
+         android:inputType="textMultiLine"
+         android:minHeight="48dp"
+         android:layout_marginBottom="50dp"/>
+
+     <TextView
+         android:id="@+id/textView21"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/otros_datos_vivienda" />
+
+     <EditText
+         android:id="@+id/editTextOtrosDatosVivienda"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:background="@color/white"
+         android:ems="10"
+         android:hint="@string/caracterInvisible"
+         android:gravity="start|top"
+         android:inputType="textMultiLine"
+         android:minHeight="48dp" />
+
+ </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="0"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/buttonGuardar"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:text="@string/guardar" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/buttonVolver"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/volver" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

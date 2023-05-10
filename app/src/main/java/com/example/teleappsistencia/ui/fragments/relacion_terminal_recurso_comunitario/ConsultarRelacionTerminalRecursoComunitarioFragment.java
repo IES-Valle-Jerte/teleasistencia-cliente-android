@@ -56,7 +56,7 @@ public class ConsultarRelacionTerminalRecursoComunitarioFragment extends Fragmen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_consultar_relacion_terminal_recurso_comunitario, container, false);
-        textViewConsultarIdRelacionTerminalRecursoComunitario = root.findViewById(R.id.textViewConsultarIdRelacionTerminalRecursoComunitario);
+        /*textViewConsultarIdRelacionTerminalRecursoComunitario = root.findViewById(R.id.textViewConsultarIdRelacionTerminalRecursoComunitario);
         textViewConsultarNumeroTerminal = root.findViewById(R.id.textViewConsultarNumeroTerminal);
         textViewConsultarNombreRecursoComunitario = root.findViewById(R.id.textViewConsultarNombreRecursoComunitario);
         textViewConsultarIdRelacionTerminalRecursoComunitario.setText(String.valueOf(relacionTerminalRecursoComunitario.getId()));
@@ -67,7 +67,7 @@ public class ConsultarRelacionTerminalRecursoComunitarioFragment extends Fragmen
         RecursoComunitario recursoComunitario = (RecursoComunitario) Utilidad.getObjeto(relacionTerminalRecursoComunitario.getIdRecursoComunitario(), "RecursoComunitario");
         if (recursoComunitario != null) {
             textViewConsultarNombreRecursoComunitario.setText(recursoComunitario.getNombre());
-        }
+        }*/
         return root;
     }
 

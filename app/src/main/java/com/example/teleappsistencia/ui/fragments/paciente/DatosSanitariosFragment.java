@@ -3,21 +3,49 @@ package com.example.teleappsistencia.ui.fragments.paciente;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.teleappsistencia.R;
+import com.example.teleappsistencia.modelos.Paciente;
+import com.example.teleappsistencia.modelos.RecursoComunitario;
+import com.example.teleappsistencia.modelos.RelacionTerminalRecursoComunitario;
+import com.example.teleappsistencia.modelos.Terminal;
+import com.example.teleappsistencia.modelos.TipoModalidadPaciente;
+import com.example.teleappsistencia.modelos.TipoRecursoComunitario;
+import com.example.teleappsistencia.servicios.APIService;
+import com.example.teleappsistencia.servicios.ClienteRetrofit;
+import com.example.teleappsistencia.ui.fragments.recurso_comunitario.RecursoComunitarioAdapter;
+import com.example.teleappsistencia.ui.fragments.relacion_terminal_recurso_comunitario.RelacionTerminalRecursoComunitarioAdapter;
+import com.example.teleappsistencia.utilidades.Constantes;
+import com.example.teleappsistencia.utilidades.Utilidad;
+import com.google.gson.internal.LinkedTreeMap;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DatosSanitariosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DatosSanitariosFragment extends Fragment {
+public class DatosSanitariosFragment extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,10 +56,31 @@ public class DatosSanitariosFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Paciente paciente=null;
+    private Terminal terminal=null;
+
+    private DatosPersonalesFragment datosPersonalesFragment;
+
     private Button buttonGuardar;
+    private Button buttonVolver;
+    private ImageButton botonAdd;
+    private ImageButton botonBorrar;
+    private Spinner recursos;
+    private EditText nuss;
+    private EditText tiempo;
+    private ListView listaRecursos;
+
+    private ArrayList<RelacionTerminalRecursoComunitario> arrayListRecursos;
+    private ArrayAdapter<RelacionTerminalRecursoComunitario> adaptador;
+
+    private RelacionTerminalRecursoComunitario recursoSeleccionado;
 
     public DatosSanitariosFragment() {
         // Required empty public constructor
+    }
+
+    public void setDatosPersonalesFragment(DatosPersonalesFragment datosPersonalesFragment) {
+        this.datosPersonalesFragment = datosPersonalesFragment;
     }
 
     /**
@@ -59,24 +108,199 @@ public class DatosSanitariosFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Paciente paciente = (Paciente) bundle.getSerializable("paciente"); // Reemplaza "objeto" con la clave que hayas utilizado en el primer fragmento
+            // Haz lo que desees con el objeto en este fragmento
+            this.paciente=paciente;
+            Terminal terminal= (Terminal) bundle.getSerializable("terminal");
+            this.terminal=terminal;
+        }
+        this.paciente.setPersona(datosPersonalesFragment.getIdpersona());
+        this.terminal.setId(datosPersonalesFragment.getIdTerminal());
+
+        arrayListRecursos=new ArrayList<>();
+        adaptador = new ArrayAdapter<RelacionTerminalRecursoComunitario>(getContext(), android.R.layout.simple_list_item_1, arrayListRecursos);
     }
 
+    public void inicializarSpinnerTipoRecursoComunitario() {
+            APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+            Call<List<RecursoComunitario>> call = apiService.getListadoRecursoComunitario(Constantes.BEARER + Utilidad.getToken().getAccess());
+            call.enqueue(new retrofit2.Callback<List<RecursoComunitario>>() {
+                @Override
+                public void onResponse(Call<List<RecursoComunitario>> call, Response<List<RecursoComunitario>> response) {
+                    if (response.isSuccessful()) {
+                        List<RecursoComunitario> listadoRecursoComunitario = response.body();
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, convertirListaRecursoComunitario(listadoRecursoComunitario));
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        recursos.setAdapter(adapter);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<RecursoComunitario>> call, Throwable t) {
+                    Toast.makeText(getContext(), Constantes.ERROR_AL_OBTENER_LOS_DATOS, Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+    }
+    private List<String> convertirListaRecursoComunitario(List<RecursoComunitario> listadoRecursoComunitario) {
+        List<String> listadoRecursoComunitarioString = new ArrayList<>();
+        for (RecursoComunitario recursoComunitario : listadoRecursoComunitario) {
+            listadoRecursoComunitarioString.add(recursoComunitario.getId() + Constantes.REGEX_SEPARADOR_GUION + recursoComunitario.getNombre());
+        }
+        return listadoRecursoComunitarioString;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_datos_sanitarios, container, false);
-        buttonGuardar=v.findViewById(R.id.buttonGuardarDatosPersonales);
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
+        buttonGuardar=v.findViewById(R.id.buttonGuardar);
+        buttonGuardar.setOnClickListener(this);
+        buttonVolver=v.findViewById(R.id.buttonVolver);
+        buttonVolver.setOnClickListener(this);
+        recursos=v.findViewById(R.id.spinnerRecursos);
+        inicializarSpinnerTipoRecursoComunitario();
+        nuss=v.findViewById(R.id.editTextNUSS);
+        tiempo=v.findViewById(R.id.editTextTiempo);
+        listaRecursos=v.findViewById(R.id.listaRecursos);
+        listaRecursos.setAdapter(adaptador);
+        listaRecursos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                // Guardar los datos personales
-
-                // Cambiar al siguiente fragment
-                ViewPager2 viewPager = requireActivity().findViewById(R.id.view_pager_pacientes);
-                viewPager.setCurrentItem(2);
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                recursoSeleccionado= arrayListRecursos.get(i);
             }
         });
+        botonAdd=v.findViewById(R.id.imageButtonAdd);
+        botonAdd.setOnClickListener(this);
+        botonBorrar=v.findViewById(R.id.imageButtonEliminar);
+        botonBorrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                borrarRecurso();
+            }
+        });
+
+        // Obtener el Bundle y extraer el objeto de él
+        /*Bundle bundle = getArguments();
+        if (bundle != null) {
+            paciente = (Paciente) bundle.getSerializable("paciente");
+        }*/
+        /*if (paciente != null) {
+            TipoModalidadPaciente tipo= (TipoModalidadPaciente) paciente.getTipoModalidadPaciente();
+            Toast.makeText(getContext(), tipo.getNombre(), Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "Paciente null", Toast.LENGTH_SHORT).show();
+        }*/
+
         return v;
+    }
+
+    private void volver() {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, datosPersonalesFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+    public void pasarPacienteAlSiguienteFragmento(Paciente paciente) {
+        DatosViviendaFragment siguienteFragment = new DatosViviendaFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("paciente", paciente); //Se carga el objeto en el bundle
+        bundle.putSerializable("terminal",this.terminal);
+        siguienteFragment.setDatosSanitariosFragment(this);
+        siguienteFragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, siguienteFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+    public void addRecurso(){
+        RelacionTerminalRecursoComunitario recursoComunitario=new RelacionTerminalRecursoComunitario();
+        String recursoComunitarioSeleccionado = recursos.getSelectedItem().toString();
+        String[] recursoComunitarioSeleccionadoSplit = recursoComunitarioSeleccionado.split(Constantes.REGEX_SEPARADOR_GUION);
+        recursoComunitarioSeleccionado = recursoComunitarioSeleccionadoSplit[0];
+
+        recursoComunitario.setIdTerminal(terminal.getId());
+        recursoComunitario.setIdRecursoComunitario(Integer.parseInt(recursoComunitarioSeleccionado));
+        try {
+            recursoComunitario.setTiempoEstimado(Integer.parseInt(tiempo.getText().toString()));
+
+            arrayListRecursos.add(recursoComunitario);
+            adaptador.notifyDataSetChanged();
+
+        }catch (java.lang.NumberFormatException e){
+            Toast.makeText(getContext(), "Debe indicar el tiempo", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+    }
+    public void borrarRecurso(){
+        arrayListRecursos.remove(recursoSeleccionado);
+        adaptador.notifyDataSetChanged();
+    }
+    public void insertarRecursos(){
+       /* APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        for (RelacionTerminalRecursoComunitario recurso: arrayListRecursos) {
+            recurso.setIdTerminal(this.terminal.getId());
+            Call<RelacionTerminalRecursoComunitario> call = apiService.addRelacionTerminalRecursoComunitario(recurso, Constantes.BEARER + Utilidad.getToken().getAccess());
+            call.enqueue(new Callback<RelacionTerminalRecursoComunitario>() {
+                @Override
+                public void onResponse(Call<RelacionTerminalRecursoComunitario> call, Response<RelacionTerminalRecursoComunitario> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), Constantes.RELACION_GUARDADA, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), Constantes.ERROR_AL_GUARDAR_RELACIÓN, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RelacionTerminalRecursoComunitario> call, Throwable t) {
+
+                }
+            });
+        }*/
+        RelacionTerminalRecursoComunitario recurso=arrayListRecursos.get(0);
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<RelacionTerminalRecursoComunitario> call = apiService.addRelacionTerminalRecursoComunitario(recurso, Constantes.BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<RelacionTerminalRecursoComunitario>() {
+            @Override
+            public void onResponse(Call<RelacionTerminalRecursoComunitario> call, Response<RelacionTerminalRecursoComunitario> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), Constantes.RELACION_GUARDADA, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), Constantes.ERROR_AL_GUARDAR_RELACIÓN, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RelacionTerminalRecursoComunitario> call, Throwable t) {
+
+            }
+        });
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.buttonGuardar:
+                paciente.setNumeroSeguridadSocial(nuss.getText().toString());
+                paciente.setObservacionesMedicas("no tiene");
+                paciente.setInteresesYActividades("no hay");
+                //Post de los recursos almacenados en el arrayList
+                //insertarRecursos();
+                //Pasar al siguiente fragment
+                pasarPacienteAlSiguienteFragmento(paciente);
+                break;
+            case R.id.buttonVolver:
+                volver();
+                break;
+            case R.id.imageButtonAdd:
+                addRecurso();
+                break;
+            case R.id.imageButtonBorrar:
+                borrarRecurso();
+                break;
+        }
     }
 }

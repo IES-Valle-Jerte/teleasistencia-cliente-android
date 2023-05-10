@@ -39,6 +39,8 @@ public class Paciente implements Serializable {
     @SerializedName("id_tipo_modalidad_paciente")
     private Object tipoModalidadPaciente;
 
+    public Paciente() {
+    }
     //Getters y setters
 
     public int getId() {

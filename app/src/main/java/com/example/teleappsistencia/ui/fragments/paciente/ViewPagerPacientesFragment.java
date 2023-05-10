@@ -1,6 +1,5 @@
 package com.example.teleappsistencia.ui.fragments.paciente;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,6 +34,8 @@ public class ViewPagerPacientesFragment extends Fragment {
     private ViewPager2 viewPager;
 
     PacientePagerAdapter adapter;
+    private DatosPersonalesFragment datosPersonalesFragment;
+    private DatosSanitariosFragment datosSanitariosFragment;
 
     public ViewPagerPacientesFragment() {
         // Required empty public constructor
@@ -74,6 +75,8 @@ public class ViewPagerPacientesFragment extends Fragment {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_view_pager_pacientes, container, false);
         tableLayout=v.findViewById(R.id.tab_layout_pacientes);
+        datosPersonalesFragment = new DatosPersonalesFragment();
+        datosSanitariosFragment = new DatosSanitariosFragment();
         /*viewPager=v.findViewById(R.id.view_pager_pacientes);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);*/

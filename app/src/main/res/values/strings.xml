@@ -497,6 +497,32 @@
     <string name="caracterInvisible">‎ </string>
     <string name="botonGuardar">Guardar</string>
     <string name="labelSexo">Sexo</string>
+    <string name="tipo_usuario">Tipo de usuario</string>
+    <string name="servicios_soc">Otros servicios sociales</string>
+    <string name="botonVolver">Volver</string>
+    <string name="datos_sanitarios">Datos Sanitarios</string>
+    <string name="nuss">NUSS</string>
+    <string name="tiempo">Tiempo</string>
+    <string name="vivienda">Vivienda</string>
+    <string name="acceso_vivienda">Acceso a la vivienda</string>
+    <string name="otros_datos_vivienda">Otros datos de la vivienda</string>
+    <string name="personas_contacto">Personas de contacto</string>
+    <string name="contacto">Contacto</string>
+    <string name="relacion">Relación</string>
+    <string name="disponibilidad">Disponibilidad</string>
+    <string name="tiempo_domicilio">Tiempo al domicilio</string>
+    <string name="conviviente">Conviviente</string>
+    <string name="prioridad">Prioridad</string>
+    <string name="contacto_desactivado">Contacto desactivado</string>
+    <string name="contacto_activado">Contacto activado</string>
+    <string name="rellenar_campos">Rellena todos los campos</string>
+    <string name="dispositivo">Dispositivos</string>
+    <string name="terminal_ucr">Terminal y UCR</string>
+    <string name="numTerminal">Nº terminal</string>
+    <string name="modeloTerminal">Modelo terminal</string>
+    <string name="UCR">UCR</string>
+    <string name="fecha_alta">Fecha alta</string>
+    <string name="situacion_terminal">Situacion terminal</string>
     <!-- no pisar este bloque -->
 
 </resources>
