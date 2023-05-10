@@ -282,6 +282,36 @@ public class Utilidad {
         return cargarImagen((Object) fileImagen, imageView, radiousDP, marginDP);
     }
 
+    // Mediante Uri de la imagen
+    /**
+     * @see Utilidad#cargarImagen(Uri, ImageView, Integer, Integer)
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(Uri uriImagen, ImageView imageView) {
+        return cargarImagen(uriImagen, imageView, null, null);
+    }
+
+    /**
+     * @see Utilidad#cargarImagen(Uri, ImageView, Integer, Integer)
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(Uri uriImagen, ImageView imageView, Integer radiousDP) {
+        return cargarImagen(uriImagen, imageView, radiousDP, null);
+    }
+
+    /**
+     * Implementación del método cargarImagen para cargar imágenes con Picasso mediante un ResourceID.
+     *
+     * @param uriImagen {@link Uri} representando la URL de la imagen para descargarla.
+     * @param imageView ImageView en el que insertará la imagen.
+     * @param radiousDP [Opcional] Radio del borde para bordes redondeados, no afecta si 0 o null.
+     * @param marginDP [Opcional] wMargen respecto al borde, no afecta si 0 o null.
+     * @return Devuelve true o false dependiendo de si ha habido un problema al cargar la imagen.
+     */
+    public static boolean cargarImagen(Uri uriImagen, ImageView imageView, Integer radiousDP, Integer marginDP) {
+        return cargarImagen((Object) uriImagen, imageView, radiousDP, marginDP);
+    }
+
     // Implementación
     /**
      * Implementación del método cargarImagen para reutilizar código y poder cargar imágenes de todas
@@ -318,7 +348,7 @@ public class Utilidad {
 
             // Cargar imagen en el ImageView (metodo para simplificar los imputs)
             picassoLoad(picasso, imagen)
-                .fit().centerInside()
+                .fit().centerCrop()
                 // Redondear si es necesario
                 .transform(new RoundedCornersTransformation(radious, margin))
                 // Placeholder mientras carga e Imagen si no carga bien
@@ -373,6 +403,16 @@ public class Utilidad {
         CharSequence input = editText.getText().toString().trim();
         // Si no está vacio y cumple el regex, el email es valido
         return !TextUtils.isEmpty(input) && Patterns.EMAIL_ADDRESS.matcher(input).matches();
+    }
+
+    /**
+    /**
+     * Alterna la visibilidad de una View entre {@link View#VISIBLE} y {@link View#GONE}
+     * @param v
+     */
+    public static void alternarVista(View v) {
+        if (View.VISIBLE == v.getVisibility()) v.setVisibility(View.GONE);
+        else v.setVisibility(View.VISIBLE);
     }
 
     /**
