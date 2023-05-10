@@ -1,6 +1,7 @@
 package com.example.teleappsistencia.servicios;
 
 import com.example.teleappsistencia.modelos.CentroSanitario;
+import com.example.teleappsistencia.modelos.ProfilePatch;
 import com.example.teleappsistencia.modelos.RecursoComunitario;
 import com.example.teleappsistencia.modelos.TipoModalidadPaciente;
 import com.example.teleappsistencia.modelos.TipoRecursoComunitario;
@@ -18,7 +19,10 @@ import com.example.teleappsistencia.modelos.TipoVivienda;
 import com.example.teleappsistencia.modelos.Usuario;
 
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -42,8 +46,12 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -134,6 +142,9 @@ public interface APIService {
     @GET("api-rest/profile")
     public Call<List<Usuario>> getUsuarioLogueado(@Header("Authorization") String token);
 
+    @PATCH("/api-rest/profile/{id_usuario}")
+    @Multipart
+    Call<Usuario> patchImagenPerfil(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
 
     // Peticiones de Direccion
 

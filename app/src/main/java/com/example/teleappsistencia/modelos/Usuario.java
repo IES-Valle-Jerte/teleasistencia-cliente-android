@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Clase POJO "Usuario" utilizada para parsear la respuesta JSON del servidor.
  */
-public class Usuario implements Serializable{
+public class Usuario implements Serializable {
 
     private final static long serialVersionUID = 2592565805411682085L;
 
