@@ -422,7 +422,7 @@ public class Utilidad {
      * @throws SecurityException EACCES (Permission denied) en caso de que no se tengan los permisos necesarios.
      * @see File#deleteOnExit()
      */
-    public static File extraerFicheroTemporal(Context context, Uri uriRecursoLocal) throws IOException {
+    public static File extraerFicheroTemporal(Context context, Uri uriRecursoLocal) throws SecurityException {
         File tempFile = null;
         InputStream is = null; FileOutputStream fos = null;
 
@@ -443,9 +443,15 @@ public class Utilidad {
             }
             fos.flush();
 
-        // Cerrar los Streams y marcar el fichero para que sea borrado.
-        } catch (FileNotFoundException fnfe) {
+        // Devolver la excepción de falta de permisos
+        } catch (SecurityException eacces) {
+            throw eacces;
+
+        // Si hay problema de lectura/escritura de otro tipo se devuelve un fichero nulo.
+        } catch (IOException ioe) {
             tempFile = null;
+
+        // Cerrar los Streams y marcar el fichero para que sea borrado.
         } finally {
             try {
                 if (fos != null) fos.close();
