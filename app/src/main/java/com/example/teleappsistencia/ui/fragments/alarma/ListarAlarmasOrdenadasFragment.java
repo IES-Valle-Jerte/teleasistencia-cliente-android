@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Guideline;
@@ -24,13 +25,16 @@ import android.widget.Toast;
 
 import com.example.teleappsistencia.MainActivity;
 import com.example.teleappsistencia.R;
+import com.example.teleappsistencia.databinding.FragmentConsultarTipoAlarmaBinding;
 import com.example.teleappsistencia.modelos.Alarma;
+import com.example.teleappsistencia.modelos.TipoAlarma;
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFragment;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -65,6 +69,9 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
     private int selectedPosition = RecyclerView.NO_POSITION;
     private List<Object> lContactos;
 
+    private SearchView searchView;
+
+    private List<Alarma> filtroItemsBusqueda;
 
     public ListarAlarmasOrdenadasFragment() {
         // Required empty public constructor
@@ -99,6 +106,9 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_listar_alarmas_ordenadas, container, false);
+
+        this.searchView = (SearchView) root.findViewById(R.id.search_view);
+        crearFiltroBusqueda();
 
         // Mostrar botón nueva para administradores
         this.btn_add_alerta = (Button) root.findViewById(R.id.btn_add_alarma);
@@ -139,6 +149,44 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
 
 
         return root;
+    }
+
+    private void crearFiltroBusqueda() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            // Filtra los items y se los pasa al Recycler.
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filtrarBusqueda(s);
+                adapter = new AlarmaAdapter(filtroItemsBusqueda);
+                recycler.setAdapter(adapter);
+                return true;
+            }
+        });
+    }
+
+    public void filtrarBusqueda(String secuencia) {
+        String tipoAlarma = secuencia.toLowerCase();
+        String auxNombre;
+        filtroItemsBusqueda = new ArrayList<>();
+
+        if(tipoAlarma.isEmpty()){
+            filtroItemsBusqueda = lAlarmas;
+        }else{
+            List<Alarma> filtroAlarmas = new ArrayList<>();
+            for(Alarma aux : lAlarmas){
+                TipoAlarma tipoAlarmaAux = (TipoAlarma) (Utilidad.getObjeto(aux.getId_tipo_alarma(), Constantes.TIPO_ALARMA));
+                auxNombre = Normalizer.normalize(tipoAlarmaAux.getNombre(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+                if(auxNombre.toLowerCase().contains(tipoAlarma)){
+                    filtroAlarmas.add(aux);
+                }
+            }
+            filtroItemsBusqueda = filtroAlarmas;
+        }
     }
 
     /**

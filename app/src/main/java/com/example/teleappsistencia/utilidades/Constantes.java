@@ -311,7 +311,7 @@ public class Constantes {
 
     public final static String AL_DESAROLLADOR = "ArrayList<Desarrollador>";
 
-    public final static String AL_RELACION_DESARROLLADOR_TECNOLOGIA = "ArrayList<RelacionDesarrolladorTecnologia>";
+    public final static String AL_DESARROLLADOR_TECNOLOGIA = "ArrayList<Desarrollador_tecnologia>";
 
     public final static String DESARROLLADOR_TECNOLOGIA = "Desarrollador_tecnologia";
 
@@ -319,7 +319,7 @@ public class Constantes {
 
     public final static String DESARROLLADORREL = "DesarrolladorRel";
     public final static String CONVOCATORIA_DESARROLLADOR = "ConvocatoriaDesarrollador";
-    public final static String TECNOLOGIAREL = "TecnologiaRel";
+    public final static String TECNOLOGIA = "Tecnologia";
 
     public static final String ALARMA = "Alarma";
     public static final String CLASIFICACION_ALARMA = "ClasificacionAlarma";
@@ -398,6 +398,10 @@ public class Constantes {
     public static final String ERROR_CERRAR_ALARMA = "No se ha podido cerrar la alarma correctamente. ";
     public static final String NO_HAY_CONTACTOS = "No hay personas de contacto para este paciente";
     public static final String TERMINAL_DP_SP = "Terminal: ";
+
+    public static final String TELEOPERADOR_DP_SP = "Teleoperador: ";
+
+    public static final String USUARIO_SERVICIO_DP_SP = "Usuario servicio: ";
     public static final String ALARMAS_DE_HOY = "Alarmas de hoy";
     public static final String ALARMAS_SIN_ASIGNAR = "Alarmas sin asignar";
 

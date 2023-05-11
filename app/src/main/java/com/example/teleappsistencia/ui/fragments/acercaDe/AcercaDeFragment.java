@@ -98,7 +98,7 @@ public class AcercaDeFragment extends Fragment implements View.OnClickListener, 
 
         //Cargamos un adaptador vacío mientras se carga la lista desde la API REST
         this.lDesarrolladores = new ArrayList<>();
-        adapter = new DesarrolladorAdapter(lDesarrolladores);
+        adapter = new DesarrolladorAdapter(getContext(), lDesarrolladores);
         recycler.setAdapter(adapter);
 
         //Cargamos lista desde la API REST
@@ -129,7 +129,7 @@ public class AcercaDeFragment extends Fragment implements View.OnClickListener, 
                         }
                     }
 
-                    adapter = new DesarrolladorAdapter(lDesarrolladores);
+                    adapter = new DesarrolladorAdapter(getContext(), lDesarrolladores);
                     recycler.setAdapter(adapter);
                 }else{
                     Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();

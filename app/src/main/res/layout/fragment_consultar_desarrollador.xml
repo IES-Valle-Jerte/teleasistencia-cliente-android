@@ -25,27 +25,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/idDesarrollador"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/id"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/textViewIdDesarrollador"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="2dp"
-                    android:background="#B3AEB3" />
 
                 <TextView
                     android:id="@+id/nombreDesarrollador"
@@ -80,28 +60,6 @@
 
                 <TextView
                     android:id="@+id/textViewDescripcionDesarrollador"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="2dp"
-                    android:background="#B3AEB3" />
-
-                <TextView
-                    android:id="@+id/convocatoriaDesarrollador"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/convocatoria"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textViewConvocatoriaDesarollador"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"

@@ -21,10 +21,8 @@ import com.example.teleappsistencia.utilidades.Utilidad;
  */
 public class ConsultarDesarrolladorFragment extends Fragment {
     private Desarrollador desarrollador;
-    private TextView textViewIdDesarrollador;
     private TextView textViewNombreDesarrollador;
     private TextView textViewDescripcionDesarrollador;
-    private TextView textViewConvocatoriaDesarrollador;
 
     public ConsultarDesarrolladorFragment() {
         // Required empty public constructor
@@ -70,13 +68,12 @@ public class ConsultarDesarrolladorFragment extends Fragment {
     }
 
     public void capturarElementos(View root){
-        this.textViewIdDesarrollador = (TextView) root.findViewById(R.id.textViewIdDesarrollador);
         this.textViewNombreDesarrollador = (TextView) root.findViewById(R.id.textViewNombreDesarrollador);
         this.textViewDescripcionDesarrollador = (TextView) root.findViewById(R.id.textViewDescripcionDesarrollador);
-        this.textViewConvocatoriaDesarrollador = (TextView) root.findViewById(R.id.textViewConvocatoriaDesarollador);
     }
 
     public void cargarDatos(){
-
+        this.textViewNombreDesarrollador.setText(desarrollador.getNombre());
+        this.textViewDescripcionDesarrollador.setText(desarrollador.getDescripcion());
     }
 }

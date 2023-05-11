@@ -21,31 +21,31 @@
             app:layout_constraintGuide_percent="0.01" />
 
         <TextView
-            android:id="@+id/txtCardIdAlarma"
+
+            android:id="@+id/txtCardHoraRegistroAlarma"
+            android:layout_margin="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/id_alarma"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/hora"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/txtCardUsuarioDelServicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/usuario_servicio_dp"
             app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtCardEstadoAlarma"
+            android:id="@+id/txtCardTerminal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/estado_dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButtonVerAlarma"
+            android:text="@string/terminal_dp"
             app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
-            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerAlarma" />
-
-        <TextView
-            android:id="@+id/txtCardFechaRegistroAlarma"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fecha_dp"
-            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
-            app:layout_constraintTop_toBottomOf="@+id/txtCardEstadoAlarma" />
-
+            app:layout_constraintTop_toBottomOf="@+id/txtCardUsuarioDelServicio" />
 
         <TextView
             android:id="@+id/txtCardTipoAlarma"
@@ -53,36 +53,22 @@
             android:layout_height="wrap_content"
             android:text="@string/tipo_dp"
             app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
-            app:layout_constraintTop_toBottomOf="@+id/txtCardFechaRegistroAlarma" />
+            app:layout_constraintTop_toBottomOf="@+id/txtCardTerminal" />
 
-
-        <ImageButton
-            android:id="@+id/imageButtonVerAlarma"
+        <TextView
+            android:id="@+id/txtCardTeleoperador"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-        <ImageButton
-            android:id="@+id/imageButtonModificarAlarma"
+            android:text="@string/teleoperador_dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/txtCardTipoAlarma" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_edit"
-            app:layout_constraintBottom_toTopOf="@+id/imageButtonBorrarAlarma"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerAlarma"
-            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="193dp" />
 
-        <ImageButton
-            android:id="@+id/imageButtonBorrarAlarma"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_delete"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="SpeakableTextPresentCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

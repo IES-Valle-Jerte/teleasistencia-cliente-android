@@ -128,6 +128,8 @@ public class InsertarAlarmaFragment extends Fragment implements View.OnClickList
         //Oculta los campos de programar alarmas
         ocultarCamposProgramarAlarma();
 
+        switchProgramarAlarma.setSelected(Boolean.TRUE);
+
         // Próxima entrega quitar comentarios de la siguiente línea
 
         /*etPlannedDate.setVisibility(View.INVISIBLE);
