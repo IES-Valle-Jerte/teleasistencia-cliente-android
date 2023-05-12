@@ -1,9 +1,11 @@
 package com.example.teleappsistencia.ui.fragments.recursos;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFragment;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
+import com.example.teleappsistencia.utilidades.dialogs.AlertDialogBuilder;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -42,7 +45,7 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
     private SearchView searchView;
     private OpcionesListaFragment opcionesListaFragment;
 
-    //private Button botonNuevoRecurso;
+    private Button botonNuevoRecurso;
 
     //Posicion seleccionada en la lista
     private int selectedPosition = RecyclerView.NO_POSITION;
@@ -81,6 +84,10 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         tituloFragment = (TextView) root.findViewById(R.id.textViewTituloRecursosComunitarios);
         tituloFragment.setText(titulo);
 
+        // Obtenemos el boton de Nuevo
+        botonNuevoRecurso = (Button) root.findViewById(R.id.buttonNuevoRecurso);
+        botonNuevoRecurso.setOnClickListener(this);
+
         // Obtener el SearchView
         searchView = (SearchView) root.findViewById(R.id.search_view);
 
@@ -108,6 +115,9 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         return root;
     }
 
+    /**
+     * Método que crea un filtro de busqueda utilizando el SearchView.
+     */
     private void crearFiltroBusqueda() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -115,6 +125,10 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
                 return false;
             }
 
+            /*
+            Cada vez que se ingresa una nueva letra (o se borra) se llama al método filtrarBusqueda
+            con un nuevo String para realizar la busqueda en la base de datos y filtrar los resiltados.
+             */
             @Override
             public boolean onQueryTextChange(String s) {
                 filtrarBusqueda(s);
@@ -125,6 +139,11 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         });
     }
 
+    /**
+     * Método que lista los recursos comunitarios según la clasificación de recursos
+     * elegida en el submenu principal. Genera un nuevo adaptardor y se lo pasa al
+     * recycler para que lo muestre.
+     */
     private void listarRecursoComunitario() {
         APIService apiService = ClienteRetrofit.getInstance().getAPIService();
         Call<List<RecursoComunitario>> call = apiService.getRecursoComunitario(Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
@@ -162,18 +181,21 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         });
     }
 
-    public void cargarFragmentInsertar(){
-        FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        //fragmentTransaction.replace(R.id.main_fragment,new ViewPagerPacientesFragment());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+    /**
+     * Método que carga el fragment RecursosOpcionesFragment con los valores necesarios
+     * para generar un nuevo recurso comunitario.
+     */
+    private void cargarFragmentInsertar(){
+        this.searchView.setQuery(Constantes.STRING_VACIO, false);
+        AppCompatActivity activity = (AppCompatActivity) getContext();
+        RecursosOpcionesFragment nuevoRecursoFragment = RecursosOpcionesFragment.newInstance(Constantes.NUEVO, this.id);
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, nuevoRecursoFragment).addToBackStack(null).commit();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case 1 /*R.id.buttonNuevoPaciente*/:
+            case R.id.buttonNuevoRecurso:
                 cargarFragmentInsertar();
                 break;
         }
@@ -205,7 +227,26 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onDeleteButtonClicked() {
+        recursoComunitarioSeleccionado = adapter.getRecursoSeleccionado();
+        if(recursoComunitarioSeleccionado != null){
+            this.searchView.setQuery(Constantes.STRING_VACIO, false);
+            AlertDialogBuilder.crearBorrarAlerDialog(getContext(), Constantes.ELIMINAR_ELEMENTO, new AlertDialogBuilder.AlertDialogListener() {
+                // Que sucede cuando el usuario pulsa Si.
+                @Override
+                public void onPositiveButtonClicked() {
+                    // Borra el recurso comunitario en la base de datos.
+                    borrarRecurso(recursoComunitarioSeleccionado);
+                    // Refresca la lista de recursos comunitario que se muestra.
+                    listarRecursoComunitario();
+                }
 
+                // Que sucede cuando el usuario punta No.
+                @Override
+                public void onNegativeButtonClicked() {
+                    // No hace nada.
+                }
+            });
+        }
     }
 
     @Override
@@ -216,10 +257,9 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
 
     /**
      * Método para generar el filtro de busqueda con el SearchView en el Listado.
-     *
      * @return
      */
-    public void filtrarBusqueda(String secuencia) {
+    private void filtrarBusqueda(String secuencia) {
         String cadenaUsuario = secuencia.toLowerCase();
         String auxNombre;
         filtroItemsBusqueda = new ArrayList<>();
@@ -239,4 +279,29 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Método para borrar el recurso comunitario seleccionado utilizando una petición a la API.
+     * @param recursoComunitario: Recurso comunitario que se va a borrar.
+     */
+    private void borrarRecurso(RecursoComunitario recursoComunitario) {
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<Response<String>> call = apiService.deleteRecursoComunitario(recursoComunitario.getId(), Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<Response<String>>() {
+            @Override
+            public void onResponse(Call<Response<String>> call, Response<Response<String>> response) {
+                if(response.isSuccessful()){
+                    Object string = response.body();
+                    AlertDialogBuilder.crearInfoAlerDialog(getContext(), Constantes.INFO_ALERTDIALOG_ELIMINADO_RECURSO);
+                }else{
+                    AlertDialogBuilder.crearErrorAlerDialog(getContext(), Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Response<String>> call, Throwable t) {
+                t.printStackTrace();
+                System.out.println(t.getMessage());
+            }
+        });
+    }
 }

@@ -2,6 +2,7 @@ package com.example.teleappsistencia.ui.fragments.recursos;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +80,24 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
     }
 
     /**
+     * Crea una nueva instancia con dos atributos, opción y idClasificacion.
+     * Se utiliza para la opción de NUEVO. Ya que el parametro recursoComunitario no
+     * es necesario en esta opción.
+     *
+     * @param opcion:             Recibe el id del boton presionado.
+     * @param idClasificacion:    Recibe el id de la clasificación de recursos.
+     * @return A new instance of fragment ConsultarRecursoComunitario.
+     */
+    public static RecursosOpcionesFragment newInstance(String opcion, int idClasificacion) {
+        RecursosOpcionesFragment fragment = new RecursosOpcionesFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(Constantes.KEY_OPCION_SELECCIONADA, opcion);
+        args.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, idClasificacion);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    /**
      * Método que inicializa el objeto a consultar.
      *
      * @param savedInstanceState
@@ -87,21 +106,31 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            this.recursoComunitario = (RecursoComunitario) getArguments().getSerializable(Constantes.KEY_RECURSO_COMUNITARIO);
             this.opcion = (String) getArguments().getSerializable(Constantes.KEY_OPCION_SELECCIONADA);
             this.idClasificacionRecurso = (int) getArguments().getSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS);
+            // Controla la excepción que salta si se crea un nuevo recurso comunitario ya que el atributo recursoComunitario tiene un valor null.
+            try{
+                this.recursoComunitario = (RecursoComunitario) getArguments().getSerializable(Constantes.KEY_RECURSO_COMUNITARIO);
+            }catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        TipoRecursoComunitario tipoRecursoComunitario = new TipoRecursoComunitario(null);
+        Direccion direccion = new Direccion();
 
         // Se guarda la vista.
         View root = inflater.inflate(R.layout.fragment_opciones_recursos, container, false);
 
         // Método que muestra los valores del recurso comunitario.
-        TipoRecursoComunitario tipoRecursoComunitario = (TipoRecursoComunitario) Utilidad.getObjeto(recursoComunitario.getTipoRecursoComunitario(), Constantes.TIPO_RECURSO_COMUNITARIO);
-        Direccion direccion = (Direccion) Utilidad.getObjeto(this.recursoComunitario.getDireccion(), Constantes.DIRECCION);
+        if(this.recursoComunitario != null){
+            tipoRecursoComunitario = (TipoRecursoComunitario) Utilidad.getObjeto(recursoComunitario.getTipoRecursoComunitario(), Constantes.TIPO_RECURSO_COMUNITARIO);
+            direccion = (Direccion) Utilidad.getObjeto(this.recursoComunitario.getDireccion(), Constantes.DIRECCION);
+        }
+
 
         // Se inicializan las variables.
         this.textViewErrorPedirNombre = (TextView) root.findViewById(R.id.textViewErrorNombre);
@@ -123,7 +152,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
         this.buttonGuardar = (Button) root.findViewById(R.id.buttonGuardar);
         this.buttonVolver = (Button) root.findViewById(R.id.buttonVolver);
 
-        switch (opcion) {
+        switch (this.opcion) {
 
             // Consultar.
             case Constantes.CONSULTAR:
@@ -168,7 +197,9 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
             case Constantes.NUEVO:
                 this.buttonGuardar.setOnClickListener(this);
                 this.buttonVolver.setOnClickListener(this);
+                this.editTextTipoRecursoComunitario.setVisibility(View.INVISIBLE);
 
+                cargarSpinner();
                 break;
         }
 
@@ -184,7 +215,14 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonGuardar:
-                accionBotonGuardar();
+                switch (this.opcion) {
+                    case Constantes.NUEVO:
+                        accionBotonGuardarNuevo();
+                        break;
+                    case Constantes.MODIFICAR:
+                        accionBotonGuardarModificado();
+                        break;
+                }
                 break;
             case R.id.buttonVolver:
                 accionBotonVolver();
@@ -200,9 +238,9 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
     }
 
     /**
-     * Método para el botón guardar.
+     * Método para el botón guardar cuando se modifica un recurso.
      */
-    private void accionBotonGuardar() {
+    private void accionBotonGuardarModificado() {
         RecursoComunitario recursoComunitarioModificado = generarRecurso();
         APIService apiService = ClienteRetrofit.getInstance().getAPIService();
         Call<Object> call = apiService.putRecursoComunitario(this.recursoComunitario.getId(), recursoComunitarioModificado, Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
@@ -212,7 +250,54 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                 if (response.isSuccessful()) {
                     Object recurso = response.body();
                     AlertDialogBuilder.crearInfoAlerDialog(getContext(), Constantes.INFO_ALERTDIALOG_MODIFICADO_RECURSO);
-                    getActivity().onBackPressed();
+                    // Necesita un tiempo para ejecutarse, de no ser así, salta excepción.
+                    new CountDownTimer(500, 500) {
+                        public void onTick(long millisUntilFinished) {
+                            // No se necesita hacer nada en este caso
+                        }
+
+                        public void onFinish() {
+                            // Código para el segundo comando después de esperar medio segundo
+                            getActivity().onBackPressed();
+                        }
+                    }.start();
+                } else {
+                    AlertDialogBuilder.crearErrorAlerDialog(getContext(), Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                t.printStackTrace();
+                System.out.println(t.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Método para el botón guardar cuando se crea un nuevo recurso.
+     */
+    private void accionBotonGuardarNuevo() {
+        RecursoComunitario recursoComunitarioModificado = generarRecurso();
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<Object> call = apiService.postRecursoComunitario(recursoComunitarioModificado, Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                if (response.isSuccessful()) {
+                    Object recurso = response.body();
+                    AlertDialogBuilder.crearInfoAlerDialog(getContext(), Constantes.INFO_ALERTDIALOG_CREADO_RECURSO);
+                    // Necesita tiempo para ejecutarse.
+                    new CountDownTimer(500, 500) {
+                        public void onTick(long millisUntilFinished) {
+                            // No se necesita hacer nada en este caso
+                        }
+
+                        public void onFinish() {
+                            // Código para el segundo comando después de esperar medio segundo
+                            getActivity().onBackPressed();
+                        }
+                    }.start();
                 } else {
                     AlertDialogBuilder.crearErrorAlerDialog(getContext(), Integer.toString(response.code()));
                 }

@@ -13,6 +13,14 @@ import com.example.teleappsistencia.utilidades.Constantes;
 public class AlertDialogBuilder {
 
     /**
+     * Interfaz que controla que va a suceder cuando el usuario pulse un boton en el AlertDialog.
+     */
+    public interface AlertDialogListener {
+        void onPositiveButtonClicked();
+        void onNegativeButtonClicked();
+    }
+
+    /**
      * Método que muestra un AlertDialog con información pasada por parámetros.
      * @param context Contexto de la aplicación.
      * @param message Mensaje que se mostrará al usuario.
@@ -47,4 +55,26 @@ public class AlertDialogBuilder {
         });
         builder.show();
     }
+
+    public static void crearBorrarAlerDialog(Context context, String errorCode, AlertDialogListener listener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(Constantes.ELIMINAR_ELEMENTO);
+        builder.setMessage(Constantes.ESTAS_SEGURO_ELIMINAR);
+        builder.setPositiveButton(Constantes.SI, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                listener.onPositiveButtonClicked();
+                dialogInterface.cancel();
+            }
+        });
+        builder.setNegativeButton(Constantes.NO, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                listener.onNegativeButtonClicked();
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+    }
+
 }
