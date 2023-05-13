@@ -19,8 +19,10 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 
 /**
- * Clase POJO "ProfilePatch" utilizada para mandar los cambios sobre un usuario del sistema al servidor.
- * El servidor solo tendrá en cuenta aquellos campos que no sean nulos
+ * Clase "ProfilePatch" utilizada para mandar los cambios sobre un usuario del sistema al servidor.
+ *
+ * El servidor solo tendrá en cuenta aquellos campos que no sean nulos, por lo que para prevenir errores,
+ * esta clase 
  */
 public class ProfilePatch implements Serializable {
     @SerializedName("email")
@@ -43,10 +45,12 @@ public class ProfilePatch implements Serializable {
     public String getNuevaPassword() { return nuevaPassword; }
     public Uri getNuevaFotoPerfil() { return nuevaFotoPerfil; }
 
-    // Setters
+    // Setters con prevencion de errores
     public void setNuevoEmail(String nuevoEmail) {
         if (!usuarioAsociado.getEmail().equals(nuevoEmail))
             this.nuevoEmail = nuevoEmail;
+        else
+            this.nuevoEmail = null;
     }
     public void setNuevaPassword(String nuevaPassword) {
         this.nuevaPassword = nuevaPassword;
