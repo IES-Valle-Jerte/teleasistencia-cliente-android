@@ -525,7 +525,8 @@ public interface APIService {
      * @return Devuelve una llamada a Retrofit, que se utiliza para realizar la llamada al servidor.
      */
     @GET("api-rest/users")
-    public Call<List<Usuario>> getUsuarios(@Header("Authorization") String token);
+    Call<List<Usuario>> getUsuarios(@Header("Authorization") String token);
+
 
     
     /**
@@ -557,7 +558,7 @@ public interface APIService {
     public Call<Object> modifyUsuario(@Path("id") int id, @Body Usuario usuario, @Header("Authorization") String token);
 
     @DELETE("api-rest/users/{id}")
-    Call<Response<String>> deleteUser(@Path("id") int id, @Header("Authorization") String token);
+    Call<String> deleteUser(@Path("id") int id, @Header("Authorization") String token);
 
 
     //Peticiones de Personas

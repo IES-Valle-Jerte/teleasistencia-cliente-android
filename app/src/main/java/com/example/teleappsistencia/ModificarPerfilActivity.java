@@ -219,26 +219,27 @@ public class ModificarPerfilActivity extends AppCompatActivity {
      * Intenta confirmar los cambios y enviarlos al servidor
      */
     private void guardarCambiosDatos() {
-        // Si los campos son validos procedemos
-        if (validarDatos()) {
-            // Cargar los cambios para enviarlos
-            patches.setNuevoEmail(edtEmail.getText().toString());
+        // Cargar los cambios para enviarlos
+        patches.setNuevoEmail(edtEmail.getText().toString());
 
-            // Si se han hecho alguna modificación se envian
-            if (patches.hasPatches()) {
+        // Si se han hecho alguna modificación continualmos
+        if (patches.hasPatches()) {
+            // Validamos los cambios y procedemos
+            if (validarDatos()) {
                 enviarModificacionesPerfil();
-            } else {
-                cerrarActivity(Activity.RESULT_CANCELED);
             }
+        } else {
+            cerrarActivity(Activity.RESULT_CANCELED);
         }
     }
 
     /**
      * Intenta validar todos los campos, si hay probelmas con alguno lo notificará
-     * @return true si todos los campos son válidos
+     * @return true si todos los campos son válidos.
      */
     private boolean validarDatos() {
-        if (!Utilidad.validarFormatoEmail(edtEmail)) {
+        // Si se va a cambiar el email y no es valido (mal formato o vacio)
+        if (patches.getNuevoEmail() != null && !Utilidad.validarFormatoEmail(edtEmail)) {
             Toast.makeText(this, Constantes.TOAST_MODPERFIL_CORREO_INVALIDO, Toast.LENGTH_SHORT).show();
             return false;
         } else return true;

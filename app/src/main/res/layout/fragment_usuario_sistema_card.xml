@@ -17,8 +17,8 @@
         <!-- IMAGEN USUARIO -->
         <ImageView
             android:id="@+id/cardIV_imagen"
-            android:layout_width="135dp"
-            android:layout_height="135dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:scaleType="fitCenter"
             android:contentDescription="@string/usuario_card_description_imagen"
             android:src="@drawable/default_user"

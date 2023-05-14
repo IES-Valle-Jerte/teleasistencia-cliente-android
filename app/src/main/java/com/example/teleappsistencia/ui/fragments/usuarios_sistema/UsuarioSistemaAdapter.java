@@ -40,7 +40,7 @@ public class UsuarioSistemaAdapter extends RecyclerView.Adapter<UsuarioSistemaAd
     // ? Getters y Setters
     // Devuelve el usuario seleccionado
     public Usuario getUsuarioSelecionado() {
-        return selectedItem;
+        return selectedPosition != RecyclerView.NO_POSITION ? selectedItem : null;
     }
 
     // Define el método getItemAtPosition para obtener el elemento en la posición indicada
@@ -102,8 +102,9 @@ public class UsuarioSistemaAdapter extends RecyclerView.Adapter<UsuarioSistemaAd
      *
      * @param usuarios_sistema La lista de objetos Usuario a mostrar dentro del RecyclerView.
      */
-    public UsuarioSistemaAdapter(List<Usuario> usuarios_sistema) {
+    public UsuarioSistemaAdapter(List<Usuario> usuarios_sistema, OnItemSelectedListener listener) {
         this.items = usuarios_sistema;
+        this.listener = listener;
     }
 
 
@@ -204,9 +205,9 @@ public class UsuarioSistemaAdapter extends RecyclerView.Adapter<UsuarioSistemaAd
         }
         // Intentar cargar la imagen
         if (usuario.getImagen() != null) {
-            Utilidad.cargarImagen(usuario.getImagen().getUrl(), viewHolder.cardIV_imagen, Constantes.IMG_PERFIL_RADIOUS);
+            Utilidad.cargarImagen(usuario.getImagen().getUrl(), viewHolder.cardIV_imagen, Constantes.IMG_PERFIL_RADIOUS_LISTA);
         } else {
-            Utilidad.cargarImagen(R.drawable.default_user, viewHolder.cardIV_imagen, Constantes.IMG_PERFIL_RADIOUS);
+            Utilidad.cargarImagen(R.drawable.default_user, viewHolder.cardIV_imagen, Constantes.IMG_PERFIL_RADIOUS_LISTA);
         }
 
 

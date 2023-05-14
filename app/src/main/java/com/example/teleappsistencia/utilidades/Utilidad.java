@@ -554,6 +554,10 @@ public class Utilidad {
         return token;
     }
 
+    public static String getAuthorization() {
+        return Constantes.TOKEN_BEARER + token.getAccess();
+    }
+
     public static void setToken(Token token) {
         Utilidad.token = token;
     }
