@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#B3AEB3"
+    tools:context=".ui.fragments.usuarios_sistema.DetallesUsuarioSistemaFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="15dp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <!-- FotoPerfil -->
+            <TextView
+                android:id="@+id/titleFotoPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_foto_perfil"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivFotoPerfil"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/default_user"
+                app:layout_constraintTop_toBottomOf="@id/titleFotoPerfil"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <View
+                android:id="@+id/separador9"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:background="#B3AEB3"
+                app:layout_constraintTop_toBottomOf="@id/ivFotoPerfil"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- ID -->
+            <TextView
+                android:id="@+id/titleId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_id"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/separador9"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/campoVacio"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/titleId"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/separador1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#B3AEB3"
+                app:layout_constraintTop_toBottomOf="@id/tvId"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- URL -->
+            <TextView
+                android:id="@+id/titleUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_url"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/separador1"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/campoVacio"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/titleUrl"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/separador2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#B3AEB3"
+                app:layout_constraintTop_toBottomOf="@id/tvUrl"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- Last Login -->
+            <TextView
+                android:id="@+id/titleLastLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_lastlogin"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/separador2"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvLastLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/campoVacio"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/titleLastLogin"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/separador3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#B3AEB3"
+                app:layout_constraintTop_toBottomOf="@id/tvLastLogin"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- Username -->
+            <TextView
+                android:id="@+id/titleUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_username"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/separador3"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/campoVacio"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/titleUsername"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/separador4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#B3AEB3"
+                app:layout_constraintTop_toBottomOf="@id/tvUsername"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Nombre -->
+            <TextView
+                android:id="@+id/titleNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_nombre"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/separador4"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/campoVacio"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/titleNombre"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/separador5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#B3AEB3"
+                app:layout_constraintTop_toBottomOf="@id/tvNombre"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Apellidos -->
+            <TextView
+                android:id="@+id/titleApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_apellidos"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/separador5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/campoVacio"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/titleApellidos"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/separador6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#B3AEB3"
+                app:layout_constraintTop_toBottomOf="@id/tvApellidos"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Email -->
+            <TextView
+                android:id="@+id/titleEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_email"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/separador6"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/campoVacio"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/titleEmail"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/separador7"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#B3AEB3"
+                app:layout_constraintTop_toBottomOf="@id/tvEmail"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Fecha Alta -->
+            <TextView
+                android:id="@+id/titleFechaAlta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_fecha_alta"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/separador7"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvFechaAlta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/campoVacio"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/titleFechaAlta"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/separador8"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#B3AEB3"
+                app:layout_constraintTop_toBottomOf="@id/tvFechaAlta"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Grupo -->
+            <TextView
+                android:id="@+id/titleGrupo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/detalles_usuario_sistema_tittle_grupo"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/separador8"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvGrupo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/campoVacio"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintTop_toBottomOf="@id/titleGrupo"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</ScrollView>

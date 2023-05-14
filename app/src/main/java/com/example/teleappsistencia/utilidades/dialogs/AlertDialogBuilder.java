@@ -47,4 +47,12 @@ public class AlertDialogBuilder {
         });
         builder.show();
     }
+
+    public static void crearConfirmacionAlertDialog(Context context, String mensaje, DialogInterface.OnClickListener accionSi, DialogInterface.OnClickListener accionNo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(mensaje)
+            .setPositiveButton("Si", accionSi)
+            .setNegativeButton("No", accionNo)
+            .show();
+    }
 }

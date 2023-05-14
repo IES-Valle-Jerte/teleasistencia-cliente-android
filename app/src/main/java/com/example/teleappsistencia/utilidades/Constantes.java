@@ -113,6 +113,7 @@ public class Constantes {
      */
     public static final int RESULT_MODPERFIL_ERROR = -2;
     public static final int IMG_PERFIL_RADIOUS = 1000;
+    public static final int IMG_PERFIL_RADIOUS_LISTA = 15;
     public static final String TOAST_MODPERFIL_SUCCES = "Tu perfil se ha actualizado correctamente";
     public static final String TOAST_MODPERFIL_API_ERROR = "Ha habido un error al actualizar tu perfil";
     public static final String TOAST_MODPERFIL_CORREO_INVALIDO = "El correo no es un correo válido";
@@ -126,7 +127,10 @@ public class Constantes {
     public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID = "La contraseña no cumple con los requisitos";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_REGEX = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,}$";
 
-
+    /**
+     * Constantes referentes a la gestión de Usuarios del Sistema
+     */
+    public static final String MSG_CONFIRMAR_ELEIMINAR_USUARIO_SISTEMA = "¿Está seguro que desea eliminarlo?";
 
 
     /**

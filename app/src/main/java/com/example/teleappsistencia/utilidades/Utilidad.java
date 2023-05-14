@@ -56,12 +56,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -521,6 +523,50 @@ public class Utilidad {
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
         fecha = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
         return sdf.format(fecha);
+    }
+
+    /**
+     * Este método de vuelve un datetime devuelta por la API al formato: dd/MM/yyyy @ HH:mm:ss
+     *
+     * @return null si no es posible dar formato al datetime
+     */
+    public static String getStringDatetime(String datetimeApi) {
+        // Tratar casos erroneos
+        if (null == datetimeApi || datetimeApi.trim().isEmpty()) return null;
+
+        try {
+            SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX", Locale.getDefault());
+            return getStringDatetime(inFormat.parse(datetimeApi));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Este método de vuelve un datetime devuelta por la API al formato: dd/MM/yyyy @ HH:mm:ss
+     *
+     * @return null si no es posible dar formato al datetime
+     */
+    public static String getStringDatetime(Date datetimeApi) {
+        // Tratar casos erroneos
+        if (null == datetimeApi) return null;
+
+        SimpleDateFormat outFormat = new SimpleDateFormat("dd/MM/yyyy @ HH:mm:ss", Locale.getDefault());
+        return outFormat.format(datetimeApi);
+    }
+
+    /**
+     * Este método de vuelve un datetime devuelta por la API al formato: dd/MM/yyyy
+     *
+     * @return null si no es posible dar formato al datetime
+     */
+    public static String getStringDate(Date datetimeApi) {
+        // Tratar casos erroneos
+        if (null == datetimeApi) return null;
+
+        SimpleDateFormat outFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        return outFormat.format(datetimeApi);
     }
 
     /* Este método crea un Dialogo de selección de fecha. Le asigna el valor a una variable y además

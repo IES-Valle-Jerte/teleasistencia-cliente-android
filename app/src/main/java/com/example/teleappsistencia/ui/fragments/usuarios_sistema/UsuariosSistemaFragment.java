@@ -20,6 +20,7 @@ import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFragment;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
+import com.example.teleappsistencia.utilidades.dialogs.AlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,9 +95,7 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
         lManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(lManager);
 
-        // Mostrar el Shimmer mientras cargan los datos
-        // ConstraintLayout layoutContenido = view.findViewById(R.id.layoutContenido);
-        // Utilidad.generarCapaEspera(view, layoutContenido);
+        // TODO: Mostrar el Shimmer mientras cargan los datos
 
         // Cargar datos en el RecyclerView
         cargarUsuarios(view);
@@ -120,7 +119,7 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
                     lUsuarios = response.body();
 
                     // Crear Adaptador para el RecyclerView
-                    adapter = new UsuarioSistemaAdapter(lUsuarios);
+                    adapter = new UsuarioSistemaAdapter(lUsuarios, UsuariosSistemaFragment.this);
                     recycler.setAdapter(adapter);
                 } else {
                     Toast.makeText(getContext(), Constantes.ERROR_AL_LISTAR_LAS_DIRECCIONES, Toast.LENGTH_SHORT).show();
@@ -135,27 +134,6 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
         });
     }
 
-    private void cargarFragmentNuevoUsuario() {
-        FragmentManager fragManager = getActivity().getSupportFragmentManager();
-        fragManager.beginTransaction()
-            .replace(R.id.main_fragment, new CrearUsuarioSistemaFragment())
-            .addToBackStack(null).commit();
-    }
-
-    /**
-     * Recarga el fragment padre para mostrar los nuevos contenidos del RecyclerView.
-     */
-    private void recargarFragment() {
-        this.selectedPosition = RecyclerView.NO_POSITION;
-//        adapter.notifyDataSetChanged();
-//        MainActivity activity = (MainActivity) this.context;
-//        UsuariosSistemaFragment usuarios_fragment = new UsuariosSistemaFragment();
-//        activity.getSupportFragmentManager()
-//            .beginTransaction()
-//            .replace(R.id.main_fragment, usuarios_fragment)
-//            .addToBackStack(null).commit();
-    }
-
     // ! Métodos del UsuarioSistemaAdapter
     @Override
     public void onItemSelected(int position) {
@@ -165,16 +143,57 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
     // ! Acciones del OpcionesListaFragment
     @Override
     public void onViewDetailsButtonClicked() {
-        // TODO
-    }
-
-    @Override
-    public void onDeleteButtonClicked() {
-        // TODO
+        getActivity().getSupportFragmentManager()
+            .beginTransaction()
+            .replace(R.id.main_fragment, DetallesUsuarioSistemaFragment.newInstance(
+                adapter.getUsuarioSelecionado()
+            ))
+            .addToBackStack(null).commit();
     }
 
     @Override
     public void onEditButtonClicked() {
         // TODO
+    }
+
+    @Override
+    public void onDeleteButtonClicked() {
+        Usuario user = adapter.getUsuarioSelecionado();
+
+        if (user != null) {
+            AlertDialogBuilder.crearConfirmacionAlertDialog(
+                getContext(), Constantes.MSG_CONFIRMAR_ELEIMINAR_USUARIO_SISTEMA,
+                // Acción SI
+                (dialog, which) -> {
+                    APIService service = ClienteRetrofit.getInstance().getAPIService();
+                    Call<String> call = service.deleteUser(user.getPk(), Utilidad.getAuthorization());
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            Toast.makeText(getContext(), response.body(), Toast.LENGTH_SHORT).show();
+                            if (response.isSuccessful()) {
+                                lUsuarios.remove(selectedPosition);
+                                recycler.getAdapter().notifyItemRemoved(selectedPosition);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            t.printStackTrace();
+                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                },
+                // Acción NO
+                (dialog, which) -> {}
+            );
+        }
+    }
+
+    private void cargarFragmentNuevoUsuario() {
+        FragmentManager fragManager = getActivity().getSupportFragmentManager();
+        fragManager.beginTransaction()
+                .replace(R.id.main_fragment, new CrearUsuarioSistemaFragment())
+                .addToBackStack(null).commit();
     }
 }
