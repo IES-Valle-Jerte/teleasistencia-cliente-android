@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="false"
+    android:background="@drawable/fondo"
+    tools:context=".ui.fragments.recursos.RecursosListadoFragment">
+
+    <TextView
+        android:id="@+id/textViewTituloRecursosComunitarios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/titulo_listarDatosRecursoComunitario"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba"
+        app:layout_constraintEnd_toStartOf="@+id/buttonNuevoRecurso"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonNuevoRecurso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nuevo"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineArriba"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iconifiedByDefault="false"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineMedio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineArriba"
+        app:queryHint="Buscar" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineMedio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/guidelineAbajo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineMedio">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineAbajo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineAbajo"
+        tools:layout="@layout/fragment_opciones_lista" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

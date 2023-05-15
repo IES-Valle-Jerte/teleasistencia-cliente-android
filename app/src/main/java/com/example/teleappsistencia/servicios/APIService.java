@@ -122,6 +122,9 @@ public interface APIService {
     @GET("/api-rest/tipo_recurso_comunitario")
     public Call<List<TipoRecursoComunitario>> getTipoRecursoComunitario(@Header("Authorization") String token);
 
+    @GET("api-rest/tipo_recurso_comunitario")
+    public Call<List<TipoRecursoComunitario>> getTiposRecursosComunitariosPorId(@Query("id_clasificacion_recurso_comunitario") int idClasificacionRecursoComunitario, @Header("Authorization") String token);
+
     @POST("/api-rest/tipo_recurso_comunitario")
     public Call<Object> postTipoRecursoComunitario(@Body TipoRecursoComunitario tipoRecursoComunitario, @Header("Authorization") String token);
 
@@ -715,6 +718,11 @@ public interface APIService {
     @GET("/api-rest/relacion_terminal_recurso_comunitario")
     public Call<List<Object>> getRecursosComunitariosbyIdTerminal(@Query("id_terminal") int id, @Header("Authorization") String token);
 
-
-
+    // mod-GAG
+    /**
+     * Peticiones Recursos
+     */
+    // Peticion Clasificación_recurso_comunitario
+    @GET("/api-rest/clasificacion_recurso_comunitario")
+    public Call<List<Object>> getClasificacionRecursoComunitario(@Header("Authorization") String token);
 }

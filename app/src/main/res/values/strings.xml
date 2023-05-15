@@ -184,6 +184,7 @@
     <string name="titulo_listarDatosCentroSanitario">Centros sanitarios</string>
     <string name="titulo_listarDatosTipoRecursoComunitario">Tipos de recursos comunitarios</string>
     <string name="titulo_listarDatosRecursoComunitario">Recursos comunitarios</string>
+    <string name="titulo_DetallesRecursoComunitario">Detalles recurso comunitario</string>
     <string name="tipoCentroSanitario">Tipo de centro sanitario</string>
     <string name="tipoRecursoComunitario">Tipo de recurso comunitario</string>
     <string name="nombre">Nombre</string>
