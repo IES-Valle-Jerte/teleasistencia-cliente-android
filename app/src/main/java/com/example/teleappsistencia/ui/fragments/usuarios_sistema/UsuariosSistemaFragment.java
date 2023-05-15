@@ -1,5 +1,6 @@
 package com.example.teleappsistencia.ui.fragments.usuarios_sistema;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -161,10 +162,9 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
         Usuario user = adapter.getUsuarioSelecionado();
 
         if (user != null) {
-            AlertDialogBuilder.crearConfirmacionAlertDialog(
-                getContext(), Constantes.MSG_CONFIRMAR_ELEIMINAR_USUARIO_SISTEMA,
-                // Acción SI
-                (dialog, which) -> {
+            new AlertDialog.Builder(getContext())
+                .setMessage(Constantes.MSG_CONFIRMAR_ELEIMINAR_USUARIO_SISTEMA)
+                .setPositiveButton("Si", (dialog, which) -> {
                     APIService service = ClienteRetrofit.getInstance().getAPIService();
                     Call<String> call = service.deleteUser(user.getPk(), Utilidad.getAuthorization());
                     call.enqueue(new Callback<String>() {
@@ -183,10 +183,9 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
                             Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-                },
-                // Acción NO
-                (dialog, which) -> {}
-            );
+                })
+                .setNegativeButton("No", null)
+                .show();
         }
     }
 
