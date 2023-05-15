@@ -18,8 +18,15 @@ import com.example.teleappsistencia.modelos.Usuario;
  */
 public class EditarUsuarioSistemaFragment extends Fragment {
     private static final String ARG_USUARIO = "usuario";
+    private static final String ARG_EDITMODE = "editMode";
 
     private Usuario usuario;
+    private boolean editMode;
+
+
+
+    // Referencias GUI
+
 
 
     // Required empty public constructor
@@ -30,12 +37,14 @@ public class EditarUsuarioSistemaFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param usuario Usuario a modificar
-     * @return A new instance of fragment CrearUsuarioSistemaFragment.
+     * @param editMode booleano que especifica si se quiere modificar o crear un nuevo usuario (para reutilizar el fragment)
+     * @return A new instance of fragment EditarUsuarioSistemaFragment.
      */
-    public static EditarUsuarioSistemaFragment newInstance(Usuario usuario) {
+    public static EditarUsuarioSistemaFragment newInstance(Usuario usuario, boolean editMode) {
         EditarUsuarioSistemaFragment fragment = new EditarUsuarioSistemaFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_USUARIO, usuario);
+        args.putBoolean(ARG_EDITMODE, editMode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,6 +54,7 @@ public class EditarUsuarioSistemaFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             usuario = (Usuario) getArguments().getSerializable(ARG_USUARIO);
+            editMode = getArguments().getBoolean(ARG_EDITMODE);
         }
     }
 

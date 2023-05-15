@@ -516,8 +516,9 @@
     <string name="modificar_perfil_btnGuardar">Guardar Cambios</string>
 
     <!-- Panel: Cambio de Contraseña -->
-    <string name="modificar_perfil_tvNuevaPass">Nueva Contraseña</string>
     <string name="modificar_perfil_tvNuevaPassHeader">Cambiar Contraseña</string>
+    <string name="modificar_perfil_tvPass">Contraseña</string>
+    <string name="modificar_perfil_tvNuevaPass">Nueva Contraseña</string>
     <string name="modificar_perfil_tvRepetirNuevaPass">Repita la Contraseña</string>
     <string name="modificar_perfil_btnGuardarNuevaPassword">Guardar</string>
     <string name="modificar_perfil_btnCancelarCambioPassword">Cancelar</string>

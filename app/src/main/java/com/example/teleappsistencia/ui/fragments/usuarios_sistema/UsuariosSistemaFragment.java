@@ -141,6 +141,18 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
         selectedPosition = position;
     }
 
+    private void cargarFragmentNuevoUsuario() {
+        Usuario newUser = new Usuario();
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, EditarUsuarioSistemaFragment.newInstance(
+                        newUser, false
+                ))
+                .addToBackStack(null).commit();
+
+        // TODO recargar lista usuarios y/o notificar cambio
+    }
+
     // ! Acciones del OpcionesListaFragment
     @Override
     public void onViewDetailsButtonClicked() {
@@ -154,7 +166,14 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
 
     @Override
     public void onEditButtonClicked() {
-        // TODO
+        getActivity().getSupportFragmentManager()
+            .beginTransaction()
+            .replace(R.id.main_fragment, EditarUsuarioSistemaFragment.newInstance(
+                    adapter.getUsuarioSelecionado(), true
+            ))
+            .addToBackStack(null).commit();
+
+        // TODO recargar lista usuarios y/o notificar cambio
     }
 
     @Override
@@ -187,12 +206,5 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
                 .setNegativeButton("No", null)
                 .show();
         }
-    }
-
-    private void cargarFragmentNuevoUsuario() {
-        FragmentManager fragManager = getActivity().getSupportFragmentManager();
-        fragManager.beginTransaction()
-                .replace(R.id.main_fragment, new EditarUsuarioSistemaFragment())
-                .addToBackStack(null).commit();
     }
 }
