@@ -18,11 +18,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.teleappsistencia.modelos.ClasificacionRecurso;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.teleappsistencia.modelos.Usuario;
 import com.example.teleappsistencia.servicios.APIService;
+import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.ui.fragments.alarma.InsertarAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasDeHoyFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasFragment;
@@ -52,6 +56,7 @@ import com.example.teleappsistencia.ui.fragments.personaContactoEnAlarma.ListarP
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentInsertarRecursoComunitario;
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentListarRecursoComunitario;
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentModificarRecursoComunitario;
+import com.example.teleappsistencia.ui.fragments.recursos.RecursosListadoFragment;
 import com.example.teleappsistencia.ui.fragments.recursosComunitariosEnAlarma.InsertarRecursosComunitariosEnAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.recursosComunitariosEnAlarma.ListarRecursosComunitariosEnAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.relacion_paciente_persona.InsertarRelacionPacientePersonaFragment;
@@ -90,6 +95,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
 
 /**
  * Esta clase aparte de ser la clase principal, contendrá el menu con un fragment, el cual cambiará según las necesidades del usuario.
@@ -111,6 +119,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private List<MenuModel> headerList = new ArrayList<>();
     private HashMap<MenuModel, List<MenuModel>> childList = new HashMap<>();
+
+    /**
+     * Atributo para trabajar con la lista que devuelve la llamada a la API.
+     */
+    private ArrayList<ClasificacionRecurso> lRecursos;
 
     private TextView textView_nombre_usuarioLogged;
     private TextView textView_email_usuarioLogged;
@@ -608,6 +621,81 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+
+        // mod-GAG
+        // Menu Recursos
+        menuRecursos();
+    }
+
+    // mod-GAG
+    /**
+     * Método que genera la opción "Recursos" menu.
+     *
+     * 1º Crea la opción "Recursos".
+     * 2º Hace una llamada a la API para agregar las opciones al sub-menu de "Recursos".
+     * 3º Le pasamos un objeto al fragment (id) para que muestre solo los recursos del submenu seleccionado.
+     */
+    private void menuRecursos(){
+        MenuModel menuModel = new MenuModel("Recursos", true, true, null);
+        List<MenuModel> childModelsList = new ArrayList<>();
+        headerList.add(menuModel);
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Object>> call = apiService.getClasificacionRecursoComunitario(Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new retrofit2.Callback<List<Object>>() {
+            @Override
+            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+                if(response.isSuccessful()){
+                    RecursosListadoFragment recursosListadoFragment;
+                    List<Object> lObjetos = response.body();
+                    lRecursos = (ArrayList<ClasificacionRecurso>) Utilidad.getObjeto(lObjetos,Constantes.AL_CLASIFICACION_RECURSO);
+                    for (ClasificacionRecurso auxR : lRecursos) {
+                        Bundle bundle = new Bundle();
+                        switch (auxR.getId()){
+                            case 1:
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Sanitarios", false, false, recursosListadoFragment));
+                                break;
+                            case 2:
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Sociosanitarios", false, false, recursosListadoFragment));
+                                break;
+                            case 3:
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Organismos institucionales", false, false, recursosListadoFragment));
+                                break;
+                            case 4:
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Seguridad", false, false, recursosListadoFragment));
+                                break;
+                        }
+                    }
+                    if (menuModel.hasChildren()) {
+                        childList.put(menuModel, childModelsList);
+                    } else {
+                        childList.put(menuModel, null);
+                    }
+                }else{
+                    Toast.makeText(getBaseContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Object>> call, Throwable t) {
+                Toast.makeText(getBaseContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
@@ -638,8 +726,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         // En este caso no hay nada que hacer al pulsar en una opción principal.
                     }
                 }*/
+                /* Estas dos lineas de código hacen que siempre que se pulse una
+                opción principal del menú cargue un fragment en blanco.
+
                 DrawerLayout drawer = findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
+                 */
                 return false;
             }
         });
@@ -666,6 +758,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
 
 }

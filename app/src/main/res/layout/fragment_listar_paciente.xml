@@ -7,14 +7,15 @@
     android:orientation="vertical"
     tools:context=".ui.fragments.relacion_paciente_persona.ListarRelacionPacientePersonaFragment">
 
-    <com.facebook.shimmer.ShimmerFrameLayout
+    <!-- Capa de espera -->
+    <!--<com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/listviewPlaceholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <include layout="@layout/listview_placeholder" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/listViewDataPacientes"
@@ -81,7 +82,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.93" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </LinearLayout><!--

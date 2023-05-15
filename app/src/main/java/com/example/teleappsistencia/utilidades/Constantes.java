@@ -152,6 +152,7 @@ public class Constantes {
     public static final String INFO_ALERTDIALOG_CREADO_GRUPO = "Se ha creado correctamente un nuevo grupo.";
     public static final String INFO_ALERTDIALOG_CREADO_DISPOSITIVO_AUXILIAR = "Se ha creado correctamente un nuevo dispositivo auxiliar en terminal.";
     public static final String INFO_ALERTDIALOG_CREADO_DIRECCION = "Se ha creado correctamente una nueva dirección.";
+    public static final String INFO_ALERTDIALOG_CREADO_RECURSO = "Se ha creado correctamente un nuevo recurso comunitario.";
 
     public static final String INFO_ALERTDIALOG_MODIFICADO_USUARIO = "Se ha modificado correctamente el usuario.";
     public static final String INFO_ALERTDIALOG_MODIFICADO_TIPO_VIVIENDA = "Se ha modificado correctamente el tipo de vivienda.";
@@ -161,6 +162,7 @@ public class Constantes {
     public static final String INFO_ALERTDIALOG_MODIFICADO_GRUPO = "Se ha modificado correctamente el grupo.";
     public static final String INFO_ALERTDIALOG_MODIFICADO_DISPOSITIVO_AUXILIAR = "Se ha modificado correctamente el dispositivo auxiliar en terminal.";
     public static final String INFO_ALERTDIALOG_MODIFICADO_DIRECCION = "Se ha modificado correctamente la dirección.";
+    public static final String INFO_ALERTDIALOG_MODIFICADO_RECURSO = "Se ha modificado correctamente el recurso comunitario.";
 
     public static final String INFO_ALERTDIALOG_ELIMINADO_USUARIO = "Se ha eliminado correctamente el usuario.";
     public static final String INFO_ALERTDIALOG_ELIMINADO_TIPO_VIVIENDA = "Se ha eliminado correctamente el tipo de vivienda.";
@@ -170,6 +172,8 @@ public class Constantes {
     public static final String INFO_ALERTDIALOG_ELIMINADO_GRUPO = "Se ha eliminado correctamente el grupo.";
     public static final String INFO_ALERTDIALOG_ELIMINADO_DISPOSITIVO_AUXILIAR = "Se ha eliminado correctamente el dispositivo auxiliar en terminal.";
     public static final String INFO_ALERTDIALOG_ELIMINADO_DIRECCION = "Se ha eliminado correctamente la dirección.";
+
+    public static final String INFO_ALERTDIALOG_ELIMINADO_RECURSO = "Se ha eliminado correctamente el recurso comunitario.";
 
     /**
      * Constantes para los errorAlertDialogs
@@ -315,6 +319,7 @@ public class Constantes {
     public final static String AL_USUARIOS_SISTEMA = "ArrayList<Usuario>";
     public final static String AL_ALARMA = "ArrayList<Alarma>";
     public final static String AL_CLASIFICACION_ALARMA= "ArrayList<ClasificacionAlarma>";
+    public final static String AL_CLASIFICACION_RECURSO= "ArrayList<ClasificacionRecurso>";
     public final static String AL_CENTRO_SANITARIO_ALARMA = "ArrayList<CentroSanitarioEnAlarma>";
     public final static String AL_PERSONAS_CONTACTO_EN_ALARMA = "ArrayList<PersonaContactoEnAlarma>";
     public final static String AL_RECURSOS_COMUNITARIOS_EN_ALARMA = "ArrayList<RecursoComunitarioEnAlarma>";
@@ -397,4 +402,17 @@ public class Constantes {
     public static final String TERMINAL_DP_SP = "Terminal: ";
     public static final String ALARMAS_DE_HOY = "Alarmas de hoy";
     public static final String ALARMAS_SIN_ASIGNAR = "Alarmas sin asignar";
+
+    /* Constantes Recursos */
+    public static final String TITULO_RECURSOS = "Recursos ";
+    public static final String KEY_ID_CLASIFICACION_RECURSOS = "key_id";
+    public static final String KEY_NOMBRE_CLASIFICACION_RECURSOS = "key_nombre";
+    public static final String KEY_OPCION_SELECCIONADA = "key_opcion";
+    public static final String KEY_RECURSO_COMUNITARIO = "key_recurso";
+
+    /* Constantes Opciones Lista */
+    public static final String CONSULTAR = "Consultar";
+    public static final String MODIFICAR = "Modificar";
+    public static final String NUEVO = "Nuevo";
+
 }
