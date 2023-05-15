@@ -239,10 +239,18 @@ public class LoginActivity extends AppCompatActivity {
         Grupo grupo = (Grupo) Utilidad.getObjeto(gruposList.get(0), Constantes.GRUPO);  // LLamo al método Utils.getObjeto() para evitar
                                                                                         // el error al castear una LinkedTreeMap a un Object.
 
-        if (grupo.getName().equalsIgnoreCase(Constantes.PROFESOR)) {
-            Utilidad.setIsAdmin(true); // Si pertenece a el grupo con el nombre "Profesor" entonces se asigna la variable isAdmin a true.
+        if (grupo.getName().equalsIgnoreCase(Constantes.ADMINISTRADOR)) {
+            // Si pertenece al grupo "Administrador", tanto isAdmin como isSuperUser se asignarán a true.
+            Utilidad.setIsAdmin(true);
+            Utilidad.setIsSuperUser(true);
+        } else if (grupo.getName().equalsIgnoreCase(Constantes.PROFESOR)) {
+            // Si pertenece a el grupo con el nombre "Profesor" entonces se asigna la variable isAdmin a true, pero no a isSuperUser.
+            Utilidad.setIsAdmin(true);
+            Utilidad.setIsSuperUser(false);
         } else {
-            Utilidad.setIsAdmin(false);  // De lo contrario se le asigna false.
+            // De lo contrario se le asigna false a ambos.
+            Utilidad.setIsAdmin(false);
+            Utilidad.setIsSuperUser(false);
         }
     }
 }

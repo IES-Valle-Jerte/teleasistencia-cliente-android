@@ -72,13 +72,11 @@ public class DetallesUsuarioSistemaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detalles_usuario_sistema, container, false);
         getReferenciasGUI(view);
         cargarDatosUser();
-
-
         return view;
     }
 
     /**
-     * Extrae las referencias a las distintas vistas del layout
+     * Extrae las referencias a las distintas vistas del layout.
      */
     private void getReferenciasGUI(View view) {
         ivFotoPerfil = view.findViewById(R.id.ivFotoPerfil);
@@ -93,6 +91,9 @@ public class DetallesUsuarioSistemaFragment extends Fragment {
         tvGrupo = view.findViewById(R.id.tvGrupo);
     }
 
+    /**
+     * Carga los datos del Usuario en las distintas vistas.
+     */
     private void cargarDatosUser() {
         // Intentar cargar la imagen
         if (usuario.getImagen() != null) {

@@ -86,10 +86,24 @@ public class Utilidad {
     private static Usuario userLogged;
 
     /**
-     * Si isAdmin está en true se podrá acceder a todas las opciones del menu.
-     * Si es false algunas opciones se ocultarán.
+     * Si isSuperUser es true, se ignorará el valor de isAdmin.
+     * Si isAdmin está en true significa que el usuario es Profesor (group) y tendrá acceso a algunos menús de administración adicional.
+     * Si es false algunas opciones de administración se ocultarán, y se ocultarán todas si el usuario no es ni Profesor (Admin) ni Administrador (SuperUser).
+     *
+     * @see #isAdmin()
+     * @see #isSuperUser()
      */
     private static boolean isAdmin;
+
+    /**
+     * Si isSuperUser está en true significa que el usuario es Administrador (group) y podrá acceder a todas las opciones.
+     * Si es false algunas opciones de administración se ocultarán si isAdmin == true, y se ocultarán todas si el usuario no
+     * es ni Profesor (Admin) ni Administrador (SuperUser).
+     *
+     * @see #isAdmin()
+     * @see #isSuperUser()
+     */
+    private static boolean isSuperUser;
 
     /**
      * Método que recibe un número y si se encuentra entre 1 y 9 le añade un 0 delante.
@@ -616,11 +630,23 @@ public class Utilidad {
         Utilidad.userLogged = userLogged;
     }
 
+    /**
+     * Los Profesores y Administradores (usuarios de los grupos) son ambos admin.
+     * @return si el usuario es administrador o superusuario.
+     */
     public static boolean isAdmin() {
-        return isAdmin;
+        return isAdmin || isSuperUser;
+    }
+
+    public static boolean isSuperUser() {
+        return isSuperUser;
     }
 
     public static void setIsAdmin(boolean isAdmin) {
         Utilidad.isAdmin = isAdmin;
+    }
+
+    public static void setIsSuperUser(boolean isSuperUser) {
+        Utilidad.isSuperUser = isSuperUser;
     }
 }

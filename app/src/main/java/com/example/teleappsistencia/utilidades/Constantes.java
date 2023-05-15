@@ -78,6 +78,7 @@ public class Constantes {
      * Constantes de autorización.
      */
     public static final String UNAUTHORIZED = "Unauthorized";
+    public static final String ADMINISTRADOR = "Administrador";
     public static final String PROFESOR = "Profesor";
 
     /**

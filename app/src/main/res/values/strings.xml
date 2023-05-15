@@ -538,5 +538,6 @@
     <string name="detalles_usuario_sistema_tittle_fecha_alta">Fecha de Alta</string>
     <string name="detalles_usuario_sistema_tittle_grupo">Grupo</string>
     <string name="detalles_usuario_sistema_tittle_foto_perfil">Foto de Perfil</string>
+    <string name="detalles_usuario_sistema_tittle_database">Base de datos</string>
     <!-- FIN: Usuarios del Sistema -->
 </resources>

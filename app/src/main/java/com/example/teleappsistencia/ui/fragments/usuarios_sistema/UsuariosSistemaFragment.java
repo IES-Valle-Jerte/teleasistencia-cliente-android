@@ -193,7 +193,7 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
     private void cargarFragmentNuevoUsuario() {
         FragmentManager fragManager = getActivity().getSupportFragmentManager();
         fragManager.beginTransaction()
-                .replace(R.id.main_fragment, new CrearUsuarioSistemaFragment())
+                .replace(R.id.main_fragment, new EditarUsuarioSistemaFragment())
                 .addToBackStack(null).commit();
     }
 }
