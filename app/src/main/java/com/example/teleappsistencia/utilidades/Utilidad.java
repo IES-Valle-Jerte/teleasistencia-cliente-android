@@ -419,13 +419,13 @@ public class Utilidad {
     /**
      * Verifica si el contenido de un EditText es una dirección de correo y es válida.
      * @param editText EditText a comprobar
-     * @return Devolverá true solo si es una dirección de correo válida.
+     * @return Devolverá true solo si es una dirección de correo válida. O el campo está vacío.
      */
     public static boolean validarFormatoEmail(EditText editText) {
         // Sacamos el texto sin espacios sobrantes
         CharSequence input = editText.getText().toString().trim();
-        // Si no está vacio y cumple el regex, el email es valido
-        return !TextUtils.isEmpty(input) && Patterns.EMAIL_ADDRESS.matcher(input).matches();
+        // Si está vacio o cumple el regex, el email es valido
+        return TextUtils.isEmpty(input) || Patterns.EMAIL_ADDRESS.matcher(input).matches();
     }
 
     /**
