@@ -3,6 +3,7 @@ package com.example.teleappsistencia.ui.fragments.usuarios_sistema;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFr
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 import com.example.teleappsistencia.utilidades.dialogs.AlertDialogBuilder;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,9 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
     // ! REFEREENCIAS GUI
     private Button btnNewUser;
     private RecyclerView recycler;
+
+    private ConstraintLayout layoutContenido;
+    private ShimmerFrameLayout shimmerPlaceholder;
 
     // Otras Variables
     private OpcionesListaFragment frag_acciones;
@@ -80,6 +85,8 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
         // Extraer referencias GUI
         btnNewUser = view.findViewById(R.id.btnNewUser);
         recycler   = view.findViewById(R.id.lv_recyclerView);
+        layoutContenido = view.findViewById(R.id.layoutContenido);
+        shimmerPlaceholder = view.findViewById(R.id.shimmerPlaceholder);
         frag_acciones = new OpcionesListaFragment();
 
         // Cargar fragment de acciones
@@ -96,8 +103,8 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
         lManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(lManager);
 
-        // TODO: Mostrar el Shimmer mientras cargan los datos
-
+        // Mostrar el Shimmer mientras cargan los datos
+        iniciarShimmer();
         // Cargar datos en el RecyclerView
         cargarUsuarios(view);
 
@@ -125,14 +132,33 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
                 } else {
                     Toast.makeText(getContext(), Constantes.ERROR_AL_LISTAR_LAS_DIRECCIONES, Toast.LENGTH_SHORT).show();
                 }
+                detenerShimmer();
             }
 
             @Override
             public void onFailure(Call<List<Usuario>> call, Throwable t) {
                 t.printStackTrace();
-                System.out.println(t.getMessage());
+                detenerShimmer();
             }
         });
+    }
+
+    /**
+     * Muestra e inicia la animación del Shimmer.
+     */
+    private void iniciarShimmer() {
+        layoutContenido.setVisibility(View.GONE);
+        shimmerPlaceholder.startShimmer();
+        shimmerPlaceholder.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Finaliza la animación del Shimmer y lo oculta.
+     */
+    private void detenerShimmer() {
+        shimmerPlaceholder.setVisibility(View.GONE);
+        shimmerPlaceholder.stopShimmer();
+        layoutContenido.setVisibility(View.VISIBLE);
     }
 
     // ! Métodos del UsuarioSistemaAdapter
