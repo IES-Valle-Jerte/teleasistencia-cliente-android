@@ -34,7 +34,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:textSize="22sp"
+            android:textSize="14sp"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvId" />
@@ -58,12 +59,47 @@
             android:src="@drawable/ic_menu_camera"
             android:background="@drawable/imagebutton_circular"
             android:elevation="5dp"
+            android:layout_marginEnd="-20dp"
+            android:layout_marginBottom="-20dp"
             app:layout_constraintVertical_bias="1.0"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintTop_toTopOf="@+id/ivFotoPerfil"
             app:layout_constraintBottom_toBottomOf="@+id/ivFotoPerfil"
             app:layout_constraintStart_toStartOf="@+id/ivFotoPerfil"
             app:layout_constraintEnd_toEndOf="@+id/ivFotoPerfil" />
+
+        <!-- Database (solo si isSuperUser) -->
+        <TextView
+            android:id="@+id/titleRoles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/detalles_usuario_sistema_tittle_roles"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivFotoPerfil" />
+        <Spinner
+            android:id="@+id/spinRoles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:minHeight="45dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:gravity="center_horizontal"
+            android:background="@drawable/rounded_spinner"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            tools:listitem="@layout/support_simple_spinner_dropdown_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleRoles" />
 
         <!-- Login/Username -->
         <TextView
@@ -79,7 +115,7 @@
             android:layout_marginEnd="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivFotoPerfil" />
+            app:layout_constraintTop_toBottomOf="@id/spinRoles" />
         <EditText
             android:id="@+id/edtUsername"
             android:layout_width="match_parent"
@@ -173,51 +209,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleEmail" />
 
-        <!-- Database (solo si isSuperUser) -->
-        <TextView
-            android:id="@+id/titleDatabase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/detalles_usuario_sistema_tittle_database"
-            android:gravity="center_horizontal"
-            android:textStyle="bold"
-            android:textSize="22sp"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtEmail" />
-        <Spinner
-            android:id="@+id/spinEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:minHeight="45dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleDatabase" />
-
         <!-- Cambiar Contraseña -->
-        <View
-            android:id="@+id/separador"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:background="#B3AEB3"
-            app:layout_constraintTop_toBottomOf="@id/spinEmail"
-            app:layout_constraintStart_toStartOf="parent"/>
-
         <TextView
             android:id="@+id/titlePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:gravity="center_horizontal"
@@ -226,7 +223,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/separador"  />
+            app:layout_constraintTop_toBottomOf="@id/edtEmail"  />
 
         <EditText
             android:id="@+id/edtNuevaPassword"

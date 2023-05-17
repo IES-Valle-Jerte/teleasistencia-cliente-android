@@ -115,34 +115,6 @@ public class ModificarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Solicita al usuario los permisos necesarios que no tengamos ya.
-     * @return Ddevuelve true solo si no se han tenido que pedir permisos.
-     */
-    private boolean pedirPermisos() {
-        if (!tienePermisos) {
-            List<String> missing = new ArrayList<>();
-
-            // Anotar los permitos que faltan / si faltan
-            for (String permission : REQUIRED_PERMISSIONS) {
-                int permissionCheck = ActivityCompat.checkSelfPermission(this, permission);
-                if (PackageManager.PERMISSION_DENIED == permissionCheck ) {
-                    missing.add(permission);
-                }
-            }
-
-            tienePermisos = missing.isEmpty();
-            // Si hay permisos que nos falten, solicitarlos
-            if (!tienePermisos) {
-                String[] _missing = new String[missing.size()];
-                missing.toArray(_missing);
-                ActivityCompat.requestPermissions(this, _missing, 255);
-            }
-        }
-
-        return tienePermisos;
-    }
-
-    /**
      * Extrae las referencias a las distintas vistas del layout
      */
     private void getReferenciasGUI() {
@@ -178,6 +150,47 @@ public class ModificarPerfilActivity extends AppCompatActivity {
         edtEmail.setText(usuario.getEmail());
     }
 
+
+    /**
+     * Solicita al usuario los permisos necesarios que no tengamos ya.
+     * @return Ddevuelve true solo si no se han tenido que pedir permisos.
+     */
+    private boolean pedirPermisos() {
+        if (!tienePermisos) {
+            List<String> missing = new ArrayList<>();
+
+            // Anotar los permitos que faltan / si faltan
+            for (String permission : REQUIRED_PERMISSIONS) {
+                int permissionCheck = ActivityCompat.checkSelfPermission(this, permission);
+                if (PackageManager.PERMISSION_DENIED == permissionCheck ) {
+                    missing.add(permission);
+                }
+            }
+
+            tienePermisos = missing.isEmpty();
+            // Si hay permisos que nos falten, solicitarlos
+            if (!tienePermisos) {
+                String[] _missing = new String[missing.size()];
+                missing.toArray(_missing);
+                ActivityCompat.requestPermissions(this, _missing, 255);
+            }
+        }
+
+        return tienePermisos;
+    }
+
+    /**
+     * Solicita una imagen al usuario.
+     */
+    private void pedirFoto() {
+        if (pedirPermisos()) {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*"); // Que solo se puedan elegir imagenes
+            getImagenLauncher.launch(intent);
+        }
+    }
+
+
     /**
      * Alterna la visibiliad de los paneles.
      */
@@ -201,17 +214,6 @@ public class ModificarPerfilActivity extends AppCompatActivity {
         // Imagen por defecto si no tiene
         } else {
             Utilidad.cargarImagen(R.drawable.default_user, ivFotoPerfil, Constantes.IMG_PERFIL_RADIOUS);
-        }
-    }
-
-    /**
-     * Solicita una imagen al usuario.
-     */
-    private void pedirFoto() {
-        if (pedirPermisos()) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            intent.setType("image/*"); // Que solo se puedan elegir imagenes
-            getImagenLauncher.launch(intent);
         }
     }
 
@@ -254,7 +256,7 @@ public class ModificarPerfilActivity extends AppCompatActivity {
             File tempFile = Utilidad.extraerFicheroTemporal(this, patches.getNuevaFotoPerfil());
 
             // Llamar a la API
-            Call<Usuario> call = patches.createMultipartPatchAPICall(tempFile);
+            Call<Usuario> call = patches.createMultipartPatchAPICall(tempFile, true);
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -321,7 +323,7 @@ public class ModificarPerfilActivity extends AppCompatActivity {
      */
     private void enviarCambioPassword() {
         // Llamar a la API
-        Call<Usuario> call = passwordPatch.createPatchAPICall();
+        Call<Usuario> call = passwordPatch.createPatchAPICall(true);
         call.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {

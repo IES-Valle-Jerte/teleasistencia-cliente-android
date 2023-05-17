@@ -548,7 +548,9 @@ public interface APIService {
     * Esta función enviará una solicitud POST a la URL "api-rest/users" con el cuerpo de la solicitud
     * siendo el objeto Usuario pasado como parámetro. La función también enviará el token pasado como
     * parámetro en el encabezado de la solicitud.
-    * 
+    *
+    * @deprecated Usar {@link #postUsuario(ProfilePatch, String)} o {@link #postUsuarioMultipart(Map, MultipartBody.Part, String)}
+    *
     * @param usuario El objeto que se enviará al servidor.
     * @param token El token que obtienes del inicio de sesión
     * @return Devuelve una llamada a Retrofit, que se utiliza para realizar la llamada al servidor.
@@ -557,12 +559,36 @@ public interface APIService {
     public Call<Object> addUsuario(@Body Usuario usuario, @Header("Authorization") String token);
 
 
+    /**
+     * @deprecated Usar {@link #patchUsuario(int, ProfilePatch, String)} o {@link #patchUsuarioMultipart(int, Map, MultipartBody.Part, String)}
+     *
+     * @param id
+     * @param usuario
+     * @param token
+     * @return
+     */
     @PUT("api-rest/users/{id}")
     public Call<Object> modifyUsuario(@Path("id") int id, @Body Usuario usuario, @Header("Authorization") String token);
 
     @DELETE("api-rest/users/{id}")
     Call<String> deleteUser(@Path("id") int id, @Header("Authorization") String token);
 
+    @PATCH("/api-rest/users/{id_usuario}")
+    @Multipart
+    Call<Usuario> patchUsuarioMultipart(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
+
+    @PATCH("/api-rest/users/{id_usuario}")
+    Call<Usuario> patchUsuario(@Path("id_usuario") int id_usuario, @Body ProfilePatch patches, @Header("Authorization") String token);
+
+    @POST("/api-rest/users")
+    @Multipart
+    Call<Usuario> postUsuarioMultipart(@PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
+
+    @POST("/api-rest/users")
+    Call<Usuario> postUsuario(@Body ProfilePatch patches, @Header("Authorization") String token);
+
+
+    // TODO: postUsuarioMultipart()
 
     //Peticiones de Personas
 

@@ -25,6 +25,10 @@ import retrofit2.Call;
  * esta clase 
  */
 public class ProfilePatch implements Serializable {
+    @SerializedName("first_name")
+    private String nuevoNombre;
+    @SerializedName("last_name")
+    private String nuevosApellidos;
     @SerializedName("email")
     private String nuevoEmail;
     @SerializedName("password")
@@ -41,11 +45,25 @@ public class ProfilePatch implements Serializable {
     }
 
     // Getters
+    public String getNuevoNombre() { return  nuevoNombre; }
+    public String getNuevosApellidos() { return nuevosApellidos; }
     public String getNuevoEmail() { return nuevoEmail; }
     public String getNuevaPassword() { return nuevaPassword; }
     public Uri getNuevaFotoPerfil() { return nuevaFotoPerfil; }
 
     // Setters con prevencion de errores
+    public void setNuevoNombre(String nuevoNombre) {
+        if (!usuarioAsociado.getFirstName().equals(nuevoNombre))
+            this.nuevoNombre = nuevoNombre;
+        else
+            this.nuevoNombre = null;
+    }
+    public void setNuevosApellidos(String nuevosApellidos) {
+        if (!usuarioAsociado.getLastName().equals(nuevosApellidos))
+            this.nuevosApellidos = nuevosApellidos;
+        else
+            this.nuevosApellidos = null;
+    }
     public void setNuevoEmail(String nuevoEmail) {
         if (!usuarioAsociado.getEmail().equals(nuevoEmail))
             this.nuevoEmail = nuevoEmail;
@@ -67,11 +85,17 @@ public class ProfilePatch implements Serializable {
     };
 
     /**
-     * Pasa los campos a un mapa de Parts para poder ser enviado junto a la imagen
+     * Pasa los campos a un mapa de Parts para poder ser enviado junto a la imagen.
      * @return
      */
     private Map<String, RequestBody> asPartMap() {
         Map<String, RequestBody> campos = new HashMap<>();
+        if (nuevoNombre != null) campos.put(
+            "first_name", RequestBody.create(nuevoNombre, MediaType.parse("text/plain"))
+        );
+        if (nuevosApellidos != null) campos.put(
+            "last_name", RequestBody.create(nuevosApellidos, MediaType.parse("text/plain"))
+        );
         if (nuevoEmail != null) campos.put(
             "email", RequestBody.create(nuevoEmail, MediaType.parse("text/plain"))
         );
@@ -82,7 +106,15 @@ public class ProfilePatch implements Serializable {
         return campos;
     }
 
-    public Call<Usuario> createMultipartPatchAPICall(File imageFile) {
+    /**
+     * Genera la call a la API rest para facilitar aplicar cambios a un modelo.
+     *
+     * @param imageFile fichero de imagen a pasar a la API
+     * @param isForOwn si true se usará el endpoint {@link APIService#patchPerfilMultipart(int, Map, MultipartBody.Part, String)},
+     *                 y si false se usa endpoint {@link APIService#patchUsuarioMultipart(int, Map, MultipartBody.Part, String)}
+     * @return
+     */
+    public Call<Usuario> createMultipartPatchAPICall(File imageFile, boolean isForOwn) {
         MultipartBody.Part imagenPart = null;
 
         APIService servicio = ClienteRetrofit.getInstance().getAPIService();
@@ -97,18 +129,43 @@ public class ProfilePatch implements Serializable {
         }
 
         // Cargar los cambios en la petición
-        call = servicio.patchPerfilMultipart(
+        if (isForOwn) {
+            call = servicio.patchPerfilMultipart(
                 usuarioAsociado.getPk(), this.asPartMap(), imagenPart,
-                Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
+                Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess()
+            );
+        } else {
+            call = servicio.patchUsuarioMultipart(
+                usuarioAsociado.getPk(), this.asPartMap(), imagenPart,
+                Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess()
+            );
+        }
 
         // Devolver la petición
         return call;
     }
 
-    public Call<Usuario> createPatchAPICall() {
+    /**
+     * Genera la call a la API rest para facilitar aplicar cambios a un modelo.
+     *
+     * @param isForOwn si true se usará el endpoint {@link APIService#patchPerfil(int, ProfilePatch, String)},
+     *                 y si false se usa endpoint {@link APIService#patchUsuario(int, ProfilePatch, String)}
+     * @return
+     */
+    public Call<Usuario> createPatchAPICall(boolean isForOwn) {
         APIService servicio = ClienteRetrofit.getInstance().getAPIService();
-        return servicio.patchPerfil(
+        Call<Usuario> call;
+        if (isForOwn) {
+            call = servicio.patchPerfil(
                 usuarioAsociado.getPk(), this,
-                Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
+                Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess()
+            );
+        } else {
+            call = servicio.patchUsuario(
+                    usuarioAsociado.getPk(), this,
+                    Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess()
+            );
+        }
+        return call;
     }
 }

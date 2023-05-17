@@ -127,6 +127,8 @@ public class Constantes {
     public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID_NOPASS = "Introduzca una contraseña por favor";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID = "La contraseña no cumple con los requisitos";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_REGEX = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,}$";
+    // Creacion/Modificación de Usuarios
+    public static final String TOAST_USUARIOSISTEMA_ERROR = "Ha ocurrido un error";
 
     /**
      * Constantes referentes a la gestión de Usuarios del Sistema

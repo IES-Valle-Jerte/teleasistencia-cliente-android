@@ -520,6 +520,7 @@
     <string name="modificar_perfil_tvPass">Contraseña</string>
     <string name="modificar_perfil_tvNuevaPass">Nueva Contraseña</string>
     <string name="modificar_perfil_tvRepetirNuevaPass">Repita la Contraseña</string>
+    <string name="modificar_perfil_btnGuardarNuevoUsuario">Crear Usuario</string>
     <string name="modificar_perfil_btnGuardarNuevaPassword">Guardar</string>
     <string name="modificar_perfil_btnCancelarCambioPassword">Cancelar</string>
     <string name="modificar_perfil_requisitosPassword1">• No puede ser similar a otros datos personales.</string>
@@ -540,6 +541,7 @@
     <string name="detalles_usuario_sistema_tittle_fecha_alta">Fecha de Alta</string>
     <string name="detalles_usuario_sistema_tittle_grupo">Grupo</string>
     <string name="detalles_usuario_sistema_tittle_foto_perfil">Foto de Perfil</string>
+    <string name="detalles_usuario_sistema_tittle_roles">Perfil</string>
     <string name="detalles_usuario_sistema_tittle_database">Base de datos</string>
     <!-- FIN: Usuarios del Sistema -->
 </resources>

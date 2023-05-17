@@ -130,7 +130,7 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
                     adapter = new UsuarioSistemaAdapter(lUsuarios, UsuariosSistemaFragment.this);
                     recycler.setAdapter(adapter);
                 } else {
-                    Toast.makeText(getContext(), Constantes.ERROR_AL_LISTAR_LAS_DIRECCIONES, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
                 detenerShimmer();
             }
@@ -195,7 +195,7 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
         getActivity().getSupportFragmentManager()
             .beginTransaction()
             .replace(R.id.main_fragment, EditarUsuarioSistemaFragment.newInstance(
-                    adapter.getUsuarioSelecionado(), true
+                adapter.getUsuarioSelecionado(), true
             ))
             .addToBackStack(null).commit();
 

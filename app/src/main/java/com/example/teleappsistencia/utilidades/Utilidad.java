@@ -16,30 +16,7 @@ import android.widget.ImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.teleappsistencia.R;
-import com.example.teleappsistencia.modelos.Alarma;
-import com.example.teleappsistencia.modelos.CentroSanitario;
-import com.example.teleappsistencia.modelos.CentroSanitarioEnAlarma;
-import com.example.teleappsistencia.modelos.ClasificacionAlarma;
-import com.example.teleappsistencia.modelos.ClasificacionRecurso;
-import com.example.teleappsistencia.modelos.Contacto;
-import com.example.teleappsistencia.modelos.Direccion;
 import com.example.teleappsistencia.modelos.Grupo;
-import com.example.teleappsistencia.modelos.Paciente;
-import com.example.teleappsistencia.modelos.Persona;
-import com.example.teleappsistencia.modelos.PersonaContactoEnAlarma;
-import com.example.teleappsistencia.modelos.RecursoComunitario;
-import com.example.teleappsistencia.modelos.RecursoComunitarioEnAlarma;
-import com.example.teleappsistencia.modelos.RelacionPacientePersona;
-import com.example.teleappsistencia.modelos.RelacionTerminalRecursoComunitario;
-import com.example.teleappsistencia.modelos.RelacionUsuarioCentro;
-import com.example.teleappsistencia.modelos.Teleoperador;
-import com.example.teleappsistencia.modelos.Terminal;
-import com.example.teleappsistencia.modelos.TipoAlarma;
-import com.example.teleappsistencia.modelos.TipoCentroSanitario;
-import com.example.teleappsistencia.modelos.TipoModalidadPaciente;
-import com.example.teleappsistencia.modelos.TipoRecursoComunitario;
-import com.example.teleappsistencia.modelos.TipoSituacion;
-import com.example.teleappsistencia.modelos.TipoVivienda;
 import com.example.teleappsistencia.modelos.Token;
 import com.example.teleappsistencia.modelos.Usuario;
 import com.example.teleappsistencia.websocket.AlarmaWebSocketListener;
@@ -51,11 +28,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -643,6 +618,26 @@ public class Utilidad {
 
     public static boolean isSuperUser() {
         return isSuperUser;
+    }
+
+    public static Grupo getGrupoUser(Usuario user) {
+        // Sacamos la lista de grupos y como solo debe contener 1, lo devolvemos como grupo
+        List<Grupo> gruposList = (ArrayList) user.getGroups();
+        return null == gruposList || gruposList.isEmpty() ? null
+                : (Grupo) Utilidad.getObjeto(gruposList.get(0), Constantes.GRUPO);
+    }
+
+    public static boolean isAdmin(Usuario user) {
+        Grupo grupo = getGrupoUser(user);
+        return null != grupo
+            && grupo.getName().equalsIgnoreCase(Constantes.PROFESOR)
+            || grupo.getName().equalsIgnoreCase(Constantes.ADMINISTRADOR);
+    }
+
+    public static boolean isSuperUser(Usuario user) {
+        Grupo grupo = getGrupoUser(user);
+        return null != grupo
+            && grupo.getName().equalsIgnoreCase(Constantes.ADMINISTRADOR);
     }
 
     public static void setIsAdmin(boolean isAdmin) {
