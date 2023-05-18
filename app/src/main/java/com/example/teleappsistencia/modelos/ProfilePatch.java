@@ -1,5 +1,6 @@
 package com.example.teleappsistencia.modelos;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.example.teleappsistencia.servicios.APIService;
@@ -17,6 +18,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Clase "ProfilePatch" utilizada para mandar los cambios sobre un usuario del sistema al servidor.
@@ -109,35 +111,46 @@ public class ProfilePatch implements Serializable {
     /**
      * Genera la call a la API rest para facilitar aplicar cambios a un modelo.
      *
-     * @param imageFile fichero de imagen a pasar a la API
-     * @param isForOwn si true se usará el endpoint {@link APIService#patchPerfilMultipart(int, Map, MultipartBody.Part, String)},
-     *                 y si false se usa endpoint {@link APIService#patchUsuarioMultipart(int, Map, MultipartBody.Part, String)}
-     * @return
+     * @param context {@link Context} del fragment/activity que llama al método.
+     * @param isForSelf Indica si estamos modificando nuestro perfil u otro usuario.
+     *                 <ul>
+     *                   <li>Si true se usará el endpoint {@link APIService#patchPerfilMultipart(int, Map, MultipartBody.Part, String)}</li>
+     *                   <li>Si false se usa endpoint {@link APIService#patchUsuarioMultipart(int, Map, MultipartBody.Part, String)}</li>
+     *                 </ul>
+     * @return {@link Call} que podemos invocar directamente con {@link Call#enqueue(Callback)}
      */
-    public Call<Usuario> createMultipartPatchAPICall(File imageFile, boolean isForOwn) {
-        MultipartBody.Part imagenPart = null;
-
+    public Call<Usuario> createMultipartPatchAPICall(Context context, boolean isForSelf) {
         APIService servicio = ClienteRetrofit.getInstance().getAPIService();
         Call<Usuario> call;
 
-        // Sacamos el fichero de la nueva foto de perfil y creamos multipart-part para pasarlo al servidor
-        if (null != nuevaFotoPerfil && null != imageFile) {
+        // Crear fichero temporal para poder mandar la imagen
+        File tempFile = (null == nuevaFotoPerfil) ? null
+            : Utilidad.extraerFicheroTemporal(context, nuevaFotoPerfil);
+
+        // Crear el wrapper Multipart.Part para la imagen
+        MultipartBody.Part imagenPart = null;
+        if (null != tempFile) {
             imagenPart = MultipartBody.Part.createFormData(
-                    "imagen", imageFile.getName(),
-                    RequestBody.create(imageFile, MediaType.parse("image/*"))
+                "imagen", tempFile.getName(),
+                RequestBody.create(tempFile, MediaType.parse("image/*"))
             );
         }
 
-        // Cargar los cambios en la petición
-        if (isForOwn) {
+        // Crear la call
+        if (isForSelf) {
+            // Para modificar nuestro perfil
             call = servicio.patchPerfilMultipart(
-                usuarioAsociado.getPk(), this.asPartMap(), imagenPart,
-                Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess()
+                usuarioAsociado.getPk(),
+                this.asPartMap(), imagenPart,
+                Utilidad.getAuthorization()
             );
+
         } else {
+            // Para modificar otro usuario
             call = servicio.patchUsuarioMultipart(
-                usuarioAsociado.getPk(), this.asPartMap(), imagenPart,
-                Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess()
+                usuarioAsociado.getPk(),
+                this.asPartMap(), imagenPart,
+                Utilidad.getAuthorization()
             );
         }
 
@@ -146,26 +159,32 @@ public class ProfilePatch implements Serializable {
     }
 
     /**
-     * Genera la call a la API rest para facilitar aplicar cambios a un modelo.
+     * Genera la call a la API rest para facilitar aplicar dar de alta usuarios.
      *
-     * @param isForOwn si true se usará el endpoint {@link APIService#patchPerfil(int, ProfilePatch, String)},
-     *                 y si false se usa endpoint {@link APIService#patchUsuario(int, ProfilePatch, String)}
-     * @return
+     * @param context {@link Context} del fragment/activity que llama al método.
+     * @return {@link Call} que podemos invocar directamente con {@link Call#enqueue(Callback)}
      */
-    public Call<Usuario> createPatchAPICall(boolean isForOwn) {
+    public Call<Usuario> createMultipartPostAPICall(Context context) {
         APIService servicio = ClienteRetrofit.getInstance().getAPIService();
         Call<Usuario> call;
-        if (isForOwn) {
-            call = servicio.patchPerfil(
-                usuarioAsociado.getPk(), this,
-                Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess()
-            );
-        } else {
-            call = servicio.patchUsuario(
-                    usuarioAsociado.getPk(), this,
-                    Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess()
+
+        // Crear fichero temporal para poder mandar la imagen
+        File tempFile = (null == nuevaFotoPerfil) ? null
+            : Utilidad.extraerFicheroTemporal(context, nuevaFotoPerfil);
+
+        // Crear el wrapper Multipart.Part para la imagen
+        MultipartBody.Part imagenPart = null;
+        if (null != tempFile) {
+            imagenPart = MultipartBody.Part.createFormData(
+                "imagen", tempFile.getName(),
+                RequestBody.create(tempFile, MediaType.parse("image/*"))
             );
         }
-        return call;
+
+        // Crear la callaser
+        return servicio.postUsuarioMultipart(
+            this.asPartMap(), imagenPart,
+            Utilidad.getAuthorization()
+        );
     }
 }

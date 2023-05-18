@@ -1,5 +1,7 @@
 package com.example.teleappsistencia.servicios;
 
+import android.content.Context;
+
 import com.example.teleappsistencia.modelos.CentroSanitario;
 import com.example.teleappsistencia.modelos.ProfilePatch;
 import com.example.teleappsistencia.modelos.RecursoComunitario;
@@ -141,17 +143,6 @@ public interface APIService {
 
     @DELETE("/api-rest/tipo_recurso_comunitario/{id_dato}")
     public Call<Response<String>> deleteTipoRecursoComunitario(@Path ("id_dato") int id_dato, @Header("Authorization") String token);
-
-    @GET("api-rest/profile")
-    public Call<List<Usuario>> getUsuarioLogueado(@Header("Authorization") String token);
-
-    @PATCH("/api-rest/profile/{id_usuario}")
-    @Multipart
-    Call<Usuario> patchPerfilMultipart(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
-
-    @PATCH("/api-rest/profile/{id_usuario}")
-    Call<Usuario> patchPerfil(@Path("id_usuario") int id_usuario, @Body ProfilePatch patches, @Header("Authorization") String token);
-
 
     // Peticiones de Direccion
 
@@ -519,7 +510,6 @@ public interface APIService {
     Call<Terminal> updateTerminal(@Path("id") int id, @Body Terminal terminal, @Header("Authorization") String token);
 
     // Peticiones de Usuarios
-
     /**
      * Esta función devolverá una llamada al servidor y pasará el token especificado en el encabezado de
      * Autorización.
@@ -549,46 +539,62 @@ public interface APIService {
     * siendo el objeto Usuario pasado como parámetro. La función también enviará el token pasado como
     * parámetro en el encabezado de la solicitud.
     *
-    * @deprecated Usar {@link #postUsuario(ProfilePatch, String)} o {@link #postUsuarioMultipart(Map, MultipartBody.Part, String)}
+    * @deprecated Usar {@link #postUsuarioMultipart(Map, MultipartBody.Part, String)}
     *
     * @param usuario El objeto que se enviará al servidor.
     * @param token El token que obtienes del inicio de sesión
     * @return Devuelve una llamada a Retrofit, que se utiliza para realizar la llamada al servidor.
     */
     @POST("api-rest/users")
-    public Call<Object> addUsuario(@Body Usuario usuario, @Header("Authorization") String token);
+    Call<Object> addUsuario(@Body Usuario usuario, @Header("Authorization") String token);
 
 
     /**
-     * @deprecated Usar {@link #patchUsuario(int, ProfilePatch, String)} o {@link #patchUsuarioMultipart(int, Map, MultipartBody.Part, String)}
+     * @deprecated Usar {@link #patchUsuarioMultipart(int, Map, MultipartBody.Part, String)}
      *
      * @param id
      * @param usuario
      * @param token
      * @return
      */
-    @PUT("api-rest/users/{id}")
-    public Call<Object> modifyUsuario(@Path("id") int id, @Body Usuario usuario, @Header("Authorization") String token);
+    @PUT("/api-rest/users/{id}")
+    Call<Object> modifyUsuario(@Path("id") int id, @Body Usuario usuario, @Header("Authorization") String token);
 
-    @DELETE("api-rest/users/{id}")
+    @DELETE("/api-rest/users/{id}")
     Call<String> deleteUser(@Path("id") int id, @Header("Authorization") String token);
 
+    /**
+     * Se utiliza para modificar los datos de otro usuario.
+     * @param modificaciones POJO "parcial" (los campos nulos se ignoran) convertido a un mapa de {@link RequestBody}
+     * @param image [Opcional] Nueva imagen de perfil del usuario.
+     * @see ProfilePatch#createMultipartPatchAPICall(Context, boolean)
+     */
     @PATCH("/api-rest/users/{id_usuario}")
     @Multipart
     Call<Usuario> patchUsuarioMultipart(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
 
-    @PATCH("/api-rest/users/{id_usuario}")
-    Call<Usuario> patchUsuario(@Path("id_usuario") int id_usuario, @Body ProfilePatch patches, @Header("Authorization") String token);
-
+    /**
+     * Se utiliza para dar de alta a un nuevo Usuario.
+     * @param modificaciones POJO "parcial" (los campos nulos se ignoran) convertido a un mapa de {@link RequestBody}
+     * @param image [Opcional] Nueva imagen de perfil del usuario.
+     * @see ProfilePatch#createMultipartPostAPICall(Context)
+     */
     @POST("/api-rest/users")
     @Multipart
     Call<Usuario> postUsuarioMultipart(@PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
+    // PROFILE
+    @GET("/api-rest/profile")
+    Call<List<Usuario>> getUsuarioLogueado(@Header("Authorization") String token);
 
-    @POST("/api-rest/users")
-    Call<Usuario> postUsuario(@Body ProfilePatch patches, @Header("Authorization") String token);
-
-
-    // TODO: postUsuarioMultipart()
+    /**
+     * Se utiliza para modificar el perfil de un usuario (deber ser el mismo que el usuario loggeado)
+     * @param modificaciones POJO "parcial" (los campos nulos se ignoran) convertido a un mapa de {@link RequestBody}
+     * @param image [Opcional] fichero de imagen a
+     * @see ProfilePatch#createMultipartPatchAPICall(Context, boolean)
+     */
+    @PATCH("/api-rest/profile/{id_usuario}")
+    @Multipart
+    Call<Usuario> patchPerfilMultipart(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
 
     //Peticiones de Personas
 

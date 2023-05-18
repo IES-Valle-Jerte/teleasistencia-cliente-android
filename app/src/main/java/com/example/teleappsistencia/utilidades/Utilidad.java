@@ -630,8 +630,8 @@ public class Utilidad {
     public static boolean isAdmin(Usuario user) {
         Grupo grupo = getGrupoUser(user);
         return null != grupo
-            && grupo.getName().equalsIgnoreCase(Constantes.PROFESOR)
-            || grupo.getName().equalsIgnoreCase(Constantes.ADMINISTRADOR);
+            && (grupo.getName().equalsIgnoreCase(Constantes.PROFESOR)
+            || grupo.getName().equalsIgnoreCase(Constantes.ADMINISTRADOR));
     }
 
     public static boolean isSuperUser(Usuario user) {

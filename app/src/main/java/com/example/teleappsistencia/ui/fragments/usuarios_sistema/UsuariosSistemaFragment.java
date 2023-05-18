@@ -103,20 +103,20 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
         lManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(lManager);
 
-        // Mostrar el Shimmer mientras cargan los datos
-        iniciarShimmer();
         // Cargar datos en el RecyclerView
-        cargarUsuarios(view);
+        cargarUsuarios();
 
         return view;
     }
 
     /**
      * Método para obtener una lista de usuarios de la API para luego mostrarlos en un RecyclerView
-     *
-     * @param view Vista
      */
-    private void cargarUsuarios(View view) {
+    private void cargarUsuarios() {
+        // Mostrar el Shimmer mientras cargan los datos
+        iniciarShimmer();
+
+        // Empezar la llamada a la API
         APIService apiService = ClienteRetrofit.getInstance().getAPIService();
 
         Call<List<Usuario>> call = apiService.getUsuarios(Constantes.BEARER + Utilidad.getToken().getAccess());
@@ -132,12 +132,16 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
                 } else {
                     Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
+
+                // Detener el shimmer
                 detenerShimmer();
             }
 
             @Override
             public void onFailure(Call<List<Usuario>> call, Throwable t) {
                 t.printStackTrace();
+
+                // Detener el shimmer
                 detenerShimmer();
             }
         });
@@ -156,8 +160,8 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
      * Finaliza la animación del Shimmer y lo oculta.
      */
     private void detenerShimmer() {
-        shimmerPlaceholder.setVisibility(View.GONE);
         shimmerPlaceholder.stopShimmer();
+        shimmerPlaceholder.setVisibility(View.GONE);
         layoutContenido.setVisibility(View.VISIBLE);
     }
 
@@ -170,36 +174,36 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
     private void cargarFragmentNuevoUsuario() {
         Usuario newUser = new Usuario();
         getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_fragment, EditarUsuarioSistemaFragment.newInstance(
-                        newUser, false
-                ))
-                .addToBackStack(null).commit();
-
-        // TODO recargar lista usuarios y/o notificar cambio
+            .beginTransaction()
+            .replace(R.id.main_fragment, EditarUsuarioSistemaFragment.newInstance(
+                newUser, false
+            ))
+            .addToBackStack(null).commit();
     }
 
     // ! Acciones del OpcionesListaFragment
     @Override
     public void onViewDetailsButtonClicked() {
-        getActivity().getSupportFragmentManager()
-            .beginTransaction()
-            .replace(R.id.main_fragment, DetallesUsuarioSistemaFragment.newInstance(
-                adapter.getUsuarioSelecionado()
-            ))
-            .addToBackStack(null).commit();
+        Usuario user = adapter.getUsuarioSelecionado();
+        if (user != null) {
+            getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, DetallesUsuarioSistemaFragment.newInstance(user))
+                .addToBackStack(null).commit();
+        }
     }
 
     @Override
     public void onEditButtonClicked() {
-        getActivity().getSupportFragmentManager()
-            .beginTransaction()
-            .replace(R.id.main_fragment, EditarUsuarioSistemaFragment.newInstance(
-                adapter.getUsuarioSelecionado(), true
-            ))
-            .addToBackStack(null).commit();
-
-        // TODO recargar lista usuarios y/o notificar cambio
+        Usuario user = adapter.getUsuarioSelecionado();
+        if (user != null) {
+            getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, EditarUsuarioSistemaFragment.newInstance(
+                    user, true
+                ))
+                .addToBackStack(null).commit();
+        }
     }
 
     @Override

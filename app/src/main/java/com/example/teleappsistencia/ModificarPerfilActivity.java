@@ -252,11 +252,8 @@ public class ModificarPerfilActivity extends AppCompatActivity {
      */
     private void enviarModificacionesPerfil() {
         try {
-            // Hacemos una copia en caché de la foto para poder subirla (si hay una foto)
-            File tempFile = Utilidad.extraerFicheroTemporal(this, patches.getNuevaFotoPerfil());
-
             // Llamar a la API
-            Call<Usuario> call = patches.createMultipartPatchAPICall(tempFile, true);
+            Call<Usuario> call = patches.createMultipartPatchAPICall(this, true);
             call.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -323,7 +320,7 @@ public class ModificarPerfilActivity extends AppCompatActivity {
      */
     private void enviarCambioPassword() {
         // Llamar a la API
-        Call<Usuario> call = passwordPatch.createPatchAPICall(true);
+        Call<Usuario> call = passwordPatch.createMultipartPatchAPICall(this, true);
         call.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
