@@ -15,23 +15,29 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.teleappsistencia.modelos.Database;
 import com.example.teleappsistencia.modelos.ProfilePatch;
 import com.example.teleappsistencia.modelos.Usuario;
+import com.example.teleappsistencia.servicios.APIService;
+import com.example.teleappsistencia.servicios.ClienteRetrofit;
+import com.example.teleappsistencia.ui.fragments.usuarios_sistema.DatabaseAdapter;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,7 +55,7 @@ public class ModificarPerfilActivity extends AppCompatActivity {
 
     ImageButton btnCargarFoto;
 
-    Button btnGuardarCambios, btnCambiarPassword;
+    Button btnCambiarDatabase, btnGuardarCambios, btnCambiarPassword;
     EditText edtNombre, edtApellidos, edtEmail;
 
     // Panel: Cambio de Contraseña
@@ -57,9 +63,17 @@ public class ModificarPerfilActivity extends AppCompatActivity {
     EditText edtNuevaPassword, edtRepetirNuevaPassword;
     Button btnGuardarNuevaPassword, btnCancelarCambioPassword;
 
+    // Panel: Cambio de Database
+    ConstraintLayout panelCambiarDatabase;
+    Spinner spinDatabases;
+    Button btnGuardarNuevaDatabase, btnCancelarCambioDatabase;
+
     // Elementos necesarios para el funcionamiento de la clase
     Usuario usuario; ProfilePatch patches; ProfilePatch passwordPatch;
     ActivityResultLauncher<Intent> getImagenLauncher;
+
+    List<Database> databases;
+    private DatabaseAdapter adapter;
 
     // Permisos necesarios
     private static final List<String> REQUIRED_PERMISSIONS = Arrays.asList(
@@ -88,12 +102,20 @@ public class ModificarPerfilActivity extends AppCompatActivity {
         // Conectar acciones
         btnCargarFoto.setOnClickListener(_v -> pedirFoto());
         btnGuardarCambios.setOnClickListener(_v -> guardarCambiosDatos());
-        btnCambiarPassword.setOnClickListener(_v -> alternarPanelesVisibles());
+
+        btnCambiarDatabase.setOnClickListener(_v -> alternarPanelesCambioDatabase());
+        btnCambiarPassword.setOnClickListener(_v -> alternarPanelesCambioPassword());
+
+        btnGuardarNuevaDatabase.setOnClickListener(_v -> guardarNuevaDatabase());
+        btnCancelarCambioDatabase.setOnClickListener(_v -> {
+            Toast.makeText(this, Constantes.TOAST_MODPERFIL_CAMBIODB_CANCELADO, Toast.LENGTH_SHORT).show();
+            alternarPanelesCambioDatabase();
+        });
 
         btnGuardarNuevaPassword.setOnClickListener(_v -> guardarNuevaPassword());
         btnCancelarCambioPassword.setOnClickListener(_v -> {
             Toast.makeText(this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_CANCELADO, Toast.LENGTH_SHORT).show();
-            alternarPanelesVisibles();
+            alternarPanelesCambioPassword();
         });
     }
 
@@ -126,6 +148,9 @@ public class ModificarPerfilActivity extends AppCompatActivity {
         edtApellidos = findViewById(R.id.edtApellidos);
         edtEmail = findViewById(R.id.edtEmail);
         btnCargarFoto = findViewById(R.id.btnCargarFoto);
+        btnCambiarDatabase = findViewById(R.id.btnCambiarDatabase);
+        btnGuardarNuevaDatabase = findViewById(R.id.btnGuardarNuevaDatabase);
+        btnCancelarCambioDatabase = findViewById(R.id.btnCancelarCambioDatabase);
         btnCambiarPassword = findViewById(R.id.btnCambiarPassword);
         btnGuardarCambios = findViewById(R.id.btnGuardarCambios);
         // Panel: Cambio de Contraseña
@@ -134,6 +159,59 @@ public class ModificarPerfilActivity extends AppCompatActivity {
         edtRepetirNuevaPassword = findViewById(R.id.edtRepetirNuevaPassword);
         btnCancelarCambioPassword = findViewById(R.id.btnCancelarCambioPassword);
         btnGuardarNuevaPassword = findViewById(R.id.btnGuardarNuevaPassword);
+        // Panel: Cambio de Database
+        panelCambiarDatabase = findViewById(R.id.panelCambiarDatabase);
+        spinDatabases = findViewById(R.id.spinDatabases);
+        btnGuardarNuevaDatabase = findViewById(R.id.btnGuardarNuevaDatabase);
+        btnCancelarCambioDatabase = findViewById(R.id.btnCancelarCambioDatabase);
+
+        if (!Utilidad.isSuperUser()) {
+            btnCambiarDatabase.setVisibility(View.GONE);
+        } else {
+            cargarOpcionesSpinnerDatabases();
+        }
+    }
+
+    /**
+     * Carga los distintos grupos como opciones del spinner.
+     * Solo tendremos la opción de Administrador si somos administradores también, o el user es admin.
+     */
+    private void cargarOpcionesSpinnerDatabases() {
+        APIService service = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Database>> call = service.getDatabases(Utilidad.getAuthorization());
+
+        call.enqueue(new Callback<List<Database>>() {
+            @Override
+            public void onResponse(Call<List<Database>> call, Response<List<Database>> response) {
+                if (response.isSuccessful()) {
+                    databases = response.body();
+
+                    // Cargar datos en el Spinner
+                    adapter = new DatabaseAdapter(ModificarPerfilActivity.this, databases);
+
+                    spinDatabases.setPrompt("");
+                    spinDatabases.setAdapter(adapter);
+
+                    // Encontrar la database actual
+                    int databaseIndex = IntStream.range(0, databases.size())
+                        // Los grupos sacados de APIService.getGrupos() tienen PK
+                        // y los grupos de los Usuarios tienen ID
+                        .filter(i -> databases.get(i).getId() == usuario.getDatabase())
+                        .findFirst().orElse(-1);
+                    spinDatabases.setSelection(databaseIndex);
+
+                    // Proceder a cargar los datos del usuario
+                    cargarDatosUser();
+                } else {
+                    Toast.makeText(ModificarPerfilActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Database>> call, Throwable t) {
+                Toast.makeText(ModificarPerfilActivity.this, Constantes.TOAST_USUARIOSISTEMA_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
@@ -194,7 +272,12 @@ public class ModificarPerfilActivity extends AppCompatActivity {
     /**
      * Alterna la visibiliad de los paneles.
      */
-    private void alternarPanelesVisibles() {
+    private void alternarPanelesCambioDatabase() {
+        Utilidad.alternarVista(panelDatos);
+        Utilidad.alternarVista(panelCambiarDatabase);
+    }
+
+    private void alternarPanelesCambioPassword() {
         Utilidad.alternarVista(panelDatos);
         Utilidad.alternarVista(panelCambiarPassword);
 
@@ -291,6 +374,35 @@ public class ModificarPerfilActivity extends AppCompatActivity {
     }
 
     /**
+     * Intenta confirmar los contraseñas y enviarlos al servidor
+     */
+    private void guardarNuevaDatabase() {
+        Database selectedDb = (Database) spinDatabases.getSelectedItem();
+
+        if (selectedDb != null) {
+            APIService servicio = ClienteRetrofit.getInstance().getAPIService();
+            Call<Usuario> call = servicio.patchPerfilCambioBatabase(usuario.getPk(), selectedDb.getId() ,Utilidad.getAuthorization());
+
+            call.enqueue(new Callback<Usuario>() {
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                    if (response.isSuccessful()) {
+                        alternarPanelesCambioDatabase();
+                        Toast.makeText(ModificarPerfilActivity.this, Constantes.TOAST_MODPERFIL_CAMBIODB_CORRECTO, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ModificarPerfilActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+                    Toast.makeText(ModificarPerfilActivity.this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_API_ERROR, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    /**
      * Intenta validar los EditText de las contaseñas nuevas.
      *
      * @return true si son válidas.
@@ -325,10 +437,10 @@ public class ModificarPerfilActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 if (response.isSuccessful()) {
-                    alternarPanelesVisibles();
+                    alternarPanelesCambioPassword();
                     Toast.makeText(ModificarPerfilActivity.this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_CORRECTO, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(ModificarPerfilActivity.this, Constantes.TOAST_MODPERFIL_CAMBIOPASS_INVALID, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ModificarPerfilActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 

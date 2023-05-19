@@ -11,20 +11,34 @@
         android:layout_height="wrap_content" >
 
         <!-- ID y URL (campos inmutables) -->
-        <TextView
-            android:id="@+id/tvId"
-            android:text="@string/campoVacio"
-            android:gravity="center_horizontal"
+        <LinearLayout
+            android:id="@+id/wrapperID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:textSize="28sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvId"
+                android:text="@string/campoVacio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchActivo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:checked="true" />
+        </LinearLayout>
         <TextView
             android:id="@+id/tvUrl"
             android:text="@string/campoVacio"
@@ -38,7 +52,7 @@
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvId" />
+            app:layout_constraintTop_toBottomOf="@id/wrapperID" />
 
         <!-- Imagen de perfil -->
         <ImageView
@@ -116,20 +130,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/spinRoles" />
+
+        <!-- Nombre -->
         <EditText
             android:id="@+id/edtUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="30dp"
             android:gravity="center_horizontal"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleUsername" />
 
-        <!-- Nombre -->
         <TextView
             android:id="@+id/titleNombre"
             android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -58,8 +59,10 @@ public class EditarUsuarioSistemaFragment extends Fragment {
     private boolean editMode;
 
     private List<Grupo> grupos;
+    private GrupoAdapter adapter;
 
     // Referencias GUI
+    SwitchCompat switchActivo;
     TextView tvId, tvUrl;
     ImageView ivFotoPerfil;
     ImageButton btnCargarFoto;
@@ -117,7 +120,7 @@ public class EditarUsuarioSistemaFragment extends Fragment {
         // Conectar acciones
         btnCargarFoto.setOnClickListener(_v -> pedirFoto());
         btnGuardar.setOnClickListener(_v -> guardar());
-        btnCancelar.setOnClickListener(_v -> cancelar());
+        btnCancelar.setOnClickListener(_v -> cerrarFragment());
 
         // Cargar opciones de los spinners y después cargar los datos del usuario
         cargarOpcionesSpinnerRoles();
@@ -129,6 +132,8 @@ public class EditarUsuarioSistemaFragment extends Fragment {
      * Extrae las referencias a las distintas vistas del layout
      */
     private void getReferenciasGUI(View view) {
+        switchActivo = view.findViewById(R.id.switchActivo);
+
         tvId = view.findViewById(R.id.tvId);
         tvUrl = view.findViewById(R.id.tvUrl);
         ivFotoPerfil = view.findViewById(R.id.ivFotoPerfil);
@@ -162,23 +167,29 @@ public class EditarUsuarioSistemaFragment extends Fragment {
                     grupos = response.body();
 
                     // Si no somos administradores, quitaremos la opción de ser administrador
-                    if (!Utilidad.isSuperUser()) {
-                        // A menos que estemos modificando un usuario y sea administrador
-                        if (!editMode && Utilidad.isSuperUser(usuario)) {
-                            grupos = grupos.stream()
-                                // Filtramos todos los grupos que no sean el de administrador
-                                .filter(g -> !g.getName().equalsIgnoreCase(Constantes.ADMINISTRADOR))
-                                // Volvemos a parar a una lista de objetos
-                                .collect(Collectors.toCollection(ArrayList::new));
-                        }
+                    // A menos que estemos modificando un usuario y sea administrador
+                    if (!(Utilidad.isSuperUser() || Utilidad.isSuperUser(usuario))
+                    ) {
+                        grupos = grupos.stream()
+                            // Filtramos todos los grupos que no sean el de administrador
+                            .filter(g -> !g.getName().equalsIgnoreCase(Constantes.ADMINISTRADOR))
+                            // Volvemos a parar a una lista de objetos
+                            .collect(Collectors.toCollection(ArrayList::new));
                     }
 
                     // Cargar datos en el Spinner
-                    GrupoAdapter adapter = new GrupoAdapter(getContext(), grupos);
+                    adapter = new GrupoAdapter(getContext(), grupos);
 
                     spinRoles.setPrompt("");
                     spinRoles.setAdapter(adapter);
-                    spinRoles.setSelection(-1);
+
+                    // Encontrar el rol de Teleoperador
+                    int teleoperadorIndex = IntStream.range(0, grupos.size())
+                        // Los grupos sacados de APIService.getGrupos() tienen PK
+                        // y los grupos de los Usuarios tienen ID
+                        .filter(i -> grupos.get(i).getName().equalsIgnoreCase("teleoperador"))
+                        .findFirst().orElse(-1);
+                    spinRoles.setSelection(teleoperadorIndex);
 
                     // Proceder a cargar los datos del usuario
                     cargarDatosUser();
@@ -207,6 +218,8 @@ public class EditarUsuarioSistemaFragment extends Fragment {
 
         // No cargaremos ningun dato si estamos creando un nuevo usuario
         if (editMode) {
+            switchActivo.setChecked(null != usuario.getActive() && usuario.getActive());
+
             tvId.setText(String.format("ID: %d", usuario.getPk()));
             tvUrl.setText(usuario.getUrl());
 
@@ -237,14 +250,16 @@ public class EditarUsuarioSistemaFragment extends Fragment {
      */
     private void cargarImagenUser() {
         // Nueva imagen cargada por el usuario
-        if (patches.getNuevaFotoPerfil() != null) {
+        if (null != patches.getNuevaFotoPerfil())
             Utilidad.cargarImagen(patches.getNuevaFotoPerfil(), ivFotoPerfil, Constantes.IMG_PERFIL_RADIOUS_LISTA);
-        } else if (usuario.getImagen() != null) {
+
+        // Imagen del usuario
+        else if (null != usuario.getImagen())
             Utilidad.cargarImagen(usuario.getImagen().getUrl(), ivFotoPerfil, Constantes.IMG_PERFIL_RADIOUS_LISTA);
-            // Imagen por defecto si no tiene
-        } else {
-            Utilidad.cargarImagen(R.drawable.default_user, ivFotoPerfil, Constantes.IMG_PERFIL_RADIOUS_LISTA);
-        }
+
+        // Imagen por defecto si no tiene
+        else Utilidad.cargarImagen(R.drawable.default_user, ivFotoPerfil, Constantes.IMG_PERFIL_RADIOUS_LISTA);
+
     }
 
     /**
@@ -253,24 +268,150 @@ public class EditarUsuarioSistemaFragment extends Fragment {
      */
     private void adaptarViews() {
         // Si estamos en modo de creación de usuario
-        if (!editMode) {
-            btnGuardar.setText(R.string.modificar_perfil_btnGuardarNuevoUsuario);
-            tvId.setVisibility(View.GONE);
-            tvUrl.setVisibility(View.GONE);
-        } else {
-            edtNuevaPassword.setHint(R.string.modificar_perfil_tvPass);
-            // Si modificamos un administrador, bloqueamos el spinner
-            if (Utilidad.isSuperUser(usuario)) {
+        if (editMode) {
+            // Si modificamos un administrador y no lo somos, bloqueamos el spinner
+            if (Utilidad.isSuperUser(usuario) && !Utilidad.isSuperUser()) {
                 spinRoles.setEnabled(false);
             }
+        } else {
+            btnGuardar.setText(R.string.modificar_perfil_btnGuardarNuevoUsuario);
+            edtNuevaPassword.setHint(R.string.modificar_perfil_tvPass);
+            switchActivo.setVisibility(View.GONE);
+            tvId.setVisibility(View.GONE);
+            tvUrl.setVisibility(View.GONE);
         }
     }
 
-    private void guardar() {
-        // TODO
+    private void cerrarFragment() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
-    private void cancelar() {
-        // TODO
+
+    private void guardar() {
+        // Cargar los cambios
+        patches.setActive(switchActivo.isChecked());
+        patches.setNuevoUsername(edtUsername.getText().toString().trim());
+        patches.setNuevoGrupo(((Grupo) spinRoles.getSelectedItem()).getPk());
+        patches.setNuevoNombre(edtNombre.getText().toString().trim());
+        patches.setNuevosApellidos(edtApellidos.getText().toString().trim());
+        patches.setNuevoEmail(edtEmail.getText().toString().trim());
+        patches.setNuevaPassword(edtNuevaPassword.getText().toString());
+
+        // Procesar
+        if (editMode) actualizarUsuario();
+        else crearUsuario();
+    }
+
+    private void crearUsuario() {
+        if (patches.hasPatches()) {
+            if (validarDatos()) {
+                Call<Usuario> call = patches.createMultipartPostAPICall(getContext());
+                call.enqueue(new Callback<Usuario>() {
+                    @Override
+                    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                        if (response.isSuccessful()) {
+                            Usuario userModificado = response.body();
+                            Utilidad.setUserLogged(userModificado);
+                            Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_OK_CREAR, Toast.LENGTH_SHORT).show();
+                            cerrarFragment();
+                        } else {
+                            Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Usuario> call, Throwable t) {
+                        Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_ERROR_CREAR, Toast.LENGTH_SHORT).show();
+                        cerrarFragment();
+                    }
+                });
+            }
+        } else {
+            Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_EMPTY_PATCHES, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void actualizarUsuario() {
+        // Si se han hecho alguna modificación continualmos
+        if (patches.hasPatches()) {
+            if (validarDatos()) {
+                Call<Usuario> call = patches.createMultipartPatchAPICall(getContext(), false);
+                call.enqueue(new Callback<Usuario>() {
+                    @Override
+                    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                        if (response.isSuccessful()) {
+                            Usuario userModificado = response.body();
+                            Utilidad.setUserLogged(userModificado);
+                            Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_OK_EDITAR, Toast.LENGTH_SHORT).show();
+                            cerrarFragment();
+                        } else {
+                            Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Usuario> call, Throwable t) {
+                        Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_ERROR_EDITAR, Toast.LENGTH_SHORT).show();
+                        cerrarFragment();
+                    }
+                });
+            }
+        } else cerrarFragment();
+    }
+
+    /**
+     * Intenta validar todos los campos, si hay probelmas con alguno lo notificará.
+     * @return true si todos los campos son válidos.
+     */
+    private boolean validarDatos() {
+        // Quitarle el username cuando modificamos, o no le porle un username cuando creamos
+        if (edtUsername.getText().toString().trim().isEmpty()) {
+            Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_EMPTY_USERNAME, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // Nombre no relleno
+        else if (edtNombre.getText().toString().trim().isEmpty()) {
+            Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_EMPTY_FIRSTNAME, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // Apellidos no rellenos
+        else if (edtApellidos.getText().toString().trim().isEmpty()) {
+            Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_EMPTY_LASTNAME, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        // Email relleno e invalido
+        else if (!Utilidad.validarFormatoEmail(edtEmail)) {
+            Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_EMPTY_INVALID_MAIL, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else return validarNuevaPassword();
+    }
+
+    /**
+     * Intenta validar los EditText de las contaseñas (obligatorias si {@link #editMode} es false).
+     *
+     * @return true si son válidas.
+     * @see Utilidad#validatePassword(EditText)
+     */
+    private boolean validarNuevaPassword() {
+        // Nos saltamos la verificación si no se intenta cambiar la contraseña durante la modificación
+        if (editMode && null == patches.getNuevaPassword()) return true;
+
+        String pass1 = edtNuevaPassword.getText().toString(),
+               pass2 = edtRepetirNuevaPassword.getText().toString();
+
+        if (pass1.trim().isEmpty() && pass2.trim().isEmpty()) {
+            Toast.makeText(getContext(), Constantes.TOAST_MODPERFIL_CAMBIOPASS_INVALID_NOPASS, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (!pass1.equals(pass2)) {
+            Toast.makeText(getContext(), Constantes.TOAST_MODPERFIL_CAMBIOPASS_INVALID_DIFFERENT, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (!Utilidad.validatePassword(edtNuevaPassword) || !Utilidad.validatePassword(edtRepetirNuevaPassword)) {
+            Toast.makeText(getContext(), Constantes.TOAST_MODPERFIL_CAMBIOPASS_INVALID, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else return true;
     }
 
     // =============================== Para peticion de ficheros ===============================

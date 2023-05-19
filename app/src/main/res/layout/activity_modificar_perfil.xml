@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ModificarPerfilActivity"
-    android:background="@drawable/fondo">
-
+    tools:context=".ModificarPerfilActivity">
 
     <!-- Toolbar de la app -->
     <include
@@ -45,6 +43,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Imagen de perfil -->
+        <Button
+            android:id="@+id/btnCambiarDatabase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/modificar_perfil_btnCambiarBd"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="@+id/tvUsername"
+            app:layout_constraintBottom_toBottomOf="@+id/tvUsername"
+            app:layout_constraintStart_toEndOf="@+id/tvUsername"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <ImageView
             android:id="@+id/ivFotoPerfil"
             android:src="@drawable/default_user"
@@ -170,11 +179,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/panelCambiarPassword"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="55dp"
         android:padding="5dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -260,6 +269,7 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
+        <!-- Guardar -->
         <Button
             android:id="@+id/btnGuardarNuevaPassword"
             android:layout_width="325dp"
@@ -285,6 +295,75 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/panelCambiarDatabase"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:layout_marginTop="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <TextView
+            android:id="@+id/tvDatabases"
+            android:text="@string/modificar_perfil_tvDatabases"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinDatabases"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:minHeight="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:gravity="center_horizontal"
+            android:background="@drawable/rounded_spinner"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            tools:listitem="@layout/support_simple_spinner_dropdown_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDatabases" />
+
+        <!-- Guardar -->
+        <Button
+            android:id="@+id/btnGuardarNuevaDatabase"
+            android:layout_width="325dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/modificar_perfil_btnGuardarNuevaPassword"
+            app:layout_constraintBottom_toTopOf="@+id/btnCancelarCambioDatabase"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <!-- Cancelar -->
+        <Button
+            android:id="@+id/btnCancelarCambioDatabase"
+            android:layout_width="325dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="@string/modificar_perfil_btnCancelarCambioPassword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

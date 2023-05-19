@@ -3,6 +3,7 @@ package com.example.teleappsistencia.servicios;
 import android.content.Context;
 
 import com.example.teleappsistencia.modelos.CentroSanitario;
+import com.example.teleappsistencia.modelos.Database;
 import com.example.teleappsistencia.modelos.ProfilePatch;
 import com.example.teleappsistencia.modelos.RecursoComunitario;
 import com.example.teleappsistencia.modelos.TipoModalidadPaciente;
@@ -178,6 +179,10 @@ public interface APIService {
 
     @DELETE("api-rest/dispositivos_auxiliares_en_terminal/{id}")
     Call<Response<String>> deleteDispositivosAuxiliar(@Path("id") int id, @Header("Authorization") String token);
+
+    // Peticiones de Batabases
+    @GET("/api-rest/databases")
+    Call<List<Database>> getDatabases(@Header("Authorization") String token);
 
     // Peticiones de Grupo
 
@@ -596,6 +601,13 @@ public interface APIService {
     @Multipart
     Call<Usuario> patchPerfilMultipart(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
 
+    /**
+     * Permite a los administradores cambiar de BBDD. Verificación en lado de servidor.
+     * @return
+     */
+    @PATCH("/api-rest/profile/{id_usuario}")
+    @Multipart
+    Call<Usuario> patchPerfilCambioBatabase(@Path("id_usuario") int id_usuario, @Part("id_database") Integer id_database, @Header("Authorization") String token);
     //Peticiones de Personas
 
     /**

@@ -513,9 +513,11 @@
     <string name="modificar_perfil_tvNombreApellidos">Nombre y Apellidos</string>
     <string name="modificar_perfil_tvEmail">Correo Electrónico</string>
     <string name="modificar_perfil_btnCambiarPass">Cambiar Contraseña</string>
+    <string name="modificar_perfil_btnCambiarBd">Migracion</string>
     <string name="modificar_perfil_btnGuardar">Guardar Cambios</string>
 
     <!-- Panel: Cambio de Contraseña -->
+    <string name="modificar_perfil_tvDatabases">Bases de Datos</string>
     <string name="modificar_perfil_tvNuevaPassHeader">Cambiar Contraseña</string>
     <string name="modificar_perfil_tvPass">Contraseña</string>
     <string name="modificar_perfil_tvNuevaPass">Nueva Contraseña</string>

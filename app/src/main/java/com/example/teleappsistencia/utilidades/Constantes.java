@@ -127,8 +127,22 @@ public class Constantes {
     public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID_NOPASS = "Introduzca una contraseña por favor";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID = "La contraseña no cumple con los requisitos";
     public static final String TOAST_MODPERFIL_CAMBIOPASS_REGEX = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,}$";
+    // Cambios database
+    public static final String TOAST_MODPERFIL_CAMBIODB_CANCELADO = "Cambio de base de datos cancelado";
+    public static final String TOAST_MODPERFIL_CAMBIODB_CORRECTO = "Usuario migrado correctamente de base de datos";
     // Creacion/Modificación de Usuarios
     public static final String TOAST_USUARIOSISTEMA_ERROR = "Ha ocurrido un error";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_PATCHES = "Introduce los datos por favor";
+
+    public static final String TOAST_USUARIOSISTEMA_ERROR_CREAR = "Ha ocurrido un error al crear el usuario";
+    public static final String TOAST_USUARIOSISTEMA_ERROR_EDITAR = "Ha ocurrido un error al modificar el usuario";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_USERNAME = "El login/nombre de usuario no puede estar vacío";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_FIRSTNAME = "Indica el nombre del usuario";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_LASTNAME = "Indica los apellidos del usuario";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_INVALID_MAIL = "La dirección de correo no es válida";
+
+    public static final String TOAST_USUARIOSISTEMA_OK_CREAR = "Usuario creado correctamente";
+    public static final String TOAST_USUARIOSISTEMA_OK_EDITAR = "Modificación realizada correctamente";
 
     /**
      * Constantes referentes a la gestión de Usuarios del Sistema

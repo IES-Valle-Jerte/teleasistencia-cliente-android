@@ -3,6 +3,8 @@ package com.example.teleappsistencia.modelos;
 import android.content.Context;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.utilidades.Constantes;
@@ -27,6 +29,12 @@ import retrofit2.Callback;
  * esta clase 
  */
 public class ProfilePatch implements Serializable {
+    @SerializedName("is_active")
+    private Boolean isActive;
+    @SerializedName("username")
+    private String nuevoUsername;
+    @SerializedName("groups")
+    private Integer nuevoGrupo;
     @SerializedName("first_name")
     private String nuevoNombre;
     @SerializedName("last_name")
@@ -47,33 +55,57 @@ public class ProfilePatch implements Serializable {
     }
 
     // Getters
-    public String getNuevoNombre() { return  nuevoNombre; }
+    public Boolean getIsActive() { return isActive; }
+    public String getNuevoUsername() { return nuevoUsername; }
+    public Integer getNuevoGrupo() { return nuevoGrupo; }
+    public String getNuevoNombre() { return nuevoNombre; }
     public String getNuevosApellidos() { return nuevosApellidos; }
     public String getNuevoEmail() { return nuevoEmail; }
     public String getNuevaPassword() { return nuevaPassword; }
     public Uri getNuevaFotoPerfil() { return nuevaFotoPerfil; }
 
     // Setters con prevencion de errores
+    public void setActive(boolean isActive) {
+        if (null == usuarioAsociado.getActive() || usuarioAsociado.getActive() != isActive)
+            this.isActive = isActive;
+        else
+            this.isActive = null;
+    }
+    public void setNuevoUsername(String nuevoUsername) {
+        if (null != nuevoUsername && !nuevoUsername.trim().isEmpty() && !nuevoUsername.equals(usuarioAsociado.getUsername()))
+            this.nuevoUsername = nuevoUsername;
+        else
+            this.nuevoUsername = null;
+    }
+    public void setNuevoGrupo(Integer nuevoGrupo) {
+        if (null == Utilidad.getGrupoUser(usuarioAsociado) || Utilidad.getGrupoUser(usuarioAsociado).getId() != nuevoGrupo)
+            this.nuevoGrupo = nuevoGrupo;
+        else
+            this.nuevoGrupo = null;
+    }
     public void setNuevoNombre(String nuevoNombre) {
-        if (!usuarioAsociado.getFirstName().equals(nuevoNombre))
+        if (null != nuevoNombre && !nuevoNombre.trim().isEmpty() && !nuevoNombre.equals(usuarioAsociado.getFirstName()))
             this.nuevoNombre = nuevoNombre;
         else
             this.nuevoNombre = null;
     }
     public void setNuevosApellidos(String nuevosApellidos) {
-        if (!usuarioAsociado.getLastName().equals(nuevosApellidos))
+        if (null != nuevosApellidos && !nuevosApellidos.trim().isEmpty() && !nuevosApellidos.equals(usuarioAsociado.getLastName()))
             this.nuevosApellidos = nuevosApellidos;
         else
             this.nuevosApellidos = null;
     }
     public void setNuevoEmail(String nuevoEmail) {
-        if (!usuarioAsociado.getEmail().equals(nuevoEmail))
+        if (null != nuevoEmail && !nuevoEmail.equals(usuarioAsociado.getEmail()))
             this.nuevoEmail = nuevoEmail;
         else
             this.nuevoEmail = null;
     }
     public void setNuevaPassword(String nuevaPassword) {
-        this.nuevaPassword = nuevaPassword;
+        if (null != nuevaPassword && !nuevaPassword.isEmpty())
+            this.nuevaPassword = nuevaPassword;
+        else
+            this.nuevaPassword = null;
     }
     public void setNuevaFotoPerfil(Uri nuevaFotoPerfil) {
         this.nuevaFotoPerfil = nuevaFotoPerfil;
@@ -81,27 +113,35 @@ public class ProfilePatch implements Serializable {
 
     // Utilidad para facilitar usar el Cliente Retrofit
     public boolean hasPatches() {
-        return (nuevoEmail != null && !nuevoEmail.isEmpty())
-            || (nuevaPassword != null && !nuevaPassword.isEmpty())
-            || nuevaFotoPerfil != null;
+        return (!this.asPartMap().isEmpty()) || null != nuevaFotoPerfil;
     };
 
     /**
      * Pasa los campos a un mapa de Parts para poder ser enviado junto a la imagen.
      * @return
      */
+    @NonNull
     private Map<String, RequestBody> asPartMap() {
         Map<String, RequestBody> campos = new HashMap<>();
-        if (nuevoNombre != null) campos.put(
+        if (null != isActive) campos.put(
+            "is_active", RequestBody.create(isActive.toString(), MediaType.parse("application/json"))
+        );
+        if (null != nuevoUsername) campos.put(
+            "username", RequestBody.create(nuevoUsername, MediaType.parse("text/plain"))
+        );
+        if (null != nuevoGrupo) campos.put(
+            "groups", RequestBody.create(nuevoGrupo.toString(), MediaType.parse("application/json"))
+        );
+        if (null != nuevoNombre) campos.put(
             "first_name", RequestBody.create(nuevoNombre, MediaType.parse("text/plain"))
         );
-        if (nuevosApellidos != null) campos.put(
+        if (null != nuevosApellidos) campos.put(
             "last_name", RequestBody.create(nuevosApellidos, MediaType.parse("text/plain"))
         );
-        if (nuevoEmail != null) campos.put(
+        if (null != nuevoEmail) campos.put(
             "email", RequestBody.create(nuevoEmail, MediaType.parse("text/plain"))
         );
-        if (nuevaPassword != null) campos.put(
+        if (null != nuevaPassword) campos.put(
             "password", RequestBody.create(nuevaPassword, MediaType.parse("text/plain"))
         );
 
