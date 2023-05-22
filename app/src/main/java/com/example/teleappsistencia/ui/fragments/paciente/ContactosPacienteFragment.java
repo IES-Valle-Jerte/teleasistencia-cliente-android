@@ -21,7 +21,21 @@ import android.widget.ToggleButton;
 import com.example.teleappsistencia.R;
 import com.example.teleappsistencia.modelos.Paciente;
 import com.example.teleappsistencia.modelos.RelacionPacientePersona;
+import com.example.teleappsistencia.modelos.RelacionTerminalRecursoComunitario;
 import com.example.teleappsistencia.modelos.Terminal;
+import com.example.teleappsistencia.servicios.APIService;
+import com.example.teleappsistencia.servicios.ClienteRetrofit;
+import com.example.teleappsistencia.ui.fragments.relacion_paciente_persona.RelacionPacientePersonaAdapter;
+import com.example.teleappsistencia.utilidades.Constantes;
+import com.example.teleappsistencia.utilidades.Utilidad;
+import com.google.gson.internal.LinkedTreeMap;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +73,7 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
     private boolean desplegado1=true;
     private Switch activarContacto1;
     private boolean guardarContacto=false;
+    private boolean contactoAEditar1=false;
     //Contacto 2
     private TableLayout tableLayout2;
     private TextView contacto2;
@@ -73,6 +88,7 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
     private boolean desplegado2=false;
     private Switch activarContacto2;
     private boolean guardarContacto2=false;
+    private boolean contactoAEditar2=false;
     //Contacto 3
     private TableLayout tableLayout3;
     private TextView contacto3;
@@ -87,6 +103,7 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
     private boolean desplegado3=false;
     private Switch activarContacto3;
     private boolean guardarContacto3=false;
+    private boolean contactoAEditar3=false;
     //Contacto 4
     private TableLayout tableLayout4;
     private TextView contacto4;
@@ -101,6 +118,7 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
     private boolean desplegado4=false;
     private Switch activarContacto4;
     private boolean guardarContacto4=false;
+    private boolean contactoAEditar4=false;
     //Contacto 5
     private TableLayout tableLayout5;
     private TextView contacto5;
@@ -115,9 +133,17 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
     private boolean desplegado5=false;
     private Switch activarContacto5;
     private boolean guardarContacto5=false;
+    private boolean contactoAEditar5=false;
+
+    private boolean edit=false;
+    static List<LinkedTreeMap> lRelacionPacientePersona;
 
     public ContactosPacienteFragment() {
         // Required empty public constructor
+    }
+    public ContactosPacienteFragment(boolean editar) {
+        // Required empty public constructor
+        this.edit=editar;
     }
 
     public void setDatosViviendaFragment(DatosViviendaFragment datosViviendaFragment) {
@@ -158,7 +184,138 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
             this.terminal=terminal;
         }
     }
+    public void rellenarCamposEdit(){
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<LinkedTreeMap>> call = apiService.getListadoPacientesPersona(Constantes.BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<List<LinkedTreeMap>>() {
+            @Override
+            public void onResponse(Call<List<LinkedTreeMap>> call, Response<List<LinkedTreeMap>> response) {
+                if(response.isSuccessful()){
+                    lRelacionPacientePersona = response.body();
+                    List<RelacionPacientePersona> listadoRelacionPacientePersona = new ArrayList<>();
+                    for (LinkedTreeMap relacionPacientePersona : lRelacionPacientePersona) {
+                        RelacionPacientePersona rpp= (RelacionPacientePersona) Utilidad.getObjeto(relacionPacientePersona,"RelacionPacientePersona");
+                        if (rpp.getIdPaciente()==paciente.getId()){
+                            listadoRelacionPacientePersona.add(rpp);
+                        }
+                    }
+                    for (int i = 0; i <listadoRelacionPacientePersona.size() ; i++) {
+                        if (i<5){
+                            switch (i){
+                                case 0:{
+                                    nombre1.setText(listadoRelacionPacientePersona.get(i).getNombre());
+                                    apelldios1.setText(listadoRelacionPacientePersona.get(i).getApellidos());
+                                    telefono1.setText(listadoRelacionPacientePersona.get(i).getTelefono());
+                                    relacion1.setText(listadoRelacionPacientePersona.get(i).getTipoRelacion());
+                                    disponibilidad1.setText(listadoRelacionPacientePersona.get(i).getDisponibilidad());
+                                    tiempoADomicilio1.setText(String.valueOf(listadoRelacionPacientePersona.get(i).getTiempoDomicilio()));
+                                    if (listadoRelacionPacientePersona.get(i).isTieneLlavesVivienda()){
+                                        llaves1.setChecked(true);
+                                    }else{
+                                        llaves1.setChecked(false);
+                                    }
+                                    if (listadoRelacionPacientePersona.get(i).isEsConviviente()){
+                                        conviviente1.setChecked(true);
+                                    }else{
+                                        conviviente1.setChecked(false);
+                                    }
+                                    activarContacto1.setChecked(true);
+                                    break;
+                                }
+                                case 1:{
+                                    nombre2.setText(listadoRelacionPacientePersona.get(i).getNombre());
+                                    apelldios2.setText(listadoRelacionPacientePersona.get(i).getApellidos());
+                                    telefono2.setText(listadoRelacionPacientePersona.get(i).getTelefono());
+                                    relacion2.setText(listadoRelacionPacientePersona.get(i).getTipoRelacion());
+                                    disponibilidad2.setText(listadoRelacionPacientePersona.get(i).getDisponibilidad());
+                                    tiempoADomicilio2.setText(String.valueOf(listadoRelacionPacientePersona.get(i).getTiempoDomicilio()));
+                                    if (listadoRelacionPacientePersona.get(i).isTieneLlavesVivienda()){
+                                        llaves2.setChecked(true);
+                                    }else{
+                                        llaves2.setChecked(false);
+                                    }
+                                    if (listadoRelacionPacientePersona.get(i).isEsConviviente()){
+                                        conviviente2.setChecked(true);
+                                    }else{
+                                        conviviente2.setChecked(false);
+                                    }
+                                    activarContacto2.setChecked(true);
+                                    break;
+                                }
+                                case 2:{
+                                    nombre3.setText(listadoRelacionPacientePersona.get(i).getNombre());
+                                    apelldios3.setText(listadoRelacionPacientePersona.get(i).getApellidos());
+                                    telefono3.setText(listadoRelacionPacientePersona.get(i).getTelefono());
+                                    relacion3.setText(listadoRelacionPacientePersona.get(i).getTipoRelacion());
+                                    disponibilidad3.setText(listadoRelacionPacientePersona.get(i).getDisponibilidad());
+                                    tiempoADomicilio3.setText(String.valueOf(listadoRelacionPacientePersona.get(i).getTiempoDomicilio()));
+                                    if (listadoRelacionPacientePersona.get(i).isTieneLlavesVivienda()){
+                                        llaves3.setChecked(true);
+                                    }else{
+                                        llaves3.setChecked(false);
+                                    }
+                                    if (listadoRelacionPacientePersona.get(i).isEsConviviente()){
+                                        conviviente3.setChecked(true);
+                                    }else{
+                                        conviviente3.setChecked(false);
+                                    }
+                                    activarContacto3.setChecked(true);
+                                    break;
+                                }
+                                case 3:{
+                                    nombre4.setText(listadoRelacionPacientePersona.get(i).getNombre());
+                                    apelldios4.setText(listadoRelacionPacientePersona.get(i).getApellidos());
+                                    telefono4.setText(listadoRelacionPacientePersona.get(i).getTelefono());
+                                    relacion4.setText(listadoRelacionPacientePersona.get(i).getTipoRelacion());
+                                    disponibilidad4.setText(listadoRelacionPacientePersona.get(i).getDisponibilidad());
+                                    tiempoADomicilio4.setText(String.valueOf(listadoRelacionPacientePersona.get(i).getTiempoDomicilio()));
+                                    if (listadoRelacionPacientePersona.get(i).isTieneLlavesVivienda()){
+                                        llaves4.setChecked(true);
+                                    }else{
+                                        llaves4.setChecked(false);
+                                    }
+                                    if (listadoRelacionPacientePersona.get(i).isEsConviviente()){
+                                        conviviente4.setChecked(true);
+                                    }else{
+                                        conviviente4.setChecked(false);
+                                    }
+                                    activarContacto4.setChecked(true);
+                                    break;
+                                }
+                                case 4:{
+                                    nombre5.setText(listadoRelacionPacientePersona.get(i).getNombre());
+                                    apelldios5.setText(listadoRelacionPacientePersona.get(i).getApellidos());
+                                    telefono5.setText(listadoRelacionPacientePersona.get(i).getTelefono());
+                                    relacion5.setText(listadoRelacionPacientePersona.get(i).getTipoRelacion());
+                                    disponibilidad5.setText(listadoRelacionPacientePersona.get(i).getDisponibilidad());
+                                    tiempoADomicilio5.setText(String.valueOf(listadoRelacionPacientePersona.get(i).getTiempoDomicilio()));
+                                    if (listadoRelacionPacientePersona.get(i).isTieneLlavesVivienda()){
+                                        llaves5.setChecked(true);
+                                    }else{
+                                        llaves5.setChecked(false);
+                                    }
+                                    if (listadoRelacionPacientePersona.get(i).isEsConviviente()){
+                                        conviviente5.setChecked(true);
+                                    }else{
+                                        conviviente5.setChecked(false);
+                                    }
+                                    activarContacto5.setChecked(true);
+                                    break;
+                                }
+                            }
+                        }
 
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LinkedTreeMap>> call, Throwable t) {
+
+            }
+        });
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -314,6 +471,7 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
                 }
             }
         });
+        rellenarCamposEdit();
         return v;
     }
     private void volver() {
@@ -332,6 +490,40 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
     private void desplegarContacto(TableLayout tableLayout){
         TableLayout.LayoutParams params = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
         tableLayout.setLayoutParams(params);
+    }
+    private void insertarRelacionPacientePersona(RelacionPacientePersona relacionPacientePersona) {
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<RelacionPacientePersona> call = apiService.addRelacionPacientePersonaSeleccionadoPaciente(relacionPacientePersona, Constantes.BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<RelacionPacientePersona>() {
+            @Override
+            public void onResponse(Call<RelacionPacientePersona> call, Response<RelacionPacientePersona> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), Constantes.RELACIÓN_PACIENTE_PERSONA_INSERTADA_CORRECTAMENTE, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RelacionPacientePersona> call, Throwable t) {
+
+            }
+        });
+    }
+    private void modificarRelacionPacientePersona(RelacionPacientePersona relacionPacientePersona) {
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<RelacionPacientePersona> call = apiService.updateRelacionPacientePersona((int) relacionPacientePersona.getId(), relacionPacientePersona, "Bearer " + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<RelacionPacientePersona>() {
+            @Override
+            public void onResponse(Call<RelacionPacientePersona> call, Response<RelacionPacientePersona> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), Constantes.RELACIÓN_PACIENTE_PERSONA_MODIFICADO_CORRECTAMENTE, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RelacionPacientePersona> call, Throwable t) {
+
+            }
+        });
     }
     private void guardarContactos(){
         if(guardarContacto){
@@ -359,8 +551,152 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
             relacionPacientePersona.setEsConviviente(isConviviente);
             try {
                 relacionPacientePersona.setTiempoDomicilio(Integer.parseInt(tiempoADomicilio1.getText().toString()));
-                //set id del paciente
-                //post del objeto
+                if (!contactoAEditar1){
+                    insertarRelacionPacientePersona(relacionPacientePersona);
+                }else{
+                    modificarRelacionPacientePersona(relacionPacientePersona);
+                }
+
+            }catch (NullPointerException e){
+                Toast.makeText(getContext(), "Error en el tiempo al domicilio", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        if(guardarContacto2){
+            RelacionPacientePersona relacionPacientePersona=new RelacionPacientePersona();
+            relacionPacientePersona.setNombre(nombre2.getText().toString());
+            relacionPacientePersona.setApellidos(apelldios2.getText().toString());
+            relacionPacientePersona.setTelefono(telefono2.getText().toString());
+            relacionPacientePersona.setTipoRelacion(relacion2.getText().toString());
+            boolean estado;
+            if(llaves2.isChecked()){
+                estado=true;
+            }else{
+                estado=false;
+            }
+            relacionPacientePersona.setTieneLlavesVivienda(estado);
+            relacionPacientePersona.setDisponibilidad(disponibilidad2.getText().toString());
+            relacionPacientePersona.setObservaciones("Ninguna");
+            relacionPacientePersona.setPrioridad(2);
+            boolean isConviviente;
+            if (conviviente2.isChecked()){
+                isConviviente=true;
+            }else{
+                isConviviente=false;
+            }
+            relacionPacientePersona.setEsConviviente(isConviviente);
+            try {
+                relacionPacientePersona.setTiempoDomicilio(Integer.parseInt(tiempoADomicilio2.getText().toString()));
+                if (!contactoAEditar1){
+                    insertarRelacionPacientePersona(relacionPacientePersona);
+                }else{
+                    modificarRelacionPacientePersona(relacionPacientePersona);
+                }
+            }catch (NullPointerException e){
+                Toast.makeText(getContext(), "Error en el tiempo al domicilio", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        if(guardarContacto3){
+            RelacionPacientePersona relacionPacientePersona=new RelacionPacientePersona();
+            relacionPacientePersona.setNombre(nombre3.getText().toString());
+            relacionPacientePersona.setApellidos(apelldios3.getText().toString());
+            relacionPacientePersona.setTelefono(telefono3.getText().toString());
+            relacionPacientePersona.setTipoRelacion(relacion3.getText().toString());
+            boolean estado;
+            if(llaves3.isChecked()){
+                estado=true;
+            }else{
+                estado=false;
+            }
+            relacionPacientePersona.setTieneLlavesVivienda(estado);
+            relacionPacientePersona.setDisponibilidad(disponibilidad3.getText().toString());
+            relacionPacientePersona.setObservaciones("Ninguna");
+            relacionPacientePersona.setPrioridad(2);
+            boolean isConviviente;
+            if (conviviente3.isChecked()){
+                isConviviente=true;
+            }else{
+                isConviviente=false;
+            }
+            relacionPacientePersona.setEsConviviente(isConviviente);
+            try {
+                relacionPacientePersona.setTiempoDomicilio(Integer.parseInt(tiempoADomicilio3.getText().toString()));
+                if (!contactoAEditar1){
+                    insertarRelacionPacientePersona(relacionPacientePersona);
+                }else{
+                    modificarRelacionPacientePersona(relacionPacientePersona);
+                }
+            }catch (NullPointerException e){
+                Toast.makeText(getContext(), "Error en el tiempo al domicilio", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        if(guardarContacto4){
+            RelacionPacientePersona relacionPacientePersona=new RelacionPacientePersona();
+            relacionPacientePersona.setNombre(nombre4.getText().toString());
+            relacionPacientePersona.setApellidos(apelldios4.getText().toString());
+            relacionPacientePersona.setTelefono(telefono4.getText().toString());
+            relacionPacientePersona.setTipoRelacion(relacion4.getText().toString());
+            boolean estado;
+            if(llaves4.isChecked()){
+                estado=true;
+            }else{
+                estado=false;
+            }
+            relacionPacientePersona.setTieneLlavesVivienda(estado);
+            relacionPacientePersona.setDisponibilidad(disponibilidad4.getText().toString());
+            relacionPacientePersona.setObservaciones("Ninguna");
+            relacionPacientePersona.setPrioridad(2);
+            boolean isConviviente;
+            if (conviviente4.isChecked()){
+                isConviviente=true;
+            }else{
+                isConviviente=false;
+            }
+            relacionPacientePersona.setEsConviviente(isConviviente);
+            try {
+                relacionPacientePersona.setTiempoDomicilio(Integer.parseInt(tiempoADomicilio4.getText().toString()));
+                if (!contactoAEditar1){
+                    insertarRelacionPacientePersona(relacionPacientePersona);
+                }else{
+                    modificarRelacionPacientePersona(relacionPacientePersona);
+                }
+            }catch (NullPointerException e){
+                Toast.makeText(getContext(), "Error en el tiempo al domicilio", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        if(guardarContacto5){
+            RelacionPacientePersona relacionPacientePersona=new RelacionPacientePersona();
+            relacionPacientePersona.setNombre(nombre5.getText().toString());
+            relacionPacientePersona.setApellidos(apelldios5.getText().toString());
+            relacionPacientePersona.setTelefono(telefono5.getText().toString());
+            relacionPacientePersona.setTipoRelacion(relacion5.getText().toString());
+            boolean estado;
+            if(llaves5.isChecked()){
+                estado=true;
+            }else{
+                estado=false;
+            }
+            relacionPacientePersona.setTieneLlavesVivienda(estado);
+            relacionPacientePersona.setDisponibilidad(disponibilidad5.getText().toString());
+            relacionPacientePersona.setObservaciones("Ninguna");
+            relacionPacientePersona.setPrioridad(2);
+            boolean isConviviente;
+            if (conviviente5.isChecked()){
+                isConviviente=true;
+            }else{
+                isConviviente=false;
+            }
+            relacionPacientePersona.setEsConviviente(isConviviente);
+            try {
+                relacionPacientePersona.setTiempoDomicilio(Integer.parseInt(tiempoADomicilio5.getText().toString()));
+                if (!contactoAEditar1){
+                    insertarRelacionPacientePersona(relacionPacientePersona);
+                }else{
+                    modificarRelacionPacientePersona(relacionPacientePersona);
+                }
             }catch (NullPointerException e){
                 Toast.makeText(getContext(), "Error en el tiempo al domicilio", Toast.LENGTH_SHORT).show();
             }
@@ -379,12 +715,28 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
                 .addToBackStack(null)
                 .commit();
     }
+    public void pasarPacienteAlSiguienteFragmentoModificar(Paciente paciente) {
+        DispositivosFragment siguienteFragment = new DispositivosFragment(true);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("paciente", paciente); //Se carga el objeto en el bundle
+        bundle.putSerializable("terminal",this.terminal);
+        siguienteFragment.setContactosPacienteFragment(this);
+        siguienteFragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, siguienteFragment)
+                .addToBackStack(null)
+                .commit();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonGuardar:
                 guardarContactos();
-                pasarPacienteAlSiguienteFragmento(this.paciente);
+                if (!edit){
+                    pasarPacienteAlSiguienteFragmento(this.paciente);
+                }else{
+                    pasarPacienteAlSiguienteFragmentoModificar(this.paciente);
+                }
                 break;
             case R.id.buttonVolver:
                 volver();

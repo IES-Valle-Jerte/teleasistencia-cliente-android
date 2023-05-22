@@ -1,16 +1,19 @@
 package com.example.teleappsistencia.modelos;
 
+import com.example.teleappsistencia.servicios.APIService;
+import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-
-import androidx.annotation.NonNull;
 
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
-import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
+
 /**
  * Clase POJO "RelacionTerminalRecursoComunitario" utilizada para parsear la respuesta JSON del servidor.
  */
@@ -28,7 +31,7 @@ public class RelacionTerminalRecursoComunitario implements Serializable {
     private Object idRecursoComunitario;
     @SerializedName("tiempo_estimado")
     private int tiempoEstimado;
-
+    private static String cadena;
     // Getters y Setters
 
     public int getId() {
@@ -65,6 +68,29 @@ public class RelacionTerminalRecursoComunitario implements Serializable {
 
     @Override
     public String toString() {
+            /*APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+            Call<List<RecursoComunitario>> call = apiService.getListadoRecursoComunitario(Constantes.BEARER + Utilidad.getToken().getAccess());
+            call.enqueue(new retrofit2.Callback<List<RecursoComunitario>>() {
+                @Override
+                public void onResponse(Call<List<RecursoComunitario>> call, Response<List<RecursoComunitario>> response) {
+                    if (response.isSuccessful()) {
+                        List<RecursoComunitario> listadoRecursoComunitario = response.body();
+                        for (RecursoComunitario recurso: listadoRecursoComunitario) {
+                            if (recurso.getId()==Integer.parseInt(idRecursoComunitario.toString())){
+                                TipoRecursoComunitario t= (TipoRecursoComunitario) Utilidad.getObjeto(recurso.getTipoRecursoComunitario(),Constantes.TIPO_RECURSO_COMUNITARIO);
+                                cadena = "["+recurso.getNombre()+"]["+tiempoEstimado+"]["+t.getNombreTipoRecursoComunitario()+"]";
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<RecursoComunitario>> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+
+        return cadena;*/
         return "idRecursoComunitario=" + idRecursoComunitario +
                 " - tiempoEstimado=" + tiempoEstimado;
     }

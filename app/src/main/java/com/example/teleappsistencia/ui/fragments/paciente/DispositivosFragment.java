@@ -22,6 +22,8 @@ import com.example.teleappsistencia.modelos.Terminal;
 import com.example.teleappsistencia.modelos.TipoSituacion;
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
+import com.example.teleappsistencia.ui.fragments.historico_tipo_situacion.HistoricoTipoSituacionAdapter;
+import com.example.teleappsistencia.ui.fragments.tipo_situacion.TipoSituacionAdapter;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 import com.example.teleappsistencia.utilidades.dialogs.AlertDialogBuilder;
@@ -59,9 +61,18 @@ public class DispositivosFragment extends Fragment implements View.OnClickListen
     private EditText numTerminal;
     private EditText modeloTerminal;
     private Switch tieneUCR;
+    private HistoricoTipoSituacion historicoTipoSituacion;
+
+    private List<HistoricoTipoSituacion> items;
+
+    private boolean edit;
 
     public DispositivosFragment() {
         // Required empty public constructor
+    }
+    public DispositivosFragment(boolean editar) {
+        // Required empty public constructor
+        this.edit=editar;
     }
 
     public void setContactosPacienteFragment(ContactosPacienteFragment contactosPacienteFragment) {
@@ -114,11 +125,73 @@ public class DispositivosFragment extends Fragment implements View.OnClickListen
         buttonVolver.setOnClickListener(this);
         situacionTerminal=v.findViewById(R.id.spinnerSituacionTerminal);
         fechaAlta=v.findViewById(R.id.editTextFechaAlta);
+        fechaAlta.requestFocus();
         numTerminal=v.findViewById(R.id.editTextNumeroTerminal);
         modeloTerminal=v.findViewById(R.id.editTextModeloTerminal);
         tieneUCR=v.findViewById(R.id.switchUCR);
         inicializarSpinnerTipoSituacion();
         return v;
+    }
+    public void rellenarCamposEdit(){
+        numTerminal.setText(this.terminal.getNumeroTerminal());
+        if (this.paciente.isTieneUcr()){
+            tieneUCR.setChecked(true);
+        }else{
+            tieneUCR.setChecked(false);
+        }
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+
+        Call<List<HistoricoTipoSituacion>> call = apiService.getHistoricoTipoSituacion(Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<List<HistoricoTipoSituacion>>() {
+            @Override
+            public void onResponse(Call<List<HistoricoTipoSituacion>> call, Response<List<HistoricoTipoSituacion>> response) {
+                if (response.isSuccessful()) {
+                    items = response.body();
+                    for (int i = 0; i < items.size(); i++) {
+                        HistoricoTipoSituacion hts= (HistoricoTipoSituacion) Utilidad.getObjeto(items.get(i),"HistoricoTipoSituacion");
+                        historicoTipoSituacion=hts;
+                        Terminal t= (Terminal) Utilidad.getObjeto(hts.getTerminal(),Constantes.TERMINAL);
+                        Terminal t2=(Terminal) Utilidad.getObjeto(paciente.getTerminal(),Constantes.TERMINAL);
+                        if (t.getId()==t2.getId()){
+                            APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+
+                            Call<List<TipoSituacion>> call2 = apiService.getTipoSituacion(Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
+                            call2.enqueue(new Callback<List<TipoSituacion>>() {
+                                @Override
+                                public void onResponse(Call<List<TipoSituacion>> call2, Response<List<TipoSituacion>> response) {
+                                    if (response.isSuccessful()) {
+                                        List<TipoSituacion> tipoSituaciones= response.body();
+                                        TipoSituacion ts= (TipoSituacion) Utilidad.getObjeto(hts.getIdTipoSituacion(),"TipoSituacion");
+                                        for (int i = 0; i <tipoSituaciones.size(); i++) {
+                                            if (tipoSituaciones.get(i).getId()==ts.getId()){
+                                                situacionTerminal.setSelection(i);
+                                            }
+                                        }
+                                    } else {
+                                        AlertDialogBuilder.crearErrorAlerDialog(getContext(), Integer.toString(response.code()));
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<TipoSituacion>> call, Throwable t) {
+                                    t.printStackTrace();
+                                    System.out.println(t.getMessage());
+                                }
+                            });
+                            fechaAlta.setText(hts.getFecha());
+                        }
+                    }
+                } else {
+                    AlertDialogBuilder.crearErrorAlerDialog(getContext(), Integer.toString(response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<HistoricoTipoSituacion>> call, Throwable t) {
+                t.printStackTrace();
+                System.out.println(t.getMessage());
+            }
+        });
     }
     private void inicializarSpinnerTipoSituacion(){
         APIService apiService = ClienteRetrofit.getInstance().getAPIService();
@@ -133,6 +206,7 @@ public class DispositivosFragment extends Fragment implements View.OnClickListen
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     situacionTerminal.setAdapter(adapter);
                 }
+                rellenarCamposEdit();
             }
 
             @Override
@@ -197,7 +271,7 @@ public class DispositivosFragment extends Fragment implements View.OnClickListen
             ucr=true;
         }
         paciente.setTieneUcr(ucr);
-        paciente.setTerminal(this.terminal.getId());
+        //paciente.setTerminal(this.terminal.getId());
         //mod terminal
         modificarTerminal(terminal.getId(),terminal);
         //mod paciente
@@ -216,9 +290,9 @@ public class DispositivosFragment extends Fragment implements View.OnClickListen
             public void onResponse(Call<Object> call, Response<Object> response) {
                 if (response.isSuccessful()) {
                     Object historicoTipoSituacion = response.body();
-                    AlertDialogBuilder.crearInfoAlerDialog(getContext(), Constantes.INFO_ALERTDIALOG_CREADO_HISTORICO_TIPO_SITUACION);
+                    Toast.makeText(getContext(), Constantes.INFO_ALERTDIALOG_CREADO_HISTORICO_TIPO_SITUACION, Toast.LENGTH_SHORT).show();
                 } else {
-                    AlertDialogBuilder.crearErrorAlerDialog(getContext(), Integer.toString(response.code()));
+                    Toast.makeText(getContext(), Integer.toString(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -229,12 +303,47 @@ public class DispositivosFragment extends Fragment implements View.OnClickListen
             }
         });
     }
+    private void modificarHistoricoTipoSituacion() {
+        HistoricoTipoSituacion hts= (HistoricoTipoSituacion) Utilidad.getObjeto(historicoTipoSituacion,"HistoricoTipoSituacion");
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<Object> call = apiService.modifyHistoricoTipoSituacion(this.historicoTipoSituacion.getId(), historicoTipoSituacion, Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                if (response.isSuccessful()) {
+                    Object historicoTipoSituacion = response.body();
+                    Toast.makeText(getContext(), Constantes.INFO_ALERTDIALOG_MODIFICADO_HISTORICO_TIPO_SITUACION, Toast.LENGTH_SHORT).show();
+                    getActivity().onBackPressed();
+                } else {
+                    Toast.makeText(getContext(), Integer.toString(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                t.printStackTrace();
+                System.out.println(t.getMessage());
+            }
+        });
+    }
+    public void pasarAVentanaListarPacientes() {
+        ListarPacienteFragment siguienteFragment = new ListarPacienteFragment();
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, siguienteFragment)
+                .addToBackStack(null)
+                .commit();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.buttonGuardar:
                 modificarTerminalYPaciente();
-                guardarSituacion();
+                if (!edit){
+                    guardarSituacion();
+                }else{
+                    modificarHistoricoTipoSituacion();
+                }
+                pasarAVentanaListarPacientes();
                 break;
             case R.id.buttonVolver:
                 volver();

@@ -22,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/botonGuardar"
+        android:nextFocusForward="@+id/buttonVolver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="parent" />
@@ -33,6 +34,7 @@
         android:text="@string/botonVolver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:nextFocusForward="@+id/editTextNumeroExpedientePaciente"
         app:layout_constraintStart_toStartOf="@+id/guideline16" />
 
     <View
@@ -64,6 +66,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/editText_apellidos_paciente"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline14" />
 
@@ -184,6 +187,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/editText_dni_paciente"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
         app:layout_constraintTop_toTopOf="@+id/guideline14" />
 
@@ -276,6 +280,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/editText_fechaNacimiento_paciente"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline120" />
 
@@ -284,10 +289,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:duplicateParentState="true"
         android:ems="8"
         android:hint="@string/caracterInvisible"
-        android:inputType="textPersonName"
+        android:focusable="false"
+        android:clickable="true"
+        android:inputType="none"
+        android:cursorVisible="false"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/spinner_sexo_paciente"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
         app:layout_constraintTop_toTopOf="@+id/guideline120" />
 
@@ -300,6 +310,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/editText_telefonoMovil_paciente"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
         app:layout_constraintTop_toTopOf="@+id/guideline21" />
 
@@ -312,6 +323,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/editText_direccion_direccionPaciente"
         app:layout_constraintBottom_toTopOf="@+id/guideline19"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline22" />
@@ -325,6 +337,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/editText_provincia_direccionPaciente"
         app:layout_constraintBottom_toTopOf="@+id/guideline26"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline30" />
@@ -338,6 +351,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/spinner_Tipo_Usuario"
         app:layout_constraintBottom_toTopOf="@+id/guideline26"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
         app:layout_constraintTop_toTopOf="@+id/guideline30" />
@@ -351,6 +365,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/editText_localidad_direccionPaciente"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
         app:layout_constraintTop_toTopOf="@+id/guideline23" />
 
@@ -364,6 +379,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textMultiLine"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/editText_codigoPostal_direccionPaciente"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline23" />
 
@@ -407,6 +423,7 @@
         android:hint="@string/caracterInvisible"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:nextFocusForward="@+id/editText_nombre_paciente"
         app:layout_constraintBottom_toTopOf="@+id/guideline25"
         app:layout_constraintStart_toStartOf="@+id/guideline20"
         app:layout_constraintTop_toTopOf="@+id/guideline24" />
@@ -436,6 +453,7 @@
         android:contentDescription="@string/caracterInvisible"
         android:minHeight="48dp"
         android:spinnerMode="dialog"
+        android:nextFocusForward="@+id/editText_telefonoFijo_paciente"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline21" />
@@ -455,6 +473,7 @@
         android:layout_height="0dp"
         android:minHeight="48dp"
         android:background="@color/white"
+        android:nextFocusForward="@+id/editText_OtrosServiciosSociales"
         app:layout_constraintBottom_toTopOf="@+id/guideline28"
         app:layout_constraintEnd_toStartOf="@+id/guideline20"
         app:layout_constraintStart_toStartOf="parent"
@@ -473,6 +492,7 @@
         android:textAlignment="textStart"
         android:layout_marginTop="10dp"
         android:textColor="#535353"
+        android:nextFocusForward="@+id/buttonGuardarDatosPersonales"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline28" />

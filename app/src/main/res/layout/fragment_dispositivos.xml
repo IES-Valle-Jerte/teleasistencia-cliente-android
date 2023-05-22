@@ -33,19 +33,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
-                <TextView
-                    android:id="@+id/textView35"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/fecha_alta"
-                    android:textSize="20sp" />
-
                 <TextView
                     android:id="@+id/textView34"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/situacion_terminal"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/textView35"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fecha_alta"
                     android:textSize="20sp" />
             </TableRow>
 
@@ -59,15 +57,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:background="@color/white"
+                    android:nextFocusForward="@+id/editTextFechaAlta"
                     android:minHeight="48dp" />
+
                 <EditText
                     android:id="@+id/editTextFechaAlta"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:background="@color/white"
                     android:ems="10"
-                    android:hint="@string/caracterInvisible"
-                    android:inputType="textPersonName" />
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:inputType="none"
+                    android:nextFocusForward="@+id/editTextNumeroTerminal"
+                    android:cursorVisible="false"
+                    android:hint="@string/caracterInvisible" />
             </TableRow>
 
             <TableRow
@@ -113,6 +117,7 @@
                     android:layout_height="48dp"
                     android:ems="10"
                     android:hint="@string/caracterInvisible"
+                    android:nextFocusForward="@+id/editTextModeloTerminal"
                     android:background="@color/white"
                     android:inputType="number" />
 
@@ -122,6 +127,7 @@
                     android:layout_height="48dp"
                     android:ems="10"
                     android:hint="@string/caracterInvisible"
+                    android:nextFocusForward="@+id/switchUCR"
                     android:background="@color/white"
                     android:inputType="textPersonName"/>
             </TableRow>
@@ -134,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/UCR"
-
+                    android:nextFocusForward="@+id/buttonGuardar"
                     android:textSize="20sp" />
             </TableRow>
 
@@ -157,6 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
+                android:nextFocusForward="@+id/buttonVolver"
                 android:text="@string/guardar" />
         </LinearLayout>
         <LinearLayout
@@ -169,6 +176,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:nextFocusForward="@+id/spinnerSituacionTerminal"
                 android:text="@string/volver" />
         </LinearLayout>
 

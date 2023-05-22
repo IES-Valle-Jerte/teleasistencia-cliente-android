@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.teleappsistencia.MainActivity;
+import com.example.teleappsistencia.modelos.Persona;
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.R;
@@ -25,9 +28,11 @@ import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 import com.example.teleappsistencia.modelos.Paciente;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +55,9 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
     private RecyclerView.LayoutManager lManager;
     private Button botonNuevoPaciente;
 
+    private SearchView searchView;
+    private List<Paciente> filtroItemsBusqueda;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -58,6 +66,7 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
 
     // Lista de pacientes que se van a mostrar.
     static List<Object> lPacientes;
+    private List<Paciente> listadoPacientes;
 
     // Constructor por defecto.
     public ListarPacienteFragment() {
@@ -112,6 +121,8 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
         lManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(lManager);
 
+        searchView = (SearchView) view.findViewById(R.id.search_view);
+        crearFiltroBusqueda();
         //Obtenemos el layout con los datos de los pacientes y pasamos los datos al adaptador mientras mostramos la capa de espera
         ConstraintLayout dataConstraintLayout = (ConstraintLayout) view.findViewById(R.id.listViewDataPacientes);
         Utilidad.generarCapaEspera(view,dataConstraintLayout);
@@ -136,6 +147,7 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
      * @param view Vista
      * @param recycler RecyclerView
      */
+
     private void listarPacientes(View view, RecyclerView recycler) {
 
 
@@ -147,7 +159,7 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
             public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
                 if (response.isSuccessful()) {
                     lPacientes = response.body();
-                    List<Paciente> listadoPacientes = (ArrayList<Paciente>) Utilidad.getObjeto(lPacientes, Constantes.AL_PACIENTE);
+                    listadoPacientes = (ArrayList<Paciente>) Utilidad.getObjeto(lPacientes, Constantes.AL_PACIENTE);
 
                     //Adaptador
                     adapter = new PacienteAdapter(listadoPacientes);
@@ -166,7 +178,42 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
         });
     }
 
-    
+    private void crearFiltroBusqueda() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            // Filtra los items y se los pasa al Recycler.
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filtrarBusqueda(s);
+                adapter = new PacienteAdapter(filtroItemsBusqueda);
+                recycler.setAdapter(adapter);
+                return true;
+            }
+        });
+    }
+    public void filtrarBusqueda(String secuencia) {
+        String cadenaUsuario = secuencia.toLowerCase();
+        String auxNombre;
+        filtroItemsBusqueda = new ArrayList<>();
+
+        if(cadenaUsuario.isEmpty()){
+            filtroItemsBusqueda = listadoPacientes;
+        }else{
+            List<Paciente> filtroRecursos = new ArrayList<>();
+            for(Paciente aux : listadoPacientes){
+                Persona p= (Persona) Utilidad.getObjeto(aux.getPersona(),Constantes.PERSONA);
+                auxNombre = Normalizer.normalize(p.getNombre(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+                if(auxNombre.toLowerCase().contains(cadenaUsuario)){
+                    filtroRecursos.add(aux);
+                }
+            }
+            filtroItemsBusqueda = filtroRecursos;
+        }
+    }
     /**
      * Toma una lista de objetos LinkedTreeMap y establece el valor del atributo lPacientes.
      * 
@@ -181,6 +228,14 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         //fragmentTransaction.replace(R.id.main_fragment,new ViewPagerPacientesFragment());
         fragmentTransaction.replace(R.id.main_fragment,new DatosPersonalesFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+    public void cargarFragmentModificar(){
+        FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        //fragmentTransaction.replace(R.id.main_fragment,new ViewPagerPacientesFragment());
+        fragmentTransaction.replace(R.id.main_fragment,new DatosPersonalesFragment(adapter.getPacienteSelecionado()));
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -200,12 +255,13 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onDeleteButtonClicked() {
-
+        accionBorrarPaciente();
     }
+
 
     @Override
     public void onEditButtonClicked() {
-
+        cargarFragmentModificar();
     }
 
     @Override
@@ -217,5 +273,34 @@ public class ListarPacienteFragment extends Fragment implements View.OnClickList
         AppCompatActivity activity = (AppCompatActivity) getContext();
         ConsultarPacienteFragment consultarPacienteFragment = ConsultarPacienteFragment.newInstance(adapter.getPacienteSelecionado());
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarPacienteFragment).addToBackStack(null).commit();
+    }
+    private void accionBorrarPaciente() {
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<ResponseBody> call = apiService.deletePaciente(String.valueOf(adapter.getPacienteSelecionado().getId()), "Bearer " + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), Constantes.PACIENTE_BORRADO_CORRECTAMENTE, Toast.LENGTH_SHORT).show();
+                    recargarFragment();
+                } else {
+                    Toast.makeText(getContext(), Constantes.ERROR_AL_BORRAR_EL_PACIENTE, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+    private void recargarFragment() {
+        MainActivity activity = (MainActivity) getContext();
+        ListarPacienteFragment listarPacienteFragment = new ListarPacienteFragment();
+        activity.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, listarPacienteFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

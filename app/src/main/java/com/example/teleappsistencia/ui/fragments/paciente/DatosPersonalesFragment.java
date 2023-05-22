@@ -1,5 +1,8 @@
 package com.example.teleappsistencia.ui.fragments.paciente;
 
+import android.app.DatePickerDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,11 +10,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -28,8 +36,10 @@ import com.example.teleappsistencia.ui.fragments.direccion.DireccionAdapter;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 import com.example.teleappsistencia.utilidades.dialogs.AlertDialogBuilder;
+import com.example.teleappsistencia.utilidades.dialogs.DatePickerFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -73,10 +83,17 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
     private List<Direccion> listaDirecciones;
     private int idpersona=0;
     private int idTerminal=0;
+    private Paciente paciente;
+    private Terminal terminal;
+    private boolean edit=false;
     public DatosPersonalesFragment() {
         // Required empty public constructor
     }
 
+    public DatosPersonalesFragment(Paciente paciente) {
+        this.paciente=paciente;
+        this.edit=true;
+    }
     public int getIdpersona() {
         return idpersona;
     }
@@ -118,6 +135,60 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
                 .addToBackStack(null)
                 .commit();
     }
+    private void showDatePickerDialog() {
+        int day, month, year;
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+        day = newFragment.getDay();
+        month = newFragment.getMonth();
+        year = newFragment.getYear();
+
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int day, int month, int year) {
+                SpannableStringBuilder builder = new SpannableStringBuilder();
+                SpannableString texto = new SpannableString(day + Constantes.REGEX_SEPARADOR_GUION + month + Constantes.REGEX_SEPARADOR_GUION + year);
+                builder.append(texto);
+                Bitmap imagen = BitmapFactory.decodeResource(getResources(), R.drawable.ic_calendar);
+                ImageSpan span = new ImageSpan(getActivity(), imagen, ImageSpan.ALIGN_BOTTOM);
+                builder.setSpan(span, texto.length(), builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                fechaNac.setText(builder);
+            }
+
+        };
+
+        newFragment.setListener(listener);
+    }
+    public void establecerDatosAModificar(){
+        if(paciente!=null){
+            nExpediente.setText(paciente.getNumeroExpediente());
+            Persona persona= (Persona) Utilidad.getObjeto(paciente.getPersona(),Constantes.PERSONA);
+            nombre.setText(persona.getNombre());
+            apellidos.setText(persona.getDni());
+            fechaNac.setText(persona.getFechaNacimiento());
+            if (persona.getSexo().equals(Constantes.SEXO_MASCULINO)){
+                sexo.setSelection(0);
+            }else{
+                sexo.setSelection(1);
+            }
+            dni.setText(persona.getDni());
+            telfFijo.setText(persona.getTelefonoFijo());
+            telfMovil.setText(persona.getTelefonoMovil());
+            Direccion dir= (Direccion) Utilidad.getObjeto(persona.getDireccion(),Constantes.DIRECCION);
+            localidad.setText(dir.getLocalidad());
+            provincia.setText(dir.getProvincia());
+            direccion.setText(dir.getDireccion());
+            cp.setText(dir.getCodigoPostal());
+            TipoModalidadPaciente tipoMod= (TipoModalidadPaciente) Utilidad.getObjeto(paciente.getTipoModalidadPaciente(),Constantes.TIPO_MODALIDAD_PACIENTE_OBJETO);
+            for (int i = 0; i <listadoTipoModalidadPaciente.size() ; i++) {
+                if (listadoTipoModalidadPaciente.get(i).getNombre().equals(tipoMod.getNombre())){
+                    tipoUsuario.setSelection(i);
+                }
+            }
+            otrosServicios.setText(paciente.getPrestacionOtrosServiciosSociales());
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -128,10 +199,17 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
         buttonVolver=v.findViewById(R.id.buttonVolver);
         buttonVolver.setOnClickListener(this);
         nExpediente=v.findViewById(R.id.editTextNumeroExpedientePaciente);
+        nExpediente.requestFocus();
         nombre=v.findViewById(R.id.editText_nombre_paciente);
         apellidos=v.findViewById(R.id.editText_apellidos_paciente);
         dni=v.findViewById(R.id.editText_dni_paciente);
         fechaNac=v.findViewById(R.id.editText_fechaNacimiento_paciente);
+        fechaNac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
         sexo =v.findViewById(R.id.spinner_sexo_paciente);
         telfFijo=v.findViewById(R.id.editText_telefonoFijo_paciente);
         telfMovil=v.findViewById(R.id.editText_telefonoMovil_paciente);
@@ -147,6 +225,7 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
         this.sexo.setAdapter(adapter);
         //Rellenar datos del spinner de tipo de usuario
         inicializarSpinnertipoUsuario();
+
         return v;
     }
     private List<String> convertirListaTipoModalidadPaciente(List<TipoModalidadPaciente> listadoTipoModalidadPaciente) {
@@ -169,6 +248,7 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         tipoUsuario.setAdapter(adapter);
                     }
+                    establecerDatosAModificar();
                 }
             }
 
@@ -177,6 +257,32 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
 
             }
         });
+    }
+    public void insertarPacienteBD(Paciente pacienteInsertar) {
+        //Insertamos el paciente en la BD
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<Paciente> call = apiService.addPaciente(pacienteInsertar, Constantes.BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<Paciente>() {
+            @Override
+            public void onResponse(Call<Paciente> call, Response<Paciente> response) {
+                if (response.isSuccessful()) {
+                    Object object=response.body();
+                    Paciente p= (Paciente) Utilidad.getObjeto(paciente,Constantes.PACIENTE);
+                    paciente.setId(p.getId());
+                    paciente.setTerminal(terminal);
+                    Toast.makeText(getContext(), Constantes.PACIENTE_INSERTADO_CORRECTAMENTE, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), Constantes.ERROR_AL_INSERTAR_PACIENTE, Toast.LENGTH_SHORT).show();
+                }
+                pasarPacienteAlSiguienteFragmento(paciente,terminal);
+            }
+
+            @Override
+            public void onFailure(Call<Paciente> call, Throwable t) {
+
+            }
+        });
+
     }
     private void insertarPersona() {
         //Recoger los valores introducidos por el usuario
@@ -220,10 +326,14 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
                     Object persona = response.body();
                     Persona p= (Persona) Utilidad.getObjeto(persona,Constantes.PERSONA);
                     idpersona=p.getId();
-                    AlertDialogBuilder.crearInfoAlerDialog(getContext(), Constantes.INFO_ALERTDIALOG_CREADO_PERSONA);
-                    borrarEditTexts();
+                    Toast.makeText(getContext(), Constantes.INFO_ALERTDIALOG_CREADO_PERSONA, Toast.LENGTH_SHORT).show();
+                    terminal=new Terminal();
+                    terminal.setNumeroTerminal("");
+                    terminal.setModoAccesoVivienda("");
+                    terminal.setBarrerasArquitectonicas("");
+                    insertarTerminal(terminal);
                 } else {
-                    AlertDialogBuilder.crearErrorAlerDialog(getContext(), Integer.toString(response.code()));
+                    Toast.makeText(getContext(), Integer.toString(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -260,6 +370,18 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
                 .addToBackStack(null)
                 .commit();
     }
+    public void pasarPacienteAlSiguienteFragmentoModificar(Paciente paciente,Terminal terminal) {
+        DatosSanitariosFragment segundoFragmento = new DatosSanitariosFragment(true);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("paciente", paciente); //Se carga el objeto en el bundle
+        bundle.putSerializable("terminal",terminal);
+        segundoFragmento.setDatosPersonalesFragment(this);
+        segundoFragmento.setArguments(bundle);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, segundoFragmento)
+                .addToBackStack(null)
+                .commit();
+    }
     private void insertarTerminal(Terminal terminal) {
         APIService apiService = ClienteRetrofit.getInstance().getAPIService();
         Call<Terminal> call = apiService.addTerminal(terminal, Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
@@ -271,6 +393,19 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
                     Object terminalAux = response.body();
                     Terminal t= (Terminal) Utilidad.getObjeto(terminalAux,Constantes.TERMINAL);
                     idTerminal=t.getId();
+                    terminal.setId(t.getId());
+                    paciente=new Paciente();
+                    paciente.setPersona(idpersona);
+                    paciente.setTerminal(idTerminal);
+                    paciente.setNumeroExpediente(nExpediente.getText().toString());
+                    paciente.setPrestacionOtrosServiciosSociales(otrosServicios.getText().toString());
+
+                    //Obtemos el id del tipo de modalidad de paciente
+                    String tipoModalidadPacienteSeleccionado = tipoUsuario.getSelectedItem().toString();
+                    String[] tipoModalidadPacienteSplit = tipoModalidadPacienteSeleccionado.split("-");
+                    tipoModalidadPacienteSeleccionado = tipoModalidadPacienteSplit[0].replaceAll("\\s+", "");
+                    paciente.setTipoModalidadPaciente(tipoModalidadPacienteSeleccionado);
+                    insertarPacienteBD(paciente);
                 } else {
                     Toast.makeText(getContext(), Constantes.ERROR_INSERTANDO_TERMINAL, Toast.LENGTH_SHORT).show();
                 }
@@ -283,6 +418,7 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
             }
         });
     }
+
     public boolean comprobarCamposRellenos(){
         boolean todosRellenos=false;
         int contadorCorrectos=0;
@@ -324,33 +460,43 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
         }
         return todosRellenos;
     }
+    private void modificarPacienteBD(int id, Paciente pacienteModificar) {
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<Paciente> call = apiService.updatePaciente(id, pacienteModificar, Constantes.BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<Paciente>() {
+            @Override
+            public void onResponse(Call<Paciente> call, Response<Paciente> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), Constantes.PACIENTE_MODIFICADO, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), Constantes.ERROR_AL_MODIFICAR_EL_PACIENTE, Toast.LENGTH_SHORT).show();
+                }
+                pasarPacienteAlSiguienteFragmentoModificar(paciente,terminal);
+            }
+
+            @Override
+            public void onFailure(Call<Paciente> call, Throwable t) {
+
+            }
+        });
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonGuardarDatosPersonales:
+                if (!edit){
+                    if (comprobarCamposRellenos()){
+                        // Post de la persona, terminal y del paciente
+                        insertarPersona();
+                        //insertar paciente
 
-                if (comprobarCamposRellenos()){
-                    //Crear objeto paciente y pasarlo al sigueinte fragment para seguir rellenandolo
-                    Paciente paciente=new Paciente();
-                    Terminal terminal=new Terminal();
-                    terminal.setNumeroTerminal("");
-                    terminal.setModoAccesoVivienda("");
-                    terminal.setBarrerasArquitectonicas("");
-                    // Guardar los datos personales
-                    insertarPersona();
-                    insertarTerminal(terminal);
-                    paciente.setNumeroExpediente(this.nExpediente.getText().toString());
-                    paciente.setPrestacionOtrosServiciosSociales(this.otrosServicios.getText().toString());
-
-                    //Obtemos el id del tipo de modalidad de paciente
-                    String tipoModalidadPacienteSeleccionado = tipoUsuario.getSelectedItem().toString();
-                    String[] tipoModalidadPacienteSplit = tipoModalidadPacienteSeleccionado.split("-");
-                    tipoModalidadPacienteSeleccionado = tipoModalidadPacienteSplit[0].replaceAll("\\s+", "");
-                    paciente.setTipoModalidadPaciente(tipoModalidadPacienteSeleccionado);
-                    pasarPacienteAlSiguienteFragmento(paciente,terminal);
+                    }else{
+                        Toast.makeText(getContext(), R.string.rellenar_campos, Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(getContext(), R.string.rellenar_campos, Toast.LENGTH_SHORT).show();
+                    modificarPacienteBD(paciente.getId(),paciente);
                 }
+
 
                 break;
             case R.id.buttonVolver:

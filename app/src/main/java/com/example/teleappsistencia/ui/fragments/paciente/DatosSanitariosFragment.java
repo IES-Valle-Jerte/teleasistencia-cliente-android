@@ -70,6 +70,10 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
     private EditText tiempo;
     private ListView listaRecursos;
 
+    private boolean edit=false;
+
+    static List<LinkedTreeMap> lRelacionTerminalRecursoComunitario;
+
     private ArrayList<RelacionTerminalRecursoComunitario> arrayListRecursos;
     private ArrayAdapter<RelacionTerminalRecursoComunitario> adaptador;
 
@@ -77,6 +81,10 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
 
     public DatosSanitariosFragment() {
         // Required empty public constructor
+    }
+    public DatosSanitariosFragment(boolean editar) {
+        // Required empty public constructor
+        this.edit=editar;
     }
 
     public void setDatosPersonalesFragment(DatosPersonalesFragment datosPersonalesFragment) {
@@ -114,10 +122,10 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
             // Haz lo que desees con el objeto en este fragmento
             this.paciente=paciente;
             Terminal terminal= (Terminal) bundle.getSerializable("terminal");
-            this.terminal=terminal;
+            this.terminal= (Terminal) Utilidad.getObjeto(this.paciente.getTerminal(),Constantes.TERMINAL);
         }
-        this.paciente.setPersona(datosPersonalesFragment.getIdpersona());
-        this.terminal.setId(datosPersonalesFragment.getIdTerminal());
+        //this.paciente.setPersona(datosPersonalesFragment.getIdpersona());
+        //this.terminal.setId(datosPersonalesFragment.getIdTerminal());
 
         arrayListRecursos=new ArrayList<>();
         adaptador = new ArrayAdapter<RelacionTerminalRecursoComunitario>(getContext(), android.R.layout.simple_list_item_1, arrayListRecursos);
@@ -134,6 +142,8 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, convertirListaRecursoComunitario(listadoRecursoComunitario));
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         recursos.setAdapter(adapter);
+                        //rellenar los campos si el la opcion es editar
+                        rellenarCamposEdit();
                     }
                 }
 
@@ -150,6 +160,38 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
             listadoRecursoComunitarioString.add(recursoComunitario.getId() + Constantes.REGEX_SEPARADOR_GUION + recursoComunitario.getNombre());
         }
         return listadoRecursoComunitarioString;
+    }
+    public void rellenarCamposEdit(){
+        if(paciente.getNumeroSeguridadSocial()!=null && paciente.getNumeroSeguridadSocial()!=""){
+            nuss.setText(paciente.getNumeroSeguridadSocial());
+
+            APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+            Call<List<LinkedTreeMap>> call = apiService.getListadoRelacionTerminalRecursoComunitario(Constantes.BEARER + Utilidad.getToken().getAccess());
+            call.enqueue(new Callback<List<LinkedTreeMap>>() {
+                @Override
+                public void onResponse(Call<List<LinkedTreeMap>> call, Response<List<LinkedTreeMap>> response) {
+                    if (response.isSuccessful()) {
+                        lRelacionTerminalRecursoComunitario = response.body();
+                        List<RelacionTerminalRecursoComunitario> listadoRelacionTerminalRecursoComunitario = new ArrayList<>();
+                        for (LinkedTreeMap terminalRecursoComunitario : lRelacionTerminalRecursoComunitario) {
+                            RelacionTerminalRecursoComunitario rtrc=((RelacionTerminalRecursoComunitario) Utilidad.getObjeto(terminalRecursoComunitario, "RelacionTerminalRecursoComunitario"));
+                            Terminal t= (Terminal) Utilidad.getObjeto(rtrc.getIdTerminal(),Constantes.TERMINAL);
+                            Terminal t2=(Terminal) Utilidad.getObjeto(paciente.getTerminal(),Constantes.TERMINAL);
+                            if(t.getId()==t2.getId()){
+                                arrayListRecursos.add(rtrc);
+                            }
+
+                        }
+                        adaptador.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<LinkedTreeMap>> call, Throwable t) {
+
+                }
+            });
+        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -215,6 +257,18 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
                 .addToBackStack(null)
                 .commit();
     }
+    public void pasarPacienteAlSiguienteFragmentoModificar(Paciente paciente) {
+        DatosViviendaFragment siguienteFragment = new DatosViviendaFragment(true);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("paciente", paciente); //Se carga el objeto en el bundle
+        bundle.putSerializable("terminal",this.terminal);
+        siguienteFragment.setDatosSanitariosFragment(this);
+        siguienteFragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, siguienteFragment)
+                .addToBackStack(null)
+                .commit();
+    }
     public void addRecurso(){
         RelacionTerminalRecursoComunitario recursoComunitario=new RelacionTerminalRecursoComunitario();
         String recursoComunitarioSeleccionado = recursos.getSelectedItem().toString();
@@ -232,7 +286,7 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
         }catch (java.lang.NumberFormatException e){
             Toast.makeText(getContext(), "Debe indicar el tiempo", Toast.LENGTH_SHORT).show();
         }
-
+        tiempo.setText("");
 
 
     }
@@ -241,7 +295,7 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
         adaptador.notifyDataSetChanged();
     }
     public void insertarRecursos(){
-       /* APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+       APIService apiService = ClienteRetrofit.getInstance().getAPIService();
         for (RelacionTerminalRecursoComunitario recurso: arrayListRecursos) {
             recurso.setIdTerminal(this.terminal.getId());
             Call<RelacionTerminalRecursoComunitario> call = apiService.addRelacionTerminalRecursoComunitario(recurso, Constantes.BEARER + Utilidad.getToken().getAccess());
@@ -260,22 +314,23 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
 
                 }
             });
-        }*/
-        RelacionTerminalRecursoComunitario recurso=arrayListRecursos.get(0);
+        }
+    }
+    private void modificarPacienteBD(int id, Paciente pacienteModificar) {
         APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-        Call<RelacionTerminalRecursoComunitario> call = apiService.addRelacionTerminalRecursoComunitario(recurso, Constantes.BEARER + Utilidad.getToken().getAccess());
-        call.enqueue(new Callback<RelacionTerminalRecursoComunitario>() {
+        Call<Paciente> call = apiService.updatePaciente(id, pacienteModificar, Constantes.BEARER + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<Paciente>() {
             @Override
-            public void onResponse(Call<RelacionTerminalRecursoComunitario> call, Response<RelacionTerminalRecursoComunitario> response) {
+            public void onResponse(Call<Paciente> call, Response<Paciente> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), Constantes.RELACION_GUARDADA, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), Constantes.PACIENTE_MODIFICADO, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), Constantes.ERROR_AL_GUARDAR_RELACIÓN, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), Constantes.ERROR_AL_MODIFICAR_EL_PACIENTE, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<RelacionTerminalRecursoComunitario> call, Throwable t) {
+            public void onFailure(Call<Paciente> call, Throwable t) {
 
             }
         });
@@ -285,12 +340,19 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
         switch (view.getId()) {
             case R.id.buttonGuardar:
                 paciente.setNumeroSeguridadSocial(nuss.getText().toString());
-                paciente.setObservacionesMedicas("no tiene");
-                paciente.setInteresesYActividades("no hay");
+                paciente.setObservacionesMedicas("");
+                paciente.setInteresesYActividades("");
                 //Post de los recursos almacenados en el arrayList
-                //insertarRecursos();
+                insertarRecursos();
+                //Publicar modificaciones en el paciente
                 //Pasar al siguiente fragment
-                pasarPacienteAlSiguienteFragmento(paciente);
+                modificarPacienteBD(paciente.getId(),paciente);
+                if (!edit){
+                    pasarPacienteAlSiguienteFragmento(paciente);
+                }else{
+                    pasarPacienteAlSiguienteFragmentoModificar(paciente);
+                }
+
                 break;
             case R.id.buttonVolver:
                 volver();

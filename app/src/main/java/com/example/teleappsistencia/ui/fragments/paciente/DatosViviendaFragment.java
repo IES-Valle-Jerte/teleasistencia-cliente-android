@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.teleappsistencia.R;
 import com.example.teleappsistencia.modelos.Paciente;
 import com.example.teleappsistencia.modelos.Terminal;
+import com.example.teleappsistencia.modelos.TipoModalidadPaciente;
 import com.example.teleappsistencia.modelos.TipoVivienda;
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
@@ -56,12 +57,18 @@ public class DatosViviendaFragment extends Fragment implements View.OnClickListe
     private EditText accesoVivienda;
     private EditText otrosDatos;
 
+    private boolean edit=false;
+
     private List<TipoVivienda> listadoTipoVivienda=null;
 
 
 
     public DatosViviendaFragment() {
         // Required empty public constructor
+    }
+    public DatosViviendaFragment(boolean editar) {
+        // Required empty public constructor
+        this.edit=editar;
     }
 
     public void setDatosSanitariosFragment(DatosSanitariosFragment datosSanitariosFragment) {
@@ -109,6 +116,18 @@ public class DatosViviendaFragment extends Fragment implements View.OnClickListe
         }
         return listadoString;
     }
+    public void rellenarCamposEdit(){
+        if (this.terminal.getTipoVivienda()!=null && this.terminal.getTipoVivienda()!=""){
+            accesoVivienda.setText(this.terminal.getModoAccesoVivienda());
+            otrosDatos.setText(this.terminal.getBarrerasArquitectonicas());
+            TipoVivienda tipoViv= (TipoVivienda) Utilidad.getObjeto(paciente.getTipoModalidadPaciente(),"TipoVivienda");
+            for (int i = 0; i <listadoTipoVivienda.size() ; i++) {
+                if (listadoTipoVivienda.get(i).getNombre().equals(tipoViv.getNombre())){
+                    tipoVivienda.setSelection(i);
+                }
+            }
+        }
+    }
     private void listarTipoVivienda() {
         APIService apiService = ClienteRetrofit.getInstance().getAPIService();
 
@@ -122,8 +141,10 @@ public class DatosViviendaFragment extends Fragment implements View.OnClickListe
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, convertirListaTipoVivienda(listadoTipoVivienda));
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     tipoVivienda.setAdapter(adapter);
+                    //Si el objeto se va a editar se rellenan los campos
+                    rellenarCamposEdit();
                 } else {
-                    AlertDialogBuilder.crearErrorAlerDialog(getContext(), Integer.toString(response.code()));
+                    Toast.makeText(getContext(), Integer.toString(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -167,24 +188,35 @@ public class DatosViviendaFragment extends Fragment implements View.OnClickListe
                 .addToBackStack(null)
                 .commit();
     }
-    public void postPaciente(){
+    public void pasarObjetosAlSiguienteFragmentoModificar(Paciente paciente,Terminal terminal) {
+        ContactosPacienteFragment siguienteFragment = new ContactosPacienteFragment(true);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("paciente", paciente); //Se carga el paciente en el bundle
+        bundle.putSerializable("terminal",terminal);//Se pasa el terminal mediante el bundle
+        siguienteFragment.setDatosViviendaFragment(this);
+        siguienteFragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, siguienteFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+    private void modificarTerminal(int id, Terminal terminalModificar) {
         APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-        Call<Paciente> call = apiService.addPaciente(paciente, Constantes.BEARER + Utilidad.getToken().getAccess());
-        call.enqueue(new Callback<Paciente>() {
+        Call<Terminal> call = apiService.updateTerminal(id,terminalModificar, Constantes.BEARER +Utilidad.getToken().getAccess());
+        call.enqueue(new Callback <Terminal>() {
             @Override
-            public void onResponse(Call<Paciente> call, Response<Paciente> response) {
+            public void onResponse(Call<Terminal> call, Response<Terminal> response) {
                 if (response.isSuccessful()) {
-                    Object paciente=response.body();
-                    Paciente p= (Paciente) Utilidad.getObjeto(paciente,Constantes.PACIENTE);
-                    Toast.makeText(getContext(), Constantes.PACIENTE_INSERTADO_CORRECTAMENTE, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), Constantes.TERMINAL_MODIFICADA,Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), Constantes.ERROR_AL_INSERTAR_PACIENTE, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), Constantes.ERROR_AL_MODIFICAR_TERMINAL,Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Paciente> call, Throwable t) {
-                Toast.makeText(getContext(), Constantes.ERROR_AL_INSERTAR_PACIENTE, Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<Terminal> call, Throwable t) {
+                Toast.makeText(getContext(),Constantes.ERROR_AL_MODIFICAR_TERMINAL,Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
             }
         });
     }
@@ -209,11 +241,15 @@ public class DatosViviendaFragment extends Fragment implements View.OnClickListe
                 }
                 TipoVivienda tipoVivienda= listadoTipoVivienda.get(i);
                 terminal.setTipoVivienda(tipoVivienda.getId());
-                paciente.setTerminal(null);
                 //post paciente
-                postPaciente();
+                modificarTerminal(terminal.getId(),terminal);
                 //get paciente con su id
-                pasarObjetosAlSiguienteFragmento(paciente,terminal);
+                if (!edit){
+                    pasarObjetosAlSiguienteFragmento(paciente,terminal);
+                }else{
+                    pasarObjetosAlSiguienteFragmentoModificar(paciente,terminal);
+                }
+
                 break;
             case R.id.buttonVolver:
                 volver();

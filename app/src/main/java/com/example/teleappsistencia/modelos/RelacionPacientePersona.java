@@ -12,6 +12,8 @@ public class RelacionPacientePersona implements Serializable {
      * Atributos de la clase POJO con sus anotaciones GSON correspondientes,
      * que se utilizan para mapear las JSON keys hacia campos Java.
      */
+    @SerializedName("id")
+    private int id;
     @SerializedName("nombre")
     private String nombre;
     @SerializedName("apellidos")
@@ -38,6 +40,14 @@ public class RelacionPacientePersona implements Serializable {
 
     //Getters y setters
 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNombre() {
         return nombre;

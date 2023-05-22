@@ -15,7 +15,6 @@
 
         <include layout="@layout/listview_placeholder" />
     </com.facebook.shimmer.ShimmerFrameLayout>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/listViewDataPacientes"
         android:layout_width="match_parent"
@@ -25,6 +24,13 @@
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineArriba"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineArriba1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -38,7 +44,7 @@
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/guidelineArriba"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineArriba1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nuevo"
-            app:layout_constraintBottom_toTopOf="@+id/guidelineArriba"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineArriba1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,6 +86,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.93" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:iconifiedByDefault="false"
+            android:background="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/guidelineArriba"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guidelineArriba1"
+            app:queryHint="Buscar" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
