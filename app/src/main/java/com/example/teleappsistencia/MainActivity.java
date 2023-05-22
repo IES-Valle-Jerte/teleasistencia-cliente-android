@@ -1,15 +1,18 @@
 package com.example.teleappsistencia;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -81,15 +84,12 @@ import com.example.teleappsistencia.ui.fragments.tipo_vivienda.InsertarTipoVivie
 import com.example.teleappsistencia.ui.fragments.tipo_vivienda.ListarTipoViviendaFragment;
 import com.example.teleappsistencia.ui.fragments.usuarios.InsertarUsuariosFragment;
 import com.example.teleappsistencia.ui.fragments.usuarios.ListarUsuariosFragment;
+import com.example.teleappsistencia.ui.fragments.usuarios_sistema.UsuariosSistemaFragment;
 import com.example.teleappsistencia.ui.menu.ExpandableListAdapter;
 import com.example.teleappsistencia.ui.menu.MenuModel;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,8 +131,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private APIService apiService;
 
+    /**
+     * Usado para cargar el activity para que un usuario pueda modificar sus datos.
+     */
+    private ActivityResultLauncher<Intent> resultLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initActivityResultLauncher();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -140,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Realizo una petición a la API para cargar la cabecera del menu con los datos del usuario logueado.
         loadMenuHeader();
-
 
         /* Iniciamos el servicio de notificación de Alarmas. Sólo para usuarios no admin (Teleoperadores) */
         if(!Utilidad.isAdmin()) {
@@ -161,7 +167,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private void initActivityResultLauncher() {
+        this.resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                int resultCode = result.getResultCode();
+                if (Activity.RESULT_OK == resultCode) {
+                    // Cambios guardados correctamente
+                    Toast.makeText(this, Constantes.TOAST_MODPERFIL_SUCCES, Toast.LENGTH_SHORT).show();
+                    // Recargar datos del usuario
+                    cargarDatosUsuarioLoggeado();
+                } else if (Constantes.RESULT_MODPERFIL_ERROR == resultCode) {
+                    Toast.makeText(this, Constantes.TOAST_MODPERFIL_API_ERROR, Toast.LENGTH_SHORT).show();
+                }
+            }
+        );
+    }
 
+    public void cargarActivityModificarPerfil() {
+        Intent intent = new Intent(this, ModificarPerfilActivity.class);
+        resultLauncher.launch(intent);
+    }
     /**
      * Método que carga los datos del usuario en la cabezera del menú.
      */
@@ -169,37 +195,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Recogo el NavigationView para poder asignar los datos.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        textView_nombre_usuarioLogged = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView_nombre_usuarioLogged);
-        textView_email_usuarioLogged = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView_email_usuarioLogged);
-        imageView_fotoPerfil = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView_usuario);
 
+        View navigationHeader = navigationView.getHeaderView(0);
+        textView_nombre_usuarioLogged = (TextView) navigationHeader.findViewById(R.id.textView_nombre_usuarioLogged);
+        textView_email_usuarioLogged = (TextView) navigationHeader.findViewById(R.id.textView_email_usuarioLogged);
+        imageView_fotoPerfil = (ImageView) navigationHeader.findViewById(R.id.imageView_usuario);
+
+        cargarDatosUsuarioLoggeado();
+
+        // Conectar evento para cargar la actividad de modificar perfil del usuario
+        imageView_fotoPerfil.setOnClickListener(_v -> cargarActivityModificarPerfil());
+    }
+
+    public void cargarDatosUsuarioLoggeado() {
         Usuario usuario = Utilidad.getUserLogged();    // Recogo el usuario de la clase Utils.
-        if (usuario != null) {  // Si existe el usuario.
+        if (usuario != null) { // Si existe el usuario.
             // Le asigno el nombre y apellidos.
             textView_nombre_usuarioLogged.setText(usuario.getFirstName() + Constantes.ESPACIO_EN_BLANCO + usuario.getLastName());
             textView_email_usuarioLogged.setText(usuario.getEmail());
+            textView_nombre_usuarioLogged.setText(usuario.getFirstName() + Constantes.ESPACIO_EN_BLANCO + usuario.getLastName());
+            textView_email_usuarioLogged.setText(usuario.getEmail());
 
-            if(usuario.getImagen() != null) {  // Si el usuario cuenta con una imagen.
-                String img_url = usuario.getImagen().getUrl(); // Recogo la imagen del usuario.
-
-                Picasso.get()       // LLamo a Picasso para poder asignar una imagen por URL.
-                        .load(img_url)  // Cargo la URL.
-                        .error(R.drawable.rounded_default_user) // Si sucede un error se utiliza la imagen por defecto.
-                        .resize(78, 80)
-                        .centerCrop()
-                        .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.OFFLINE)
-                        .into(imageView_fotoPerfil, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                System.out.println("\nPerfe\n");
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                System.out.println("\nError\n");
-                                e.printStackTrace();
-                            }
-                        }); // Carga la imagen en el imageView.
+            if (usuario.getImagen() != null) {  // Si el usuario cuenta con una imagen.
+                Utilidad.cargarImagen(usuario.getImagen().getUrl(), imageView_fotoPerfil, Constantes.IMG_PERFIL_RADIOUS);
+            } else {
+                Utilidad.cargarImagen(R.drawable.default_user, imageView_fotoPerfil, Constantes.IMG_PERFIL_RADIOUS);
             }
         }
     }
@@ -257,6 +277,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         childModelsList = new ArrayList<>();
         menuModel = new MenuModel(getResources().getString(R.string.menu_usuarios_servicio), true, true, new ListarPacienteFragment());
         headerList.add(menuModel);
+
+        // Menu Usuarios del Sistema. Solo le aparece a los administradores
+        if(Utilidad.isAdmin()) {
+            menuModel = new MenuModel(getResources().getString(R.string.menu_usuarios_sistema), false, false, new UsuariosSistemaFragment());
+            headerList.add(menuModel);
+        }
 
         // Menu Alarma.
         childModelsList = new ArrayList<>();

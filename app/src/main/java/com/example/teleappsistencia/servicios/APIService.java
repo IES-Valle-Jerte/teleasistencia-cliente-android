@@ -1,6 +1,10 @@
 package com.example.teleappsistencia.servicios;
 
+import android.content.Context;
+
 import com.example.teleappsistencia.modelos.CentroSanitario;
+import com.example.teleappsistencia.modelos.Database;
+import com.example.teleappsistencia.modelos.ProfilePatch;
 import com.example.teleappsistencia.modelos.RecursoComunitario;
 import com.example.teleappsistencia.modelos.TipoModalidadPaciente;
 import com.example.teleappsistencia.modelos.TipoRecursoComunitario;
@@ -18,7 +22,10 @@ import com.example.teleappsistencia.modelos.TipoVivienda;
 import com.example.teleappsistencia.modelos.Usuario;
 
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -42,8 +49,12 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -134,10 +145,6 @@ public interface APIService {
     @DELETE("/api-rest/tipo_recurso_comunitario/{id_dato}")
     public Call<Response<String>> deleteTipoRecursoComunitario(@Path ("id_dato") int id_dato, @Header("Authorization") String token);
 
-    @GET("api-rest/profile")
-    public Call<List<Usuario>> getUsuarioLogueado(@Header("Authorization") String token);
-
-
     // Peticiones de Direccion
 
     @GET("api-rest/direccion")
@@ -172,6 +179,10 @@ public interface APIService {
 
     @DELETE("api-rest/dispositivos_auxiliares_en_terminal/{id}")
     Call<Response<String>> deleteDispositivosAuxiliar(@Path("id") int id, @Header("Authorization") String token);
+
+    // Peticiones de Batabases
+    @GET("/api-rest/databases")
+    Call<List<Database>> getDatabases(@Header("Authorization") String token);
 
     // Peticiones de Grupo
 
@@ -504,7 +515,6 @@ public interface APIService {
     Call<Terminal> updateTerminal(@Path("id") int id, @Body Terminal terminal, @Header("Authorization") String token);
 
     // Peticiones de Usuarios
-
     /**
      * Esta función devolverá una llamada al servidor y pasará el token especificado en el encabezado de
      * Autorización.
@@ -513,7 +523,8 @@ public interface APIService {
      * @return Devuelve una llamada a Retrofit, que se utiliza para realizar la llamada al servidor.
      */
     @GET("api-rest/users")
-    public Call<List<Usuario>> getUsuarios(@Header("Authorization") String token);
+    Call<List<Usuario>> getUsuarios(@Header("Authorization") String token);
+
 
     
     /**
@@ -532,22 +543,71 @@ public interface APIService {
     * Esta función enviará una solicitud POST a la URL "api-rest/users" con el cuerpo de la solicitud
     * siendo el objeto Usuario pasado como parámetro. La función también enviará el token pasado como
     * parámetro en el encabezado de la solicitud.
-    * 
+    *
+    * @deprecated Usar {@link #postUsuarioMultipart(Map, MultipartBody.Part, String)}
+    *
     * @param usuario El objeto que se enviará al servidor.
     * @param token El token que obtienes del inicio de sesión
     * @return Devuelve una llamada a Retrofit, que se utiliza para realizar la llamada al servidor.
     */
     @POST("api-rest/users")
-    public Call<Object> addUsuario(@Body Usuario usuario, @Header("Authorization") String token);
+    Call<Object> addUsuario(@Body Usuario usuario, @Header("Authorization") String token);
 
 
-    @PUT("api-rest/users/{id}")
-    public Call<Object> modifyUsuario(@Path("id") int id, @Body Usuario usuario, @Header("Authorization") String token);
+    /**
+     * @deprecated Usar {@link #patchUsuarioMultipart(int, Map, MultipartBody.Part, String)}
+     *
+     * @param id
+     * @param usuario
+     * @param token
+     * @return
+     */
+    @PUT("/api-rest/users/{id}")
+    Call<Object> modifyUsuario(@Path("id") int id, @Body Usuario usuario, @Header("Authorization") String token);
 
-    @DELETE("api-rest/users/{id}")
-    Call<Response<String>> deleteUser(@Path("id") int id, @Header("Authorization") String token);
+    @DELETE("/api-rest/users/{id}")
+    Call<String> deleteUser(@Path("id") int id, @Header("Authorization") String token);
 
+    /**
+     * Se utiliza para modificar los datos de otro usuario.
+     * @param modificaciones POJO "parcial" (los campos nulos se ignoran) convertido a un mapa de {@link RequestBody}
+     * @param image [Opcional] Nueva imagen de perfil del usuario.
+     * @see ProfilePatch#createMultipartPatchAPICall(Context, boolean)
+     */
+    @PATCH("/api-rest/users/{id_usuario}")
+    @Multipart
+    Call<Usuario> patchUsuarioMultipart(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
 
+    /**
+     * Se utiliza para dar de alta a un nuevo Usuario.
+     * @param modificaciones POJO "parcial" (los campos nulos se ignoran) convertido a un mapa de {@link RequestBody}
+     * @param image [Opcional] Nueva imagen de perfil del usuario.
+     * @see ProfilePatch#createMultipartPostAPICall(Context)
+     */
+    @POST("/api-rest/users")
+    @Multipart
+    Call<Usuario> postUsuarioMultipart(@PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
+    // PROFILE
+    @GET("/api-rest/profile")
+    Call<List<Usuario>> getUsuarioLogueado(@Header("Authorization") String token);
+
+    /**
+     * Se utiliza para modificar el perfil de un usuario (deber ser el mismo que el usuario loggeado)
+     * @param modificaciones POJO "parcial" (los campos nulos se ignoran) convertido a un mapa de {@link RequestBody}
+     * @param image [Opcional] fichero de imagen a
+     * @see ProfilePatch#createMultipartPatchAPICall(Context, boolean)
+     */
+    @PATCH("/api-rest/profile/{id_usuario}")
+    @Multipart
+    Call<Usuario> patchPerfilMultipart(@Path("id_usuario") int id_usuario, @PartMap Map<String, RequestBody> modificaciones, @Part MultipartBody.Part image, @Header("Authorization") String token);
+
+    /**
+     * Permite a los administradores cambiar de BBDD. Verificación en lado de servidor.
+     * @return
+     */
+    @PATCH("/api-rest/profile/{id_usuario}")
+    @Multipart
+    Call<Usuario> patchPerfilCambioBatabase(@Path("id_usuario") int id_usuario, @Part("id_database") Integer id_database, @Header("Authorization") String token);
     //Peticiones de Personas
 
     /**
