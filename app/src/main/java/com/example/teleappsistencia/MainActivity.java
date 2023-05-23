@@ -721,11 +721,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }
-                /*if (headerList.get(groupPosition).isGroup()) {
-                    if (!headerList.get(groupPosition).hasChildren()) {
-                        // En este caso no hay nada que hacer al pulsar en una opción principal.
-                    }
-                }*/
+                // Cerramos el drawer al pulsar una opción sin hijos si no es  un grupo y no tiene hijos
+                if (!headerList.get(groupPosition).isGroup() && !headerList.get(groupPosition).hasChildren()) {
+                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                }
                 /* Estas dos lineas de código hacen que siempre que se pulse una
                 opción principal del menú cargue un fragment en blanco.
 
