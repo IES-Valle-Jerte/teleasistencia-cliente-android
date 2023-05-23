@@ -139,8 +139,7 @@ public class UsuariosSistemaFragment extends Fragment implements OpcionesListaFr
 
             @Override
             public void onFailure(Call<List<Usuario>> call, Throwable t) {
-                t.printStackTrace();
-
+                Toast.makeText(getContext(), Constantes.TOAST_USUARIOSISTEMA_ERROR, Toast.LENGTH_SHORT).show();
                 // Detener el shimmer
                 detenerShimmer();
             }
