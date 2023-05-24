@@ -345,9 +345,10 @@ public class DatosSanitariosFragment extends Fragment implements View.OnClickLis
                 //Post de los recursos almacenados en el arrayList
                 insertarRecursos();
                 //Publicar modificaciones en el paciente
-                //Pasar al siguiente fragment
+
                 modificarPacienteBD(paciente.getId(),paciente);
-                if (!edit){
+                //Pasar al siguiente fragment
+                if (!edit){//Dependiendo si se esta creando o modificando el paciente
                     pasarPacienteAlSiguienteFragmento(paciente);
                 }else{
                     pasarPacienteAlSiguienteFragmentoModificar(paciente);

@@ -732,7 +732,7 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
         switch (view.getId()) {
             case R.id.buttonGuardar:
                 guardarContactos();
-                if (!edit){
+                if (!edit){//Si el paciente se está insertando
                     pasarPacienteAlSiguienteFragmento(this.paciente);
                 }else{
                     pasarPacienteAlSiguienteFragmentoModificar(this.paciente);
@@ -741,7 +741,7 @@ public class ContactosPacienteFragment extends Fragment implements View.OnClickL
             case R.id.buttonVolver:
                 volver();
                 break;
-            case R.id.textViewContacto:
+            case R.id.textViewContacto://Contraer y desplegar contactos
                 if (desplegado1){
                     contraerContacto(tableLayout1);
                     desplegado1=false;

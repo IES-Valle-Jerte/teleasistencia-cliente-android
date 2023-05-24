@@ -241,10 +241,8 @@ public class DatosViviendaFragment extends Fragment implements View.OnClickListe
                 }
                 TipoVivienda tipoVivienda= listadoTipoVivienda.get(i);
                 terminal.setTipoVivienda(tipoVivienda.getId());
-                //post paciente
                 modificarTerminal(terminal.getId(),terminal);
-                //get paciente con su id
-                if (!edit){
+                if (!edit){//Dependiendo si se esta creando o modificando el paciente
                     pasarObjetosAlSiguienteFragmento(paciente,terminal);
                 }else{
                     pasarObjetosAlSiguienteFragmentoModificar(paciente,terminal);

@@ -484,16 +484,14 @@ public class DatosPersonalesFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonGuardarDatosPersonales:
-                if (!edit){
+                if (!edit){//Si el paciente se va a insertar
                     if (comprobarCamposRellenos()){
                         // Post de la persona, terminal y del paciente
                         insertarPersona();
-                        //insertar paciente
-
                     }else{
                         Toast.makeText(getContext(), R.string.rellenar_campos, Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                }else{//Si el paciente se va a modificar
                     modificarPacienteBD(paciente.getId(),paciente);
                 }
 

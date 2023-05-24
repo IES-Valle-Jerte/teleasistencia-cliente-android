@@ -338,7 +338,7 @@ public class DispositivosFragment extends Fragment implements View.OnClickListen
         switch (view.getId()){
             case R.id.buttonGuardar:
                 modificarTerminalYPaciente();
-                if (!edit){
+                if (!edit){//Dependiendo si se esta creando o modificando el paciente
                     guardarSituacion();
                 }else{
                     modificarHistoricoTipoSituacion();
