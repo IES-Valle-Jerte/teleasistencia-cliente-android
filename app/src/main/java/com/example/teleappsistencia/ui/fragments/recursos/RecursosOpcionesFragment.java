@@ -1,6 +1,6 @@
 package com.example.teleappsistencia.ui.fragments.recursos;
 
-import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.TypedValue;
@@ -12,9 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.teleappsistencia.R;
@@ -26,6 +25,7 @@ import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 import com.example.teleappsistencia.utilidades.dialogs.AlertDialogBuilder;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
@@ -35,13 +35,16 @@ import retrofit2.Response;
 
 public class RecursosOpcionesFragment extends Fragment implements View.OnClickListener {
 
-    // Declaración de atributos.
+    /*
+        Declaración de atributos.
+     */
     private TextView textViewErrorPedirNombre;
     private TextView textViewErrorPedirTelefono;
     private TextView textViewErrorPedirLocalidad;
     private TextView textViewErrorPedirProvincia;
     private TextView textViewErrorPedirDireccion;
     private TextView textViewErrorPedirCodigoPostal;
+    private TextView textViewTitulo;
     private EditText nombreRecursoComunitario;
     private EditText telefonoRecursoComunitario;
     private EditText editTextTipoRecursoComunitario;
@@ -55,19 +58,23 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
     private String opcion;
     private int idClasificacionRecurso;
     private Spinner spinnerTipoRecursoComunitario;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
+    /**
+     * Constructor por defecto.
+     */
     public RecursosOpcionesFragment() {
 
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Crea una nueva instancia con tres atributos: recursoComunitario, opción e idClasificacion.
+     * Se utiliza para las opciones de CONSULTAR y EDITAR.
      *
      * @param recursoComunitario: Recibe el recurso comunitario.
      * @param opcion:             Recibe el id del boton presionado.
      * @param idClasificacion:    Recibe el id de la clasificación de recursos.
-     * @return A new instance of fragment ConsultarRecursoComunitario.
+     * @return Nueva instancia para el fragment ConsultarRecursoComunitario.
      */
     public static RecursosOpcionesFragment newInstance(RecursoComunitario recursoComunitario, String opcion, int idClasificacion) {
         RecursosOpcionesFragment fragment = new RecursosOpcionesFragment();
@@ -80,13 +87,13 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
     }
 
     /**
-     * Crea una nueva instancia con dos atributos, opción y idClasificacion.
+     * Crea una nueva instancia con dos atributos, opción e idClasificacion.
      * Se utiliza para la opción de NUEVO. Ya que el parametro recursoComunitario no
      * es necesario en esta opción.
      *
      * @param opcion:             Recibe el id del boton presionado.
      * @param idClasificacion:    Recibe el id de la clasificación de recursos.
-     * @return A new instance of fragment ConsultarRecursoComunitario.
+     * @return Nueva instancia para el fragment ConsultarRecursoComunitario.
      */
     public static RecursosOpcionesFragment newInstance(String opcion, int idClasificacion) {
         RecursosOpcionesFragment fragment = new RecursosOpcionesFragment();
@@ -108,7 +115,12 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
         if (getArguments() != null) {
             this.opcion = (String) getArguments().getSerializable(Constantes.KEY_OPCION_SELECCIONADA);
             this.idClasificacionRecurso = (int) getArguments().getSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS);
-            // Controla la excepción que salta si se crea un nuevo recurso comunitario ya que el atributo recursoComunitario tiene un valor null.
+            /*
+                Controla la excepción que salta si se crea un nuevo recurso comunitario ya que
+                el atributo recursoComunitario tiene un valor null al no pasarle valor en el constructor
+                newInstance(String opcion, int idClasificacion), que es el que se utiliza para generar
+                un nuevo recurso comunitario.
+             */
             try{
                 this.recursoComunitario = (RecursoComunitario) getArguments().getSerializable(Constantes.KEY_RECURSO_COMUNITARIO);
             }catch (NullPointerException e) {
@@ -117,22 +129,42 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
         }
     }
 
+    /**
+     * Método que inicializa la vista.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         TipoRecursoComunitario tipoRecursoComunitario = new TipoRecursoComunitario(null);
         Direccion direccion = new Direccion();
 
-        // Se guarda la vista.
+        /*
+            Se guarda la vista.
+         */
         View root = inflater.inflate(R.layout.fragment_opciones_recursos, container, false);
 
-        // Método que muestra los valores del recurso comunitario.
+        /*
+            Método que muestra los valores del recurso comunitario.
+         */
         if(this.recursoComunitario != null){
             tipoRecursoComunitario = (TipoRecursoComunitario) Utilidad.getObjeto(recursoComunitario.getTipoRecursoComunitario(), Constantes.TIPO_RECURSO_COMUNITARIO);
             direccion = (Direccion) Utilidad.getObjeto(this.recursoComunitario.getDireccion(), Constantes.DIRECCION);
         }
 
 
-        // Se inicializan las variables.
+        /*
+            Se inicializan las variables.
+         */
+        this.textViewTitulo = (TextView) root.findViewById(R.id.textViewTitulo);
         this.textViewErrorPedirNombre = (TextView) root.findViewById(R.id.textViewErrorNombre);
         this.nombreRecursoComunitario = (EditText) root.findViewById(R.id.editTextNombre);
         this.textViewErrorPedirTelefono = (TextView) root.findViewById(R.id.textViewErrorTelefono);
@@ -148,26 +180,45 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
 
         this.editTextTipoRecursoComunitario = (EditText) root.findViewById(R.id.editTextTipoRecursoComunitario);
         this.spinnerTipoRecursoComunitario = (Spinner) root.findViewById(R.id.spinnerTipoRecursoComunitario);
+        this.shimmerFrameLayout = (ShimmerFrameLayout) root.findViewById(R.id.shimmer_container_spinner);
 
         this.buttonGuardar = (Button) root.findViewById(R.id.buttonGuardar);
         this.buttonVolver = (Button) root.findViewById(R.id.buttonVolver);
 
+        /*
+            Según la opción enviada desde el fragment RecursosListadoFragment (Consulta, Editar
+            o Nuevo), los atributos tendrán un valor determinado.
+         */
         switch (this.opcion) {
 
-            // Consultar.
+            /*
+                Consultar.
+             */
             case Constantes.CONSULTAR:
+                this.textViewTitulo.setText(Constantes.TITULO_CONSULTAR);
+                /*
+                    Los EditText pierden su listener para que no puedan ser modificados.
+                 */
                 this.nombreRecursoComunitario.setKeyListener(null);
                 this.telefonoRecursoComunitario.setKeyListener(null);
                 this.localidadRecursoComunitario.setKeyListener(null);
                 this.provinciaRecursoComunitario.setKeyListener(null);
                 this.direccionRecursoComunitario.setKeyListener(null);
                 this.codigoPostalRecursoComunitario.setKeyListener(null);
-                this.editTextTipoRecursoComunitario.setVisibility(View.VISIBLE);
                 this.editTextTipoRecursoComunitario.setKeyListener(null);
+                /*
+                    El Spinner pasa a ser invisible y se muestra el EditText..
+                 */
+                this.editTextTipoRecursoComunitario.setVisibility(View.VISIBLE);
                 this.spinnerTipoRecursoComunitario.setVisibility(View.INVISIBLE);
+                /*
+                    El botón Guardar pasa a ser invisible y no tiene listener.
+                 */
                 this.buttonGuardar.setVisibility(View.GONE);
                 this.buttonVolver.setOnClickListener(this);
-
+                /*
+                    Se da valor a los EditTexts.
+                 */
                 this.nombreRecursoComunitario.setText(this.recursoComunitario.getNombre());
                 this.telefonoRecursoComunitario.setText(this.recursoComunitario.getTelefono());
                 this.editTextTipoRecursoComunitario.setText(tipoRecursoComunitario.getNombreTipoRecursoComunitario());
@@ -177,14 +228,26 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                 this.codigoPostalRecursoComunitario.setText(direccion.getCodigoPostal());
                 break;
 
-            // Editar.
+            /*
+                Editar - Modificar.
+             */
             case Constantes.MODIFICAR:
+                this.textViewTitulo.setText(Constantes.TITULO_MODIFICAR);
+                /*
+                    Generamos los listeners de los botones Guardar y Volver.
+                 */
                 this.buttonGuardar.setOnClickListener(this);
                 this.buttonVolver.setOnClickListener(this);
+                /*
+                    Volvemos invisible el EditText del Tipo de Recurso Comunitario.
+                    Generamos una capa de espera en el Shimmer y cargamos el Spinner.
+                 */
                 this.editTextTipoRecursoComunitario.setVisibility(View.INVISIBLE);
-
+                this.shimmerFrameLayout.startShimmer();
                 cargarSpinner();
-
+                /*
+                    Damos valor a los EditText con el recurso comunitario elegido.
+                 */
                 this.nombreRecursoComunitario.setText(this.recursoComunitario.getNombre());
                 this.telefonoRecursoComunitario.setText(this.recursoComunitario.getTelefono());
                 this.localidadRecursoComunitario.setText(direccion.getLocalidad());
@@ -193,12 +256,22 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                 this.codigoPostalRecursoComunitario.setText(direccion.getCodigoPostal());
                 break;
 
-            // Nuevo.
+            /*
+                Nuevo.
+             */
             case Constantes.NUEVO:
+                this.textViewTitulo.setText(Constantes.TITULO_NUEVO);
+                /*
+                    Generamos los listeners de los botones Guardar y Volver.
+                 */
                 this.buttonGuardar.setOnClickListener(this);
                 this.buttonVolver.setOnClickListener(this);
+                /*
+                    Volvemos invisible el EditText del Tipo de Recurso Comunitario.
+                    Generamos una capa de espera en el Shimmer y cargamos el Spinner.
+                 */
                 this.editTextTipoRecursoComunitario.setVisibility(View.INVISIBLE);
-
+                this.shimmerFrameLayout.startShimmer();
                 cargarSpinner();
                 break;
         }
@@ -250,14 +323,21 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                 if (response.isSuccessful()) {
                     Object recurso = response.body();
                     AlertDialogBuilder.crearInfoAlerDialog(getContext(), Constantes.INFO_ALERTDIALOG_MODIFICADO_RECURSO);
-                    // Necesita un tiempo para ejecutarse, de no ser así, salta excepción.
+                    /*
+                        Necesita un tiempo para ejecutarse, de no ser así, salta excepción.
+                        Genera una espera de medio segundo.
+                     */
                     new CountDownTimer(500, 500) {
                         public void onTick(long millisUntilFinished) {
-                            // No se necesita hacer nada en este caso
+                            /*
+                                No se necesita hacer nada en este caso
+                             */
                         }
 
                         public void onFinish() {
-                            // Código para el segundo comando después de esperar medio segundo
+                            /*
+                                Código para el segundo comando después de esperar medio segundo
+                             */
                             getActivity().onBackPressed();
                         }
                     }.start();
@@ -287,14 +367,21 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                 if (response.isSuccessful()) {
                     Object recurso = response.body();
                     AlertDialogBuilder.crearInfoAlerDialog(getContext(), Constantes.INFO_ALERTDIALOG_CREADO_RECURSO);
-                    // Necesita tiempo para ejecutarse.
+                    /*
+                        Necesita tiempo para ejecutarse.
+                        Genera una espera de medio segundo.
+                     */
                     new CountDownTimer(500, 500) {
                         public void onTick(long millisUntilFinished) {
-                            // No se necesita hacer nada en este caso
+                            /*
+                                No se necesita hacer nada en este caso
+                             */
                         }
 
                         public void onFinish() {
-                            // Código para el segundo comando después de esperar medio segundo
+                            /*
+                                Código para el segundo comando después de esperar medio segundo
+                             */
                             getActivity().onBackPressed();
                         }
                     }.start();
@@ -322,8 +409,19 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
             public void onResponse(Call<List<TipoRecursoComunitario>> call, Response<List<TipoRecursoComunitario>> response) {
                 if (response.isSuccessful()) {
                     List<TipoRecursoComunitario> lTiposRecursos = response.body();
-                    // Este método sobre escribe el getView y el getDropDownView de la clase ArrayAdapter para que guarde un objeto y muestre su nombre con un tamaño determinado en dimens.xml.
+                    /*
+                        Detiene el efecto del Shimmer.
+                     */
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.hideShimmer();
+                    /*
+                        Este método sobre escribe el getView y el getDropDownView de la clase ArrayAdapter
+                        para que guarde un objeto y muestre su nombre con un tamaño determinado en dimens.xml.
+                     */
                     ArrayAdapter<TipoRecursoComunitario> lTipoRecursosSpinner = new ArrayAdapter<TipoRecursoComunitario>(getContext(), android.R.layout.simple_spinner_item, lTiposRecursos) {
+                        /*
+                            Elemento seleccionado en el Spinner.
+                         */
                         @Override
                         public View getView(int position, View convertView, ViewGroup parent) {
                             TextView textView = (TextView) super.getView(position, convertView, parent);
@@ -333,7 +431,9 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, tamañoTexto);
                             return textView;
                         }
-
+                        /*
+                            Elementos expandidos del Spinner.
+                         */
                         @Override
                         public View getDropDownView(int position, View convertView, ViewGroup parent) {
                             TextView text = (TextView) super.getDropDownView(position, convertView, parent);
@@ -344,12 +444,14 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                         }
                     };
                     spinnerTipoRecursoComunitario.setAdapter(lTipoRecursosSpinner);
+                } else {
+                    Toast.makeText(getContext(), Integer.toString(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<TipoRecursoComunitario>> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }
@@ -365,9 +467,12 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
         recursoComunitarioModificado.setNombre(this.nombreRecursoComunitario.getText().toString());
         recursoComunitarioModificado.setTelefono(this.telefonoRecursoComunitario.getText().toString());
 
-        // Para hacer el PUT, es necesario que el objeto recursoComunitario tenga el atributo
-        // tipoRecursoComunitario como int, ya que en PostMan recibe el id, no el objeto.
-        TipoRecursoComunitario tipoRecursoComunitario = (TipoRecursoComunitario) spinnerTipoRecursoComunitario.getSelectedItem();
+        /*
+            Para hacer el POST y el PUT, es necesario que el objeto recursoComunitario tenga el atributo
+            tipoRecursoComunitario como int, ya que en PostMan recibe el id, no el objeto.
+         */
+        TipoRecursoComunitario tipoRecursoComunitario = (TipoRecursoComunitario)
+                spinnerTipoRecursoComunitario.getSelectedItem();
         int id_tipo_comunitario = tipoRecursoComunitario.getId();
         recursoComunitarioModificado.setTipoRecursoComunitario(id_tipo_comunitario);
 
@@ -381,4 +486,5 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
         return recursoComunitarioModificado;
     }
 }
+
 
