@@ -1,5 +1,7 @@
 package com.example.teleappsistencia.modelos;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -10,6 +12,7 @@ public class Imagen implements Serializable {
     /**
      * Atributos de la clase
      */
+    @SerializedName("imagen")
     private String url;
 
     public Imagen(String url) {

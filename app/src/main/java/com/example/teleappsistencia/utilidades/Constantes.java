@@ -2,7 +2,7 @@ package com.example.teleappsistencia.utilidades;
 
 public class Constantes {
     /* Direcciones */
-    public static final String DIRECCION_WEBSOCKET = "ws://api-rest.teleasistencia.iesvjp.es/ws/socket-server/";
+    public static final String DIRECCION_WEBSOCKET = "ws://10.0.2.2:8000/ws/socket-server/";
 
     /* Constantes comunes */
     public final static String BEARER_ESPACIO = "Bearer ";
@@ -78,6 +78,7 @@ public class Constantes {
      * Constantes de autorización.
      */
     public static final String UNAUTHORIZED = "Unauthorized";
+    public static final String ADMINISTRADOR = "Administrador";
     public static final String PROFESOR = "Profesor";
 
     /**
@@ -107,6 +108,47 @@ public class Constantes {
     public static final String ID_CON_DOS_PUNTOS = "ID: ";
     public static final String STRING_VACIO = "";
     public static final String ESPACIO_EN_BLANCO = " ";
+
+    /**
+     * Constantes referentes a los Perfiles de Usuario del Sistema.
+     */
+    public static final int RESULT_MODPERFIL_ERROR = -2;
+    public static final int IMG_PERFIL_RADIOUS = 1000;
+    public static final int IMG_PERFIL_RADIOUS_LISTA = 15;
+    public static final String TOAST_MODPERFIL_SUCCES = "Tu perfil se ha actualizado correctamente";
+    public static final String TOAST_MODPERFIL_API_ERROR = "Ha habido un error al actualizar tu perfil";
+    public static final String TOAST_MODPERFIL_CORREO_INVALIDO = "El correo no es un correo válido";
+    public static final String TOAST_MODPERFIL_PERMISO_NECESARIO = "No puedes realizar esta acción sin dar el permiso de leer el almacenamiento";
+    // Cambios de contraseña
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_CANCELADO = "Cambio de contraseña cancelado";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_CORRECTO = "Tu contraseña se ha cambiado correctamente";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_API_ERROR = "Ha habido un error al cambiar tu contraseña";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID_DIFFERENT = "Las contraseñas no coinciden...";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID_NOPASS = "Introduzca una contraseña por favor";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID = "La contraseña no cumple con los requisitos";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_REGEX = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,}$";
+    // Cambios database
+    public static final String TOAST_MODPERFIL_CAMBIODB_CANCELADO = "Cambio de base de datos cancelado";
+    public static final String TOAST_MODPERFIL_CAMBIODB_CORRECTO = "Usuario migrado correctamente de base de datos";
+    // Creacion/Modificación de Usuarios
+    public static final String TOAST_USUARIOSISTEMA_ERROR = "Ha ocurrido un error";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_PATCHES = "Introduce los datos por favor";
+
+    public static final String TOAST_USUARIOSISTEMA_ERROR_CREAR = "Ha ocurrido un error al crear el usuario";
+    public static final String TOAST_USUARIOSISTEMA_ERROR_EDITAR = "Ha ocurrido un error al modificar el usuario";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_USERNAME = "El login/nombre de usuario no puede estar vacío";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_FIRSTNAME = "Indica el nombre del usuario";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_LASTNAME = "Indica los apellidos del usuario";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_INVALID_MAIL = "La dirección de correo no es válida";
+
+    public static final String TOAST_USUARIOSISTEMA_OK_CREAR = "Usuario creado correctamente";
+    public static final String TOAST_USUARIOSISTEMA_OK_EDITAR = "Modificación realizada correctamente";
+
+    /**
+     * Constantes referentes a la gestión de Usuarios del Sistema
+     */
+    public static final String MSG_CONFIRMAR_ELEIMINAR_USUARIO_SISTEMA = "¿Está seguro que desea eliminarlo?";
+
 
     /**
      * Constantes para los infoAlertDialogs
@@ -290,6 +332,7 @@ public class Constantes {
     public final static String AL_TIPO_ALARMA = "ArrayList<TipoAlarma>";
     public final static String AL_TERMINAL = "ArrayList<Terminal>";
     public final static String AL_PACIENTE = "ArrayList<Paciente>";
+    public final static String AL_USUARIOS_SISTEMA = "ArrayList<Usuario>";
     public final static String AL_ALARMA = "ArrayList<Alarma>";
     public final static String AL_CLASIFICACION_ALARMA= "ArrayList<ClasificacionAlarma>";
     public final static String AL_CLASIFICACION_RECURSO= "ArrayList<ClasificacionRecurso>";

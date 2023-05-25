@@ -7,12 +7,11 @@
     tools:context=".ui.fragments.opciones_listas.OpcionesListaFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-
     <ImageButton
         android:id="@+id/view_details_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:src="@android:drawable/ic_menu_search"
         android:layout_weight="1"
         android:contentDescription="detalles"
         android:src="@android:drawable/ic_menu_search"

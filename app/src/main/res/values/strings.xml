@@ -25,6 +25,7 @@
     <string name="menu_clasificacion_alarma">Clasificación Alarma</string>
     <string name="menu_alarma">Alarma</string>
     <string name="menu_usuarios_servicio">Usuarios del Servicio</string>
+    <string name="menu_usuarios_sistema">Usuarios del Sistema</string>
     <string name="menu_centro_sanitario_en_alarma">Centro Sanitario en Alarma</string>
     <string name="menu_recursos_comunitarios_en_alarma">Recursos Comunitarios en Alarma</string>
     <string name="menu_persona_de_contacto_en_alarma">Persona de contacto en Alarma</string>
@@ -181,6 +182,7 @@
     <string name="titulo_listarDatosTipoCentroSanitario">Tipos de centros sanitarios</string>
     <string name="titulo_listarDatosTipoModalidadPaciente">Tipos de modalidades de pacientes</string>
     <string name="titulo_listarPacientes">Pacientes</string>
+    <string name="titulo_usuarios_sistema">Usuarios del Sistema</string>
     <string name="titulo_listarDatosCentroSanitario">Centros sanitarios</string>
     <string name="titulo_listarDatosTipoRecursoComunitario">Tipos de recursos comunitarios</string>
     <string name="titulo_listarDatosRecursoComunitario">Recursos comunitarios</string>
@@ -193,6 +195,10 @@
     <string name="provincia">Provincia</string>
     <string name="direccion">Dirección</string>
     <string name="codigoPostal">Código Postal</string>
+    <string name="usuario_card_description_imagen">Imagen del Usuario</string>
+    <string name="usuario_card_placeholder_grupos">GRUPOS</string>
+    <string name="usuario_card_placeholder_nom_ape">NOMBRE APPELIDOS</string>
+    <string name="usuario_card_placeholder_username">username</string>
 
     <!-- Mensajes Botones. -->
     <string name="guardar">Guardar</string>
@@ -500,4 +506,44 @@
     <string name="labelSexo">Sexo</string>
     <!-- no pisar este bloque -->
 
+
+    <!-- Activity Modifical Perfil -->
+    <!-- Panel: Datos -->
+    <string name="modificar_perfil_tvUsername">username</string>
+    <string name="modificar_perfil_tvNombreApellidos">Nombre y Apellidos</string>
+    <string name="modificar_perfil_tvEmail">Correo Electrónico</string>
+    <string name="modificar_perfil_btnCambiarPass">Cambiar Contraseña</string>
+    <string name="modificar_perfil_btnCambiarBd">Migracion</string>
+    <string name="modificar_perfil_btnGuardar">Guardar Cambios</string>
+
+    <!-- Panel: Cambio de Contraseña -->
+    <string name="modificar_perfil_tvDatabases">Bases de Datos</string>
+    <string name="modificar_perfil_tvNuevaPassHeader">Cambiar Contraseña</string>
+    <string name="modificar_perfil_tvPass">Contraseña</string>
+    <string name="modificar_perfil_tvNuevaPass">Nueva Contraseña</string>
+    <string name="modificar_perfil_tvRepetirNuevaPass">Repita la Contraseña</string>
+    <string name="modificar_perfil_btnGuardarNuevoUsuario">Crear Usuario</string>
+    <string name="modificar_perfil_btnGuardarNuevaPassword">Guardar</string>
+    <string name="modificar_perfil_btnCancelarCambioPassword">Cancelar</string>
+    <string name="modificar_perfil_requisitosPassword1">• No puede ser similar a otros datos personales.</string>
+    <string name="modificar_perfil_requisitosPassword2">• Debe tener al menos 8 caracteres.</string>
+    <string name="modificar_perfil_requisitosPassword3">• No puede ser comúnmente utilizada.</string>
+    <string name="modificar_perfil_requisitosPassword4">• No puede ser completamente numérica.</string>
+    <!-- FIN: Activity Modifical Perfil -->
+
+
+    <!-- Usuarios del Sistema -->
+    <string name="detalles_usuario_sistema_tittle_id">ID</string>
+    <string name="detalles_usuario_sistema_tittle_url">Url</string>
+    <string name="detalles_usuario_sistema_tittle_lastlogin">Último Inicio de Sesión</string>
+    <string name="detalles_usuario_sistema_tittle_username">Login/Nombre de Usuario</string>
+    <string name="detalles_usuario_sistema_tittle_nombre">Nombre</string>
+    <string name="detalles_usuario_sistema_tittle_apellidos">Apellidos</string>
+    <string name="detalles_usuario_sistema_tittle_email">Dirección de correo electrónico</string>
+    <string name="detalles_usuario_sistema_tittle_fecha_alta">Fecha de Alta</string>
+    <string name="detalles_usuario_sistema_tittle_grupo">Grupo</string>
+    <string name="detalles_usuario_sistema_tittle_foto_perfil">Foto de Perfil</string>
+    <string name="detalles_usuario_sistema_tittle_roles">Perfil</string>
+    <string name="detalles_usuario_sistema_tittle_database">Base de datos</string>
+    <!-- FIN: Usuarios del Sistema -->
 </resources>
