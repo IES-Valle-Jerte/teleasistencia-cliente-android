@@ -209,7 +209,7 @@ public class ModificarRelacionTerminalRecursoComunitarioFragment extends Fragmen
     }
 
     private void modificarRelacionTerminalRecursoComunitario(String terminalSeleccionado, String recursoComunitarioSeleccionado) {
-        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+       /* APIService apiService = ClienteRetrofit.getInstance().getAPIService();
         RelacionTerminalRecursoComunitario relacionTerminalRecursoComunitarioModificado = new RelacionTerminalRecursoComunitario();
         relacionTerminalRecursoComunitarioModificado.setIdTerminal(Integer.parseInt(terminalSeleccionado));
         relacionTerminalRecursoComunitarioModificado.setIdRecursoComunitario(Integer.parseInt(recursoComunitarioSeleccionado));
@@ -230,7 +230,7 @@ public class ModificarRelacionTerminalRecursoComunitarioFragment extends Fragmen
                 Toast.makeText(getContext(), Constantes.ERROR_AL_MODIFICAR_LA_RELACION, Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
-        });
+        });*/
     }
 
     private boolean validarCampos() {

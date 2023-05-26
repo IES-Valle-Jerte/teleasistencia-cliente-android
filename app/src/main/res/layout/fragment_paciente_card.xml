@@ -36,9 +36,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="@string/numeroExpediente"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButtonVerPaciente"
+            app:layout_constraintBottom_toTopOf="@+id/tieneUCRCard"
             app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
-            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerPaciente" />
+            app:layout_constraintTop_toBottomOf="@+id/numSeguridadSocialCard" />
 
         <TextView
             android:id="@+id/tieneUCRCard"
@@ -46,47 +46,20 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="@string/tieneUCR"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButtonModificarPaciente"
+            app:layout_constraintBottom_toTopOf="@+id/tipoModalidadPacienteCard"
             app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
-            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerPaciente" />
+            app:layout_constraintTop_toBottomOf="@+id/numeroExpedienteCard" />
 
         <TextView
             android:id="@+id/tipoModalidadPacienteCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:text="@string/idTerminal"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButtonModificarPaciente"
-            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
-            app:layout_constraintTop_toBottomOf="@+id/imageButtonModificarPaciente" />
-
-        <ImageButton
-            android:id="@+id/imageButtonVerPaciente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-        <ImageButton
-            android:id="@+id/imageButtonModificarPaciente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_edit"
-            app:layout_constraintBottom_toTopOf="@+id/imageButtonBorrarPaciente"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageButtonVerPaciente"
-            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
-
-        <ImageButton
-            android:id="@+id/imageButtonBorrarPaciente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_delete"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="SpeakableTextPresentCheck" />
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+            app:layout_constraintTop_toBottomOf="@+id/tieneUCRCard" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

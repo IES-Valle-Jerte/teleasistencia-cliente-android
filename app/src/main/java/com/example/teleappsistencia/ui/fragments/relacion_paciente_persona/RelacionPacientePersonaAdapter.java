@@ -87,7 +87,7 @@ public class RelacionPacientePersonaAdapter extends RecyclerView.Adapter<Relacio
         }
 
         private void accionBorrarRelacionPacientePersona() {
-            APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+            /*APIService apiService = ClienteRetrofit.getInstance().getAPIService();
             double idSeleccionadoDouble = (double) this.relacionPacientePersona.getId();
             int idSeleccionado = (int) idSeleccionadoDouble;
             Call<ResponseBody> call = apiService.deleteRelacionPacientePersona(idSeleccionado, Constantes.BEARER + Utilidad.getToken().getAccess());
@@ -106,7 +106,7 @@ public class RelacionPacientePersonaAdapter extends RecyclerView.Adapter<Relacio
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
                 }
-            });
+            });*/
         }
 
         private void recargarFragment() {
@@ -150,7 +150,7 @@ public class RelacionPacientePersonaAdapter extends RecyclerView.Adapter<Relacio
         viewHolder.prioridadCard.setText("Prioridad: " + String.valueOf(items.get(i).getPrioridad()));
         viewHolder.disponibilidadCard.setText(items.get(i).getDisponibilidad());
         Paciente paciente = (Paciente) Utilidad.getObjeto(items.get(i).getIdPaciente(), "Paciente");
-        if (items.get(i).getIdPaciente() != null) {
+        /*if (items.get(i).getIdPaciente() != null) {
             viewHolder.pacienteRelacionCard.setText("SS del paciente: " + paciente.getNumeroSeguridadSocial());
         } else {
             viewHolder.pacienteRelacionCard.setText("Paciente: ");
@@ -160,6 +160,6 @@ public class RelacionPacientePersonaAdapter extends RecyclerView.Adapter<Relacio
             viewHolder.personaRelacionCard.setText("Persona de contacto: " + persona.getNombre() + " " + persona.getApellidos());
         }else {
             viewHolder.personaRelacionCard.setText("Persona de contacto: ");
-        }
+        }*/
     }
 }

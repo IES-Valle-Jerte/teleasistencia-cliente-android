@@ -65,9 +65,6 @@ public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.Pacien
         public Context context;
 
         // Atributos de la tarjeta en la interfaz de usuario (UI).
-        private ImageButton imageButtonModificarPaciente;
-        private ImageButton imageButtonVerPaciente;
-        private ImageButton imageButtonBorrarPaciente;
         private TextView numSeguridadSocialCard;
         private TextView numeroExpedienteCard;
         private TextView tieneUCRCard;
@@ -84,9 +81,6 @@ public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.Pacien
         public PacienteViewHolder(View v) {
             super(v);
             this.context = v.getContext();
-            this.imageButtonModificarPaciente = v.findViewById(R.id.imageButtonModificarPaciente);
-            this.imageButtonVerPaciente = v.findViewById(R.id.imageButtonVerPaciente);
-            this.imageButtonBorrarPaciente = v.findViewById(R.id.imageButtonBorrarPaciente);
             this.numSeguridadSocialCard = v.findViewById(R.id.numSeguridadSocialCard);
             this.numeroExpedienteCard = v.findViewById(R.id.numeroExpedienteCard);
             this.tieneUCRCard = v.findViewById(R.id.tieneUCRCard);
@@ -97,11 +91,6 @@ public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.Pacien
         /**
          * Esta función establece onClickListeners para los imageButtons en el RecyclerView
          */
-        public void setOnClickListeners() {
-            this.imageButtonModificarPaciente.setOnClickListener(this);
-            this.imageButtonVerPaciente.setOnClickListener(this);
-            this.imageButtonBorrarPaciente.setOnClickListener(this);
-        }
 
         /**
          * Recogemos los onClickListeners de los imageButtons en el RecyclerView
@@ -112,44 +101,9 @@ public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.Pacien
         public void onClick(View view) {
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
 
-            switch (view.getId()) {
-                // Modificar paciente.
-                case R.id.imageButtonModificarPaciente:
-                    ModificarPacienteFragment modificarPacienteFragment = ModificarPacienteFragment.newInstance(this.paciente);
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, modificarPacienteFragment).addToBackStack(null).commit();
-                    break;
-                // Ver paciente.
-                case R.id.imageButtonVerPaciente:
-                    ConsultarPacienteFragment consultarPacienteFragment = ConsultarPacienteFragment.newInstance(this.paciente);
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, consultarPacienteFragment).addToBackStack(null).commit();
-                    break;
-                // Borrar paciente.
-                case R.id.imageButtonBorrarPaciente:
-                    accionBorrarPaciente();
-                    break;
-            }
         }
 
-        private void accionBorrarPaciente() {
-            APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-            Call<ResponseBody> call = apiService.deletePaciente(String.valueOf(this.paciente.getId()), "Bearer " + Utilidad.getToken().getAccess());
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(context, Constantes.PACIENTE_BORRADO_CORRECTAMENTE, Toast.LENGTH_SHORT).show();
-                        recargarFragment();
-                    } else {
-                        Toast.makeText(context, Constantes.ERROR_AL_BORRAR_EL_PACIENTE, Toast.LENGTH_SHORT).show();
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                }
-            });
-        }
 
         private void recargarFragment() {
             MainActivity activity = (MainActivity) this.context;
@@ -219,15 +173,14 @@ public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.Pacien
      */
     @Override
     public void onBindViewHolder(PacienteViewHolder viewHolder, int i) {
-        viewHolder.setOnClickListeners();
         viewHolder.setPaciente(items.get(i));
         viewHolder.numSeguridadSocialCard.setText(items.get(i).getNumeroSeguridadSocial());
         viewHolder.numeroExpedienteCard.setText("Exp:" + items.get(i).getNumeroExpediente());
         if (items.get(i).isTieneUcr()) {
-            viewHolder.tieneUCRCard.setText("El paciente tiene UCR");
+            viewHolder.tieneUCRCard.setText("El usuario tiene UCR");
             viewHolder.tieneUCRCard.setTextColor(Color.RED);
         } else {
-            viewHolder.tieneUCRCard.setText("El paciente no tiene UCR");
+            viewHolder.tieneUCRCard.setText("El usuario no tiene UCR");
             viewHolder.tieneUCRCard.setTextColor(Color.GREEN);
         }
         TipoModalidadPaciente tipoModalidadPaciente = (TipoModalidadPaciente) Utilidad.getObjeto(items.get(i).getTipoModalidadPaciente(), "TipoModalidadPaciente");

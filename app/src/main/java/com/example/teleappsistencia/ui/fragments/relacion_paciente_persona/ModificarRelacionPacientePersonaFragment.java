@@ -131,11 +131,11 @@ public class ModificarRelacionPacientePersonaFragment extends Fragment implement
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     Paciente paciente = (Paciente) Utilidad.getObjeto(relacionPacientePersona.getIdPaciente(), "Paciente");
                     spinnerPacienteModificarRelacionPacientePersona.setAdapter(adapter);
-                    if (relacionPacientePersona.getIdPaciente() != null) {
+                    /*if (relacionPacientePersona.getIdPaciente() != null) {
                         spinnerPacienteModificarRelacionPacientePersona.setSelection(buscarPosicionSpinnerPaciente(listadoPacientes, paciente.getId()));
                     } else {
                         spinnerPacienteModificarRelacionPacientePersona.setSelection(0);
-                    }
+                    }*/
                 }
             }
 
@@ -177,7 +177,7 @@ public class ModificarRelacionPacientePersonaFragment extends Fragment implement
         String personaSeleccionada = spinnerPersonaModificar.getSelectedItem().toString();
         String[] personaSplit = personaSeleccionada.split("-");
         personaSeleccionada = personaSplit[0].replaceAll("\\s+", "");
-        relacionPacientePersonaModificar.setIdPersona(personaSeleccionada);
+        //relacionPacientePersonaModificar.setIdPersona(personaSeleccionada);
         //Obtenemos el resto de atributos de los editText
         if (editTextTieneLlaveViviendaModificar.getText().toString().equals("Sí") || editTextTieneLlaveViviendaModificar.getText().toString().equals("Si")) {
             relacionPacientePersonaModificar.setTieneLlavesVivienda(true);
@@ -188,12 +188,12 @@ public class ModificarRelacionPacientePersonaFragment extends Fragment implement
         relacionPacientePersonaModificar.setDisponibilidad(editTextDisponibilidadModificar.getText().toString());
         relacionPacientePersonaModificar.setObservaciones(editTextObservacionesModificar.getText().toString());
         relacionPacientePersonaModificar.setPrioridad(Integer.parseInt(editTextPrioridadModificar.getText().toString()));
-        relacionPacientePersonaModificar.setId((int) ((Double) relacionPacientePersona.getId()).intValue());
+        //relacionPacientePersonaModificar.setId((int) ((Double) relacionPacientePersona.getId()).intValue());
         modificarRelacionPacientePersona(relacionPacientePersonaModificar);
     }
 
     private void modificarRelacionPacientePersona(RelacionPacientePersona relacionPacientePersona) {
-        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+       /* APIService apiService = ClienteRetrofit.getInstance().getAPIService();
         Call<RelacionPacientePersona> call = apiService.updateRelacionPacientePersona((int) relacionPacientePersona.getId(), relacionPacientePersona, "Bearer " + Utilidad.getToken().getAccess());
         call.enqueue(new Callback<RelacionPacientePersona>() {
             @Override
@@ -210,7 +210,7 @@ public class ModificarRelacionPacientePersonaFragment extends Fragment implement
             public void onFailure(Call<RelacionPacientePersona> call, Throwable t) {
 
             }
-        });
+        });*/
     }
 
     public void limpiarCampos() {
@@ -239,13 +239,13 @@ public class ModificarRelacionPacientePersonaFragment extends Fragment implement
                     List<Persona> listadoPersona = response.body();
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, convertirListaPersonas(listadoPersona));
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    Persona persona = (Persona) Utilidad.getObjeto(relacionPacientePersona.getIdPersona(), "Persona");
+                    /*Persona persona = (Persona) Utilidad.getObjeto(relacionPacientePersona.getIdPersona(), "Persona");
                     spinnerPersonaModificar.setAdapter(adapter);
                     if (persona != null) {
                         spinnerPersonaModificar.setSelection(buscarPosicionSpinnerPersona(listadoPersona, persona.getId()));
                     } else {
                         spinnerPersonaModificar.setSelection(0);
-                    }
+                    }*/
                 } else {
                     Toast.makeText(getContext(), Constantes.ERROR_AL_OBTENER_LOS_DATOS, Toast.LENGTH_SHORT).show();
                 }
