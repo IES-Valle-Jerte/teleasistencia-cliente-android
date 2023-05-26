@@ -1,5 +1,8 @@
 package com.example.teleappsistencia.modelos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import com.example.teleappsistencia.utilidades.Constantes;
@@ -11,7 +14,16 @@ import java.io.Serializable;
 public class Contacto implements Serializable {
 
     @SerializedName("id")
-    private int idContacto;
+    private int id;
+
+    @SerializedName("nombre")
+    private String nombre;
+
+    @SerializedName("apellidos")
+    private String apellidos;
+
+    @SerializedName("telefono")
+    private String telefono;
     @SerializedName("tipo_relacion")
     private String tipo_relacion;
     @SerializedName("tiene_llaves_vivienda")
@@ -22,17 +34,21 @@ public class Contacto implements Serializable {
     private String observaciones;
     @SerializedName("prioridad")
     private int prioridad;
+
+    @SerializedName("es_conviviente")
+    private boolean es_conviviente;
+
+    @SerializedName("tiempo_domicilio")
+    private int tiempo_domicilio;
     @SerializedName("id_paciente")
     private Object id_paciente;
-    @SerializedName("id_persona")
-    private Object personaEnContacto;
 
-    public int getIdContacto() {
-        return idContacto;
+    public int getId() {
+        return id;
     }
 
-    public void setIdContacto(int idContacto) {
-        this.idContacto = idContacto;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTipo_relacion() {
@@ -83,23 +99,48 @@ public class Contacto implements Serializable {
         this.id_paciente = id_paciente;
     }
 
-    public Object getPersonaEnContacto() {
-        return personaEnContacto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setPersonaEnContacto(Object personaEnContacto) {
-        this.personaEnContacto = personaEnContacto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    /**
-     * Se retorna el nombre de la persona de contacto para identificarla en los ListView, Spinners, etc
-     * @return
-     */
-    @NonNull
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public boolean isEs_conviviente() {
+        return es_conviviente;
+    }
+
+    public void setEs_conviviente(boolean es_conviviente) {
+        this.es_conviviente = es_conviviente;
+    }
+
+    public int getTiempo_domicilio() {
+        return tiempo_domicilio;
+    }
+
+    public void setTiempo_domicilio(int tiempo_domicilio) {
+        this.tiempo_domicilio = tiempo_domicilio;
+    }
+
     @Override
     public String toString() {
-        Persona persona = (Persona) Utilidad.getObjeto(this.getPersonaEnContacto(), Constantes.PERSONA);
-        String nombreContacto = persona.getNombre() + Constantes.ESPACIO +persona.getApellidos();
-        return nombreContacto;
+        return nombre + Constantes.ESPACIO_EN_BLANCO + apellidos;
     }
 }

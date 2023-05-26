@@ -25,23 +25,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/idAlarma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/id_alarma"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textViewConsultarIdAlarma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="2dp"
@@ -70,64 +53,21 @@
                     android:background="#B3AEB3" />
 
                 <TextView
-                    android:id="@+id/paciente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/paciente"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textViewConsultarPacienteAlarma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="2dp"
-                    android:background="#B3AEB3" />
-
-                <TextView
                     android:id="@+id/Teleoperador"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="@string/teleoperador"
+                    android:text="@string/id_teleoperador"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <TextView
+                <EditText
                     android:id="@+id/textViewConsultarTeleoperadorAlarma"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:inputType="number"
                     android:text="@string/sin_asginar"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="2dp"
-                    android:background="#B3AEB3" />
-
-                <TextView
-                    android:id="@+id/fechaRegistro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="@string/fecha_registro"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textViewConsultarFechaRegistroAlarma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -145,13 +85,18 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <TextView
+                <EditText
                     android:id="@+id/textViewConsultarObservacionesAlarma"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:ems="20"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
+
+
 
                 <View
                     android:layout_width="wrap_content"
@@ -167,13 +112,48 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <TextView
+                <EditText
                     android:id="@+id/textViewConsultarResumenAlarma"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:ems="20"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
+
+                <LinearLayout
+                    android:id="@+id/layout_botones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_cancelar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="16sp"
+                        android:background="@drawable/button_shape"
+                        android:backgroundTint="#FF0000"
+                        android:text="@string/cancelar"
+                        android:textColor="@color/white"
+                        android:textSize="20sp">
+                    </Button>
+                    <Button
+                        android:id="@+id/btn_finalizar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="16sp"
+                        android:background="@drawable/button_shape"
+                        android:backgroundTint="#00D108"
+                        android:text="@string/finalizar"
+                        android:textColor="@color/white"
+                        android:textSize="20sp">
+                    </Button>
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

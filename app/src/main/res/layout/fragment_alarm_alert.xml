@@ -54,13 +54,13 @@
         app:layout_constraintTop_toBottomOf="@+id/cabeceraAlerta" />
 
     <TextView
-        android:id="@+id/textViewIdTerminal"
+        android:id="@+id/textViewTipoAlarmaAlerta"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:paddingVertical="5dp"
-        android:text="@string/terminal_dp"
+        android:text="@string/tipo_alarma_dp"
         android:textColor="#434343"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,12 +74,26 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:paddingVertical="5dp"
-        android:text="@string/paciente_dp"
+        android:text="@string/nombre_dp"
         android:textColor="#434343"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewIdTerminal" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTipoAlarmaAlerta" />
+
+    <TextView
+        android:id="@+id/textViewApellidosPaciente"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:paddingVertical="5dp"
+        android:text="@string/apellidos_dp"
+        android:textColor="#434343"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNombrePaciente" />
 
     <TextView
         android:id="@+id/textViewTelefono"
@@ -93,7 +107,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNombrePaciente" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewApellidosPaciente" />
 
 
     <android.widget.Button

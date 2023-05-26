@@ -11,13 +11,22 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.teleappsistencia.R;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link OpcionesListaFragment} factory method to
+ * Use the {@link OpcionesListaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class OpcionesListaFragment extends Fragment {
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
     //Interfaz con las acciones de los botones
     public interface OnButtonClickListener {
         void onViewDetailsButtonClicked();
@@ -31,6 +40,31 @@ public class OpcionesListaFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment OpcionesListaFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static OpcionesListaFragment newInstance(String param1, String param2) {
+        OpcionesListaFragment fragment = new OpcionesListaFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,7 +73,6 @@ public class OpcionesListaFragment extends Fragment {
 
         // Asignar listeners a los botones
         ImageButton viewDetailsButton = view.findViewById(R.id.view_details_button);
-
         viewDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +90,6 @@ public class OpcionesListaFragment extends Fragment {
         });
 
         ImageButton editButton = view.findViewById(R.id.edit_button);
-
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,5 +102,4 @@ public class OpcionesListaFragment extends Fragment {
     public void setOnButtonClickListener(OnButtonClickListener listener) {
         mListener = listener;
     }
-
 }

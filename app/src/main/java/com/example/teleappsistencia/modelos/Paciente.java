@@ -137,6 +137,7 @@ public class Paciente implements Serializable {
     @Override
     public String toString() {
         Persona persona = (Persona) Utilidad.getObjeto(getPersona(), Constantes.PERSONA);
-        return persona.getNombre();
+        String nombreApellidos = persona.getNombre() + " " + persona.getApellidos();
+        return nombreApellidos;
     }
 }

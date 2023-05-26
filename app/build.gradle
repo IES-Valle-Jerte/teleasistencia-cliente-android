@@ -28,6 +28,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+    dependenciesInfo {
+        includeInBundle false
+        includeInApk false
+    }
+    buildToolsVersion '33.0.2'
 
     // Para crear directorios en res/layout hay que poner este código.
     // Página con los pasos: https://es.stackoverflow.com/questions/2155/c%C3%B3mo-crear-subcarpetas-dentro-de-directorio-res-layout

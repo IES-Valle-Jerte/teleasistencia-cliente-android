@@ -11,7 +11,7 @@
         android:id="@+id/textViewTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/crear_alarma"
+        android:text="@string/crear_nueva_alarma_uc"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -35,48 +35,64 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineDerecha"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda" />
 
-    <RadioGroup
-        android:id="@+id/radioGroupAlarma"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:checkedButton="@+id/radioButtonTerminal"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba15"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineDerecha"
-        app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
-        app:layout_constraintTop_toTopOf="@+id/guidelineArriba14">
-
-        <RadioButton
-            android:id="@+id/radioButtonTerminal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/terminal" />
-
-        <RadioButton
-            android:id="@+id/radioButtonPaciente"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/paciente" />
-    </RadioGroup>
-
     <TextView
-        android:id="@+id/textViewIdTerminalPacienteAlarmaCrear"
+        android:id="@+id/textViewNombreyApellidos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/id_terminal"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerIdTerminalOPaciente"
+        android:text="@string/nombre_y_apellidos_pUsuariop"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_usuario"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda" />
 
     <Spinner
-        android:id="@+id/spinnerIdTerminalOPaciente"
+        android:id="@+id/spinner_usuario"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba16"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba15"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDerecha"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda" />
+
+    <TextView
+        android:id="@+id/textViewProgramarAlarma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/programar_alarma"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba16"
+        app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+        app:layout_constraintTop_toTopOf="@+id/guidelineArriba15" />
+
+    <Switch
+        android:id="@+id/switchProgramarAlarma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba16"
+        app:layout_constraintStart_toStartOf="@+id/guidelineCentro"
+        app:layout_constraintTop_toTopOf="@+id/guidelineArriba15"></Switch>
+
+    <EditText
+        android:id="@+id/etPlannedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_calendar"
+        android:focusable="false"
+        android:inputType="date"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba17"
+        app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+        app:layout_constraintTop_toTopOf="@+id/guidelineArriba16" />
+
+    <EditText
+        android:id="@+id/btn_timePickerBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_reloj"
+        android:focusable="false"
+        android:inputType="time"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineArriba18"
+        app:layout_constraintStart_toStartOf="@+id/guidelineIzquierda"
+        app:layout_constraintTop_toTopOf="@+id/guidelineArriba17" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineArriba"
@@ -192,5 +208,8 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineDerecha"
         app:layout_constraintStart_toStartOf="@+id/guidelineCentro"
         app:layout_constraintTop_toTopOf="@+id/guidelineArriba20" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

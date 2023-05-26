@@ -117,7 +117,6 @@ public class Utilidad {
         Gson gson = new Gson();
         Type type = null;
         Object objeto = null;
-
         boolean isLista=false; // Indica si el tipo pasado como objeto es una lista o no
 
         // Este bloque de código extrae la clase del String tipo en caso de que este sea un ArrayList
@@ -146,7 +145,6 @@ public class Utilidad {
                 // En caso de objeto
                 type = TypeToken.getParameterized(clazz).getType();
             }
-
         }
         if (type != null) {
             // Si type tiene algun valor se obtiene el objeto buscado

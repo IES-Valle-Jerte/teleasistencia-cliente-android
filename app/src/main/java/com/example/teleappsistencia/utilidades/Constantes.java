@@ -2,7 +2,8 @@ package com.example.teleappsistencia.utilidades;
 
 public class Constantes {
     /* Direcciones */
-    public static final String DIRECCION_WEBSOCKET = "ws://10.0.2.2:8000/ws/socket-server/";
+    public static final String DIRECCION_WEBSOCKET = "http://api-rest-teleasistencia-p1.iesvjp.es/ws/socket-server/";
+
 
     /* Constantes comunes */
     public final static String BEARER_ESPACIO = "Bearer ";
@@ -93,7 +94,7 @@ public class Constantes {
     public static final String TIPO_VIVIENDA = "Tipo vivienda";
     public static final String USUARIO = "Usuario";
     public static final String TERMINAL = "Terminal";
-    public static final String TIPO_ALARMA = "Tipo alarma";
+    public static final String TIPO_ALARMA = "TipoAlarma";
 
     /**
      * Constantes con los nombres de los submenus.
@@ -101,6 +102,8 @@ public class Constantes {
     public static final String SUBMENU_INSERTAR = "Insertar";
     public static final String SUBMENU_LISTAR = "Listar";
     public static final String SUBMENU_MODIFICAR = "Modificar";
+
+    public static final String DIALOGO_CONFIRMAR_ALARMA = "¿Deseas borrar la alarma?";
 
     /**
      * Constantes de uso general.
@@ -264,7 +267,6 @@ public class Constantes {
     public static final String OK = "OK";
     public static final String SIN_ASIGNAR = "Sin Asignar";
     public static final String MIS_ALARMAS = "Mis Alarmas";
-    public static final String RUTA_MODELOS = "com.example.teleappsistencia.modelos.";
 
     /* Constantes Clase AlarmaWebSocketListener */
     public final static String CONEXION_ESTABLECIDA_WEBSOCKET = "Conexión establecida con el WebSocket" ;
@@ -293,6 +295,12 @@ public class Constantes {
     public static final String ARG_TERMINAL = "Terminal";
     public static final String ARG_COLOR = "Color";
 
+    public static final String ARG_DESARROLLADOR = "Desarrollador";
+
+    public static final String ARG_AL_DESARROLLADOR = "AL_Desarrollador";
+
+    public static final String ARG_AL_CONTACTO = "AL_Contacto";
+
     /* Constantes ADAPTERS y Fragments */
     public final static String ID_ALARMA_DP_SP = "ID Alarma: ";
     public final static String ESTADO_DP_SP = "Estado: ";
@@ -306,12 +314,16 @@ public class Constantes {
     public static final String CENTRO_DP_SP = "Centro: ";
     public static final String RECURSO_COMUNITARIO_DP_SP = "Recurso Comunitario: ";
     public static final String NOMBRE_DP_SP = "Nombre: ";
+
+    public static final String APELLIDOS_DP_SP = "Apellidos: ";
     public static final String CODIGO_DP_SP = "Código: ";
     public static final String DISPOSITIVO_DP_SP = "Dispositivo: ";
     public static final String CLASIFICACION_DP_SP = "Clasificación: ";
     public static final String ID_TERMINAL_DP_SP = "ID Terminal: ";
     public static final String PACIENTE_DP_SP = "Paciente: ";
     public static final String TELEFONO_DP_SP = "Teléfono: ";
+
+    public static final String TIPO_ALARMA_DP_SP = "Tipo alarma: ";
 
     /* Constantes Simbolos Varios */
     public final static String ESPACIO_GUION_ESPACIO = " - ";
@@ -321,6 +333,8 @@ public class Constantes {
     public final static String SLASH = "/";
     public static final String GUION = "-";
     public static final String VACIO = "";
+
+    public static final String PUNTOS_DOBLES = ":";
     public static final String SALTO_LINEA = "\n";
 
     /* Nombres de los Modelos */
@@ -334,11 +348,32 @@ public class Constantes {
     public final static String AL_PACIENTE = "ArrayList<Paciente>";
     public final static String AL_USUARIOS_SISTEMA = "ArrayList<Usuario>";
     public final static String AL_ALARMA = "ArrayList<Alarma>";
+
+    public final static String AL_USUARIO = "ArrayList<Usuario>";
     public final static String AL_CLASIFICACION_ALARMA= "ArrayList<ClasificacionAlarma>";
     public final static String AL_CLASIFICACION_RECURSO= "ArrayList<ClasificacionRecurso>";
     public final static String AL_CENTRO_SANITARIO_ALARMA = "ArrayList<CentroSanitarioEnAlarma>";
     public final static String AL_PERSONAS_CONTACTO_EN_ALARMA = "ArrayList<PersonaContactoEnAlarma>";
     public final static String AL_RECURSOS_COMUNITARIOS_EN_ALARMA = "ArrayList<RecursoComunitarioEnAlarma>";
+
+    public final static String AL_DESARROLLADOR = "ArrayList<Desarrollador>";
+
+    public final static String AL_TECNOLOGIA = "ArrayList<Tecnologia>";
+
+    public final static String AL_CONVOCATORIA = "ArrayList<Convocatoria>";
+
+    public final static String AL_DESAROLLADOR = "ArrayList<Desarrollador>";
+
+    public final static String AL_DESARROLLADOR_TECNOLOGIA = "ArrayList<Desarrollador_tecnologia>";
+
+    public final static String DESARROLLADOR_TECNOLOGIA = "Desarrollador_tecnologia";
+
+    public final static String DESARROLLADOR = "Desarrollador";
+
+    public final static String DESARROLLADORREL = "DesarrolladorRel";
+    public final static String CONVOCATORIA_DESARROLLADOR = "ConvocatoriaDesarrollador";
+    public final static String TECNOLOGIA = "Tecnologia";
+
     public static final String ALARMA = "Alarma";
     public static final String CLASIFICACION_ALARMA = "ClasificacionAlarma";
     public static final String CONTACTO = "Contacto";
@@ -391,7 +426,7 @@ public class Constantes {
     public final static String TEXTO_MINIMO_10 = "Texto mínimo de 10 caracteres.";
     public final static String ACUERDO_CORTO_TEXTO_MINIMO_10 = "Acuerdo alcanzado muy corto. Texto mínimo de 10 caracteres.";
     public static final String INTRODUCIR_NOMBRE_PERSONA_LLAMADA = "Introducir el nombre de la persona que atendió la llamada.";
-    public static final String INFORMACION_DEL_PACIENTE = "Información del Paciente";
+    public static final String INFORMACION_DEL_PACIENTE = "Información del Usuario del servicio";
     public static final String NUMERO_EXPEDIENTE_DP_SP = "Número de expediente: ";
     public static final String NUMERO_DE_LA_SS_DP_SP = "Número de la SS: ";
     public static final String OBSERVACIONES_MEDDICAS_DP_SP = "Observaciones médicas: ";
@@ -405,6 +440,10 @@ public class Constantes {
     public static final String INFORMACION_CENTRO_SANITARIO = "Información Centro Sanitario";
     public static final String LOCALIDAD_DP_SP = "Localidad: ";
     public static final String DIRECCION_DP_SP = "Direccion: ";
+
+    public static final String HORA_DP_SP = "Hora: ";
+
+    public static final String H = "h";
     public static final String INFORMACION_RECURSO_COMUNITARIO = "Información Recurso Comunitario";
     public static final String ATENCION = "ATENCIÓN";
     public static final String EN_CONSTRUCCION = "En construcción. Disculpe las molestias.";
@@ -416,9 +455,13 @@ public class Constantes {
     public static final String ERROR_CERRAR_ALARMA = "No se ha podido cerrar la alarma correctamente. ";
     public static final String NO_HAY_CONTACTOS = "No hay personas de contacto para este paciente";
     public static final String TERMINAL_DP_SP = "Terminal: ";
+
+    public static final String TELEOPERADOR_DP_SP = "Teleoperador: ";
+
+    public static final String USUARIO_SERVICIO_DP_SP = "Usuario servicio: ";
     public static final String ALARMAS_DE_HOY = "Alarmas de hoy";
     public static final String ALARMAS_SIN_ASIGNAR = "Alarmas sin asignar";
-
+    public static final String RUTA_MODELOS = "com.example.teleappsistencia.modelos.";
     /* Constantes Recursos */
     public static final String KEY_ID_CLASIFICACION_RECURSOS = "key_id";
     public static final String KEY_NOMBRE_CLASIFICACION_RECURSOS = "key_nombre";
@@ -434,5 +477,4 @@ public class Constantes {
     public static final String TITULO_CONSULTAR = "Detalles recurso comunitario";
     public static final String TITULO_MODIFICAR = "Modificar recurso comunitario";
     public static final String TITULO_NUEVO = "Nuevo recurso comunitario";
-
 }

@@ -190,7 +190,7 @@ public class ModificarAlarmaFragment extends Fragment implements View.OnClickLis
     private void volver(){
         ListarAlarmasFragment listarAlarmasFragment = new ListarAlarmasFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment, listarAlarmasFragment)
+                .replace(R.id.main_fragment, new ListarAlarmasOrdenadasFragment())
                 .addToBackStack(null)
                 .commit();
     }
