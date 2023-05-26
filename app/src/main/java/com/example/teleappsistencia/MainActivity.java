@@ -1,23 +1,32 @@
 package com.example.teleappsistencia;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.teleappsistencia.modelos.ClasificacionRecurso;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.teleappsistencia.modelos.Usuario;
 import com.example.teleappsistencia.servicios.APIService;
+import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.ui.fragments.alarma.InsertarAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasDeHoyFragment;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasFragment;
@@ -47,6 +56,7 @@ import com.example.teleappsistencia.ui.fragments.personaContactoEnAlarma.ListarP
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentInsertarRecursoComunitario;
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentListarRecursoComunitario;
 import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentModificarRecursoComunitario;
+import com.example.teleappsistencia.ui.fragments.recursos.RecursosListadoFragment;
 import com.example.teleappsistencia.ui.fragments.recursosComunitariosEnAlarma.InsertarRecursosComunitariosEnAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.recursosComunitariosEnAlarma.ListarRecursosComunitariosEnAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.relacion_paciente_persona.InsertarRelacionPacientePersonaFragment;
@@ -74,19 +84,19 @@ import com.example.teleappsistencia.ui.fragments.tipo_vivienda.InsertarTipoVivie
 import com.example.teleappsistencia.ui.fragments.tipo_vivienda.ListarTipoViviendaFragment;
 import com.example.teleappsistencia.ui.fragments.usuarios.InsertarUsuariosFragment;
 import com.example.teleappsistencia.ui.fragments.usuarios.ListarUsuariosFragment;
+import com.example.teleappsistencia.ui.fragments.usuarios_sistema.UsuariosSistemaFragment;
 import com.example.teleappsistencia.ui.menu.ExpandableListAdapter;
 import com.example.teleappsistencia.ui.menu.MenuModel;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 
 /**
@@ -110,14 +120,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<MenuModel> headerList = new ArrayList<>();
     private HashMap<MenuModel, List<MenuModel>> childList = new HashMap<>();
 
+    /**
+     * Atributo para trabajar con la lista que devuelve la llamada a la API.
+     */
+    private ArrayList<ClasificacionRecurso> lRecursos;
+
     private TextView textView_nombre_usuarioLogged;
     private TextView textView_email_usuarioLogged;
     private ImageView imageView_fotoPerfil;
 
     private APIService apiService;
 
+    /**
+     * Usado para cargar el activity para que un usuario pueda modificar sus datos.
+     */
+    private ActivityResultLauncher<Intent> resultLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initActivityResultLauncher();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -125,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Realizo una petición a la API para cargar la cabecera del menu con los datos del usuario logueado.
         loadMenuHeader();
-
 
         /* Iniciamos el servicio de notificación de Alarmas. Sólo para usuarios no admin (Teleoperadores) */
         if(!Utilidad.isAdmin()) {
@@ -146,7 +167,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private void initActivityResultLauncher() {
+        this.resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                int resultCode = result.getResultCode();
+                if (Activity.RESULT_OK == resultCode) {
+                    // Cambios guardados correctamente
+                    Toast.makeText(this, Constantes.TOAST_MODPERFIL_SUCCES, Toast.LENGTH_SHORT).show();
+                    // Recargar datos del usuario
+                    cargarDatosUsuarioLoggeado();
+                } else if (Constantes.RESULT_MODPERFIL_ERROR == resultCode) {
+                    Toast.makeText(this, Constantes.TOAST_MODPERFIL_API_ERROR, Toast.LENGTH_SHORT).show();
+                }
+            }
+        );
+    }
 
+    public void cargarActivityModificarPerfil() {
+        Intent intent = new Intent(this, ModificarPerfilActivity.class);
+        resultLauncher.launch(intent);
+    }
     /**
      * Método que carga los datos del usuario en la cabezera del menú.
      */
@@ -154,37 +195,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Recogo el NavigationView para poder asignar los datos.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        textView_nombre_usuarioLogged = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView_nombre_usuarioLogged);
-        textView_email_usuarioLogged = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView_email_usuarioLogged);
-        imageView_fotoPerfil = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView_usuario);
 
+        View navigationHeader = navigationView.getHeaderView(0);
+        textView_nombre_usuarioLogged = (TextView) navigationHeader.findViewById(R.id.textView_nombre_usuarioLogged);
+        textView_email_usuarioLogged = (TextView) navigationHeader.findViewById(R.id.textView_email_usuarioLogged);
+        imageView_fotoPerfil = (ImageView) navigationHeader.findViewById(R.id.imageView_usuario);
+
+        cargarDatosUsuarioLoggeado();
+
+        // Conectar evento para cargar la actividad de modificar perfil del usuario
+        imageView_fotoPerfil.setOnClickListener(_v -> cargarActivityModificarPerfil());
+    }
+
+    public void cargarDatosUsuarioLoggeado() {
         Usuario usuario = Utilidad.getUserLogged();    // Recogo el usuario de la clase Utils.
-        if (usuario != null) {  // Si existe el usuario.
+        if (usuario != null) { // Si existe el usuario.
             // Le asigno el nombre y apellidos.
             textView_nombre_usuarioLogged.setText(usuario.getFirstName() + Constantes.ESPACIO_EN_BLANCO + usuario.getLastName());
             textView_email_usuarioLogged.setText(usuario.getEmail());
+            textView_nombre_usuarioLogged.setText(usuario.getFirstName() + Constantes.ESPACIO_EN_BLANCO + usuario.getLastName());
+            textView_email_usuarioLogged.setText(usuario.getEmail());
 
-            if(usuario.getImagen() != null) {  // Si el usuario cuenta con una imagen.
-                String img_url = usuario.getImagen().getUrl(); // Recogo la imagen del usuario.
-
-                Picasso.get()       // LLamo a Picasso para poder asignar una imagen por URL.
-                        .load(img_url)  // Cargo la URL.
-                        .error(R.drawable.rounded_default_user) // Si sucede un error se utiliza la imagen por defecto.
-                        .resize(78, 80)
-                        .centerCrop()
-                        .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.OFFLINE)
-                        .into(imageView_fotoPerfil, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                System.out.println("\nPerfe\n");
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                System.out.println("\nError\n");
-                                e.printStackTrace();
-                            }
-                        }); // Carga la imagen en el imageView.
+            if (usuario.getImagen() != null) {  // Si el usuario cuenta con una imagen.
+                Utilidad.cargarImagen(usuario.getImagen().getUrl(), imageView_fotoPerfil, Constantes.IMG_PERFIL_RADIOUS);
+            } else {
+                Utilidad.cargarImagen(R.drawable.default_user, imageView_fotoPerfil, Constantes.IMG_PERFIL_RADIOUS);
             }
         }
     }
@@ -242,6 +277,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         childModelsList = new ArrayList<>();
         menuModel = new MenuModel(getResources().getString(R.string.menu_usuarios_servicio), true, true, new ListarPacienteFragment());
         headerList.add(menuModel);
+
+        // Menu Usuarios del Sistema. Solo le aparece a los administradores
+        if(Utilidad.isAdmin()) {
+            menuModel = new MenuModel(getResources().getString(R.string.menu_usuarios_sistema), false, false, new UsuariosSistemaFragment());
+            headerList.add(menuModel);
+        }
 
         // Menu Alarma.
         childModelsList = new ArrayList<>();
@@ -580,6 +621,83 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+
+        // mod-GAG
+        // Menu Recursos
+        menuRecursos();
+    }
+
+    // mod-GAG
+    /**
+     * Método que genera la opción "Recursos" menu.
+     *
+     * 1º Crea la opción "Recursos".
+     * 2º Hace una llamada a la API para agregar las opciones al sub-menu de "Recursos".
+     * 3º Le pasamos un objeto al fragment (id) para que muestre solo los recursos del submenu seleccionado.
+     */
+    private void menuRecursos(){
+        MenuModel menuModel = new MenuModel("Recursos", true, true, null);
+        List<MenuModel> childModelsList = new ArrayList<>();
+        headerList.add(menuModel);
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Object>> call = apiService.getClasificacionRecursoComunitario(Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new retrofit2.Callback<List<Object>>() {
+            @Override
+            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+                if(response.isSuccessful()){
+                    RecursosListadoFragment recursosListadoFragment;
+                    List<Object> lObjetos = response.body();
+                    lRecursos = (ArrayList<ClasificacionRecurso>) Utilidad.getObjeto(lObjetos,Constantes.AL_CLASIFICACION_RECURSO);
+                    for (ClasificacionRecurso auxR : lRecursos) {
+                        Bundle bundle = new Bundle();
+                        switch (auxR.getId()){
+                            case 1:
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Sanitarios", false, false, recursosListadoFragment));
+                                break;
+                            case 2:
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Sociosanitarios", false, false, recursosListadoFragment));
+                                break;
+                            case 3:
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Organismos institucionales", false, false, recursosListadoFragment));
+                                break;
+                            case 4:
+                                bundle.putSerializable(Constantes.KEY_ID_CLASIFICACION_RECURSOS, auxR.getId());
+                                bundle.putSerializable(Constantes.KEY_NOMBRE_CLASIFICACION_RECURSOS, auxR.getNombre());
+                                recursosListadoFragment = new RecursosListadoFragment();
+                                recursosListadoFragment.setArguments(bundle);
+                                childModelsList.add(new MenuModel("Seguridad", false, false, recursosListadoFragment));
+                                break;
+                        }
+                    }
+                    if (menuModel.hasChildren()) {
+                        childList.put(menuModel, childModelsList);
+                    } else {
+                        childList.put(menuModel, null);
+                    }
+                }else{
+                    Toast.makeText(getBaseContext(), Constantes.ERROR_ + response.message(),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Object>> call, Throwable t) {
+                Toast.makeText(getBaseContext(), Constantes.ERROR_+t.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
@@ -605,13 +723,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }
-                /*if (headerList.get(groupPosition).isGroup()) {
-                    if (!headerList.get(groupPosition).hasChildren()) {
-                        // En este caso no hay nada que hacer al pulsar en una opción principal.
-                    }
-                }*/
+                // Cerramos el drawer al pulsar una opción sin hijos si no es  un grupo y no tiene hijos
+                if (!headerList.get(groupPosition).isGroup() && !headerList.get(groupPosition).hasChildren()) {
+                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+                /* Estas dos lineas de código hacen que siempre que se pulse una
+                opción principal del menú cargue un fragment en blanco.
+
                 DrawerLayout drawer = findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
+                 */
                 return false;
             }
         });
@@ -638,6 +760,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
 
 }

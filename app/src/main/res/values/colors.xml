@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="azul">#7cacfc</color>
     <color name="verde">#04e474</color>
+    <color name="gris_boton">#ffd6d7d7</color>
+    <color name="gris_boton_pulsado">#ffacadad</color>
+
+
+    <color name="theme_primary">@color/purple_200</color>
+    <color name="theme_primaryVariant">#FF914D95</color>
+    <color name="themeD_primary">@color/purple_500</color>
 </resources>

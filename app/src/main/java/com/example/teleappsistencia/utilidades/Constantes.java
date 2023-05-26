@@ -2,7 +2,7 @@ package com.example.teleappsistencia.utilidades;
 
 public class Constantes {
     /* Direcciones */
-    public static final String DIRECCION_WEBSOCKET = "ws://api-rest.teleasistencia.iesvjp.es/ws/socket-server/";
+    public static final String DIRECCION_WEBSOCKET = "ws://10.0.2.2:8000/ws/socket-server/";
 
     /* Constantes comunes */
     public final static String BEARER_ESPACIO = "Bearer ";
@@ -66,10 +66,10 @@ public class Constantes {
     /* Se utiliza:
          * "http://localhost:8000/" con dispositivos físicos
          * con el emulador se ha de utilizar "http://10.0.2.2:8000/"
-         * En producción (1): https://api-rest-teleasistencia.iesvjp.es/teleasistencia/
+         * En producción (1): http://api-rest-teleasistencia.iesvjp.es/
          *
          * (1) en próxima convocatoria se añadirá conexión mediante https */
-    public static final String API_BASE_URL = "http://10.0.2.2:8000/";
+    public static final String API_BASE_URL = "http://api-rest-teleasistencia-p1.iesvjp.es";
     public static final String TOKEN_BEARER = "Bearer ";
     public static final String FORMATEADOR_API = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -78,6 +78,7 @@ public class Constantes {
      * Constantes de autorización.
      */
     public static final String UNAUTHORIZED = "Unauthorized";
+    public static final String ADMINISTRADOR = "Administrador";
     public static final String PROFESOR = "Profesor";
 
     /**
@@ -109,10 +110,51 @@ public class Constantes {
     public static final String ESPACIO_EN_BLANCO = " ";
 
     /**
+     * Constantes referentes a los Perfiles de Usuario del Sistema.
+     */
+    public static final int RESULT_MODPERFIL_ERROR = -2;
+    public static final int IMG_PERFIL_RADIOUS = 1000;
+    public static final int IMG_PERFIL_RADIOUS_LISTA = 15;
+    public static final String TOAST_MODPERFIL_SUCCES = "Tu perfil se ha actualizado correctamente";
+    public static final String TOAST_MODPERFIL_API_ERROR = "Ha habido un error al actualizar tu perfil";
+    public static final String TOAST_MODPERFIL_CORREO_INVALIDO = "El correo no es un correo válido";
+    public static final String TOAST_MODPERFIL_PERMISO_NECESARIO = "No puedes realizar esta acción sin dar el permiso de leer el almacenamiento";
+    // Cambios de contraseña
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_CANCELADO = "Cambio de contraseña cancelado";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_CORRECTO = "Tu contraseña se ha cambiado correctamente";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_API_ERROR = "Ha habido un error al cambiar tu contraseña";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID_DIFFERENT = "Las contraseñas no coinciden...";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID_NOPASS = "Introduzca una contraseña por favor";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_INVALID = "La contraseña no cumple con los requisitos";
+    public static final String TOAST_MODPERFIL_CAMBIOPASS_REGEX = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8,}$";
+    // Cambios database
+    public static final String TOAST_MODPERFIL_CAMBIODB_CANCELADO = "Cambio de base de datos cancelado";
+    public static final String TOAST_MODPERFIL_CAMBIODB_CORRECTO = "Usuario migrado correctamente de base de datos";
+    // Creacion/Modificación de Usuarios
+    public static final String TOAST_USUARIOSISTEMA_ERROR = "Ha ocurrido un error";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_PATCHES = "Introduce los datos por favor";
+
+    public static final String TOAST_USUARIOSISTEMA_ERROR_CREAR = "Ha ocurrido un error al crear el usuario";
+    public static final String TOAST_USUARIOSISTEMA_ERROR_EDITAR = "Ha ocurrido un error al modificar el usuario";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_USERNAME = "El login/nombre de usuario no puede estar vacío";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_FIRSTNAME = "Indica el nombre del usuario";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_LASTNAME = "Indica los apellidos del usuario";
+    public static final String TOAST_USUARIOSISTEMA_EMPTY_INVALID_MAIL = "La dirección de correo no es válida";
+
+    public static final String TOAST_USUARIOSISTEMA_OK_CREAR = "Usuario creado correctamente";
+    public static final String TOAST_USUARIOSISTEMA_OK_EDITAR = "Modificación realizada correctamente";
+
+    /**
+     * Constantes referentes a la gestión de Usuarios del Sistema
+     */
+    public static final String MSG_CONFIRMAR_ELEIMINAR_USUARIO_SISTEMA = "¿Está seguro que desea eliminarlo?";
+
+
+    /**
      * Constantes para los infoAlertDialogs
      */
     public static final String ELIMINAR_ELEMENTO = "Eliminar datos";
-    public static final String ESTAS_SEGURO_ELIMINAR = "¿Deseas realmente eliminar los datos?";
+    public static final String ESTAS_SEGURO_ELIMINAR = "¿Estás seguro de que deseas eliminarlo?";
 
     public static final String INFORMACION = "Información";
     public static final String INFO_ALERTDIALOG_CREDENCIALES_INCORRECTOS_LOGIN = "Nombre de usuario o contraseña incorrectos.";
@@ -126,6 +168,7 @@ public class Constantes {
     public static final String INFO_ALERTDIALOG_CREADO_GRUPO = "Se ha creado correctamente un nuevo grupo.";
     public static final String INFO_ALERTDIALOG_CREADO_DISPOSITIVO_AUXILIAR = "Se ha creado correctamente un nuevo dispositivo auxiliar en terminal.";
     public static final String INFO_ALERTDIALOG_CREADO_DIRECCION = "Se ha creado correctamente una nueva dirección.";
+    public static final String INFO_ALERTDIALOG_CREADO_RECURSO = "Se ha creado correctamente un nuevo recurso comunitario.";
 
     public static final String INFO_ALERTDIALOG_MODIFICADO_USUARIO = "Se ha modificado correctamente el usuario.";
     public static final String INFO_ALERTDIALOG_MODIFICADO_TIPO_VIVIENDA = "Se ha modificado correctamente el tipo de vivienda.";
@@ -135,6 +178,7 @@ public class Constantes {
     public static final String INFO_ALERTDIALOG_MODIFICADO_GRUPO = "Se ha modificado correctamente el grupo.";
     public static final String INFO_ALERTDIALOG_MODIFICADO_DISPOSITIVO_AUXILIAR = "Se ha modificado correctamente el dispositivo auxiliar en terminal.";
     public static final String INFO_ALERTDIALOG_MODIFICADO_DIRECCION = "Se ha modificado correctamente la dirección.";
+    public static final String INFO_ALERTDIALOG_MODIFICADO_RECURSO = "Se ha modificado correctamente el recurso comunitario.";
 
     public static final String INFO_ALERTDIALOG_ELIMINADO_USUARIO = "Se ha eliminado correctamente el usuario.";
     public static final String INFO_ALERTDIALOG_ELIMINADO_TIPO_VIVIENDA = "Se ha eliminado correctamente el tipo de vivienda.";
@@ -144,6 +188,8 @@ public class Constantes {
     public static final String INFO_ALERTDIALOG_ELIMINADO_GRUPO = "Se ha eliminado correctamente el grupo.";
     public static final String INFO_ALERTDIALOG_ELIMINADO_DISPOSITIVO_AUXILIAR = "Se ha eliminado correctamente el dispositivo auxiliar en terminal.";
     public static final String INFO_ALERTDIALOG_ELIMINADO_DIRECCION = "Se ha eliminado correctamente la dirección.";
+
+    public static final String INFO_ALERTDIALOG_ELIMINADO_RECURSO = "Se ha eliminado correctamente.";
 
     /**
      * Constantes para los errorAlertDialogs
@@ -286,8 +332,10 @@ public class Constantes {
     public final static String AL_TIPO_ALARMA = "ArrayList<TipoAlarma>";
     public final static String AL_TERMINAL = "ArrayList<Terminal>";
     public final static String AL_PACIENTE = "ArrayList<Paciente>";
+    public final static String AL_USUARIOS_SISTEMA = "ArrayList<Usuario>";
     public final static String AL_ALARMA = "ArrayList<Alarma>";
     public final static String AL_CLASIFICACION_ALARMA= "ArrayList<ClasificacionAlarma>";
+    public final static String AL_CLASIFICACION_RECURSO= "ArrayList<ClasificacionRecurso>";
     public final static String AL_CENTRO_SANITARIO_ALARMA = "ArrayList<CentroSanitarioEnAlarma>";
     public final static String AL_PERSONAS_CONTACTO_EN_ALARMA = "ArrayList<PersonaContactoEnAlarma>";
     public final static String AL_RECURSOS_COMUNITARIOS_EN_ALARMA = "ArrayList<RecursoComunitarioEnAlarma>";
@@ -370,4 +418,21 @@ public class Constantes {
     public static final String TERMINAL_DP_SP = "Terminal: ";
     public static final String ALARMAS_DE_HOY = "Alarmas de hoy";
     public static final String ALARMAS_SIN_ASIGNAR = "Alarmas sin asignar";
+
+    /* Constantes Recursos */
+    public static final String KEY_ID_CLASIFICACION_RECURSOS = "key_id";
+    public static final String KEY_NOMBRE_CLASIFICACION_RECURSOS = "key_nombre";
+    public static final String KEY_OPCION_SELECCIONADA = "key_opcion";
+    public static final String KEY_RECURSO_COMUNITARIO = "key_recurso";
+
+    /* Constantes Opciones Lista */
+    public static final String CONSULTAR = "Consultar";
+    public static final String MODIFICAR = "Modificar";
+    public static final String NUEVO = "Nuevo";
+
+    /* Constantes Título Layout Recursos*/
+    public static final String TITULO_CONSULTAR = "Detalles recurso comunitario";
+    public static final String TITULO_MODIFICAR = "Modificar recurso comunitario";
+    public static final String TITULO_NUEVO = "Nuevo recurso comunitario";
+
 }

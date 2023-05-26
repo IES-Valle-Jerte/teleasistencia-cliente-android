@@ -13,6 +13,9 @@ public class TipoRecursoComunitario implements Serializable {
     private int id;
     @SerializedName("nombre")
     private String nombreTipoRecursoComunitario;
+    // Agrego el atributo id_clasificacion_recurso_comunitario (Antes no estaba)
+    @SerializedName("id_clasificacion_recurso_comunitario")
+    private int id_clasificacion_recurso_comunitario;
 
     /**
      * Inicializamos las variables en el constructor parametrizado.
@@ -39,6 +42,14 @@ public class TipoRecursoComunitario implements Serializable {
 
     public void setNombreTipoRecursoComunitario(String nombreTipoRecursoComunitario) {
         this.nombreTipoRecursoComunitario = nombreTipoRecursoComunitario;
+    }
+
+    public int getId_clasificacion_recurso_comunitario() {
+        return id_clasificacion_recurso_comunitario;
+    }
+
+    public void setId_clasificacion_recurso_comunitario(int id_clasificacion_recurso_comunitario) {
+        this.id_clasificacion_recurso_comunitario = id_clasificacion_recurso_comunitario;
     }
 
     /**
