@@ -55,18 +55,25 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.2" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listRecyclerView"
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_container_lista"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
+        app:shimmer_auto_start="false"
         app:layout_constraintBottom_toBottomOf="@+id/guidelineAbajo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineMedio">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp">
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
     <androidx.constraintlayout.widget.Guideline

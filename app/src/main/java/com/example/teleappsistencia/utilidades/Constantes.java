@@ -66,10 +66,10 @@ public class Constantes {
     /* Se utiliza:
          * "http://localhost:8000/" con dispositivos físicos
          * con el emulador se ha de utilizar "http://10.0.2.2:8000/"
-         * En producción (1): https://api-rest-teleasistencia.iesvjp.es/teleasistencia/
+         * En producción (1): http://api-rest-teleasistencia.iesvjp.es/
          *
          * (1) en próxima convocatoria se añadirá conexión mediante https */
-    public static final String API_BASE_URL = "http://10.0.2.2:8000/";
+    public static final String API_BASE_URL = "http://api-rest-teleasistencia-p1.iesvjp.es";
     public static final String TOKEN_BEARER = "Bearer ";
     public static final String FORMATEADOR_API = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -154,7 +154,7 @@ public class Constantes {
      * Constantes para los infoAlertDialogs
      */
     public static final String ELIMINAR_ELEMENTO = "Eliminar datos";
-    public static final String ESTAS_SEGURO_ELIMINAR = "¿Deseas realmente eliminar los datos?";
+    public static final String ESTAS_SEGURO_ELIMINAR = "¿Estás seguro de que deseas eliminarlo?";
 
     public static final String INFORMACION = "Información";
     public static final String INFO_ALERTDIALOG_CREDENCIALES_INCORRECTOS_LOGIN = "Nombre de usuario o contraseña incorrectos.";
@@ -189,7 +189,7 @@ public class Constantes {
     public static final String INFO_ALERTDIALOG_ELIMINADO_DISPOSITIVO_AUXILIAR = "Se ha eliminado correctamente el dispositivo auxiliar en terminal.";
     public static final String INFO_ALERTDIALOG_ELIMINADO_DIRECCION = "Se ha eliminado correctamente la dirección.";
 
-    public static final String INFO_ALERTDIALOG_ELIMINADO_RECURSO = "Se ha eliminado correctamente el recurso comunitario.";
+    public static final String INFO_ALERTDIALOG_ELIMINADO_RECURSO = "Se ha eliminado correctamente.";
 
     /**
      * Constantes para los errorAlertDialogs
@@ -420,7 +420,6 @@ public class Constantes {
     public static final String ALARMAS_SIN_ASIGNAR = "Alarmas sin asignar";
 
     /* Constantes Recursos */
-    public static final String TITULO_RECURSOS = "Recursos ";
     public static final String KEY_ID_CLASIFICACION_RECURSOS = "key_id";
     public static final String KEY_NOMBRE_CLASIFICACION_RECURSOS = "key_nombre";
     public static final String KEY_OPCION_SELECCIONADA = "key_opcion";
@@ -430,5 +429,10 @@ public class Constantes {
     public static final String CONSULTAR = "Consultar";
     public static final String MODIFICAR = "Modificar";
     public static final String NUEVO = "Nuevo";
+
+    /* Constantes Título Layout Recursos*/
+    public static final String TITULO_CONSULTAR = "Detalles recurso comunitario";
+    public static final String TITULO_MODIFICAR = "Modificar recurso comunitario";
+    public static final String TITULO_NUEVO = "Nuevo recurso comunitario";
 
 }

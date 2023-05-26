@@ -13,6 +13,8 @@
         android:layout_height="match_parent"
         android:src="@android:drawable/ic_menu_search"
         android:layout_weight="1"
+        android:contentDescription="detalles"
+        android:src="@android:drawable/ic_menu_search"
         android:text="detalles" />
 
     <ImageButton
@@ -21,6 +23,7 @@
         android:layout_height="match_parent"
         android:src="@android:drawable/ic_menu_delete"
         android:layout_weight="1"
+        android:contentDescription="delete"
         android:text="delete" />
 
     <ImageButton
@@ -29,6 +32,7 @@
         android:layout_height="match_parent"
         android:src="@android:drawable/ic_menu_edit"
         android:layout_weight="1"
+        android:contentDescription="edit"
         android:text="edit" />
 
 </LinearLayout>

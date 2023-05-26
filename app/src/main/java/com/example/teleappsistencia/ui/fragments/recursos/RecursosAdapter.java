@@ -1,67 +1,75 @@
 package com.example.teleappsistencia.ui.fragments.recursos;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.teleappsistencia.MainActivity;
 import com.example.teleappsistencia.R;
 import com.example.teleappsistencia.modelos.Direccion;
 import com.example.teleappsistencia.modelos.RecursoComunitario;
 import com.example.teleappsistencia.modelos.TipoRecursoComunitario;
-import com.example.teleappsistencia.servicios.APIService;
-import com.example.teleappsistencia.servicios.ClienteRetrofit;
-import com.example.teleappsistencia.ui.fragments.recurso_comunitario.ConsultarRecursoComunitario;
-import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentListarRecursoComunitario;
-import com.example.teleappsistencia.ui.fragments.recurso_comunitario.FragmentModificarRecursoComunitario;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RecursosAdapter extends RecyclerView.Adapter<RecursosAdapter.RecursoComunitarioViewHolder> {
 
-    // Declaración de atributos.
+    /*
+        Declaración de atributos.
+     */
     private List<RecursoComunitario> items;
     private RecursoComunitarioViewHolder recursoComunitarioViewHolder;
 
-    // Item seleccionado
+    /*
+        Item seleccionado
+     */
     private RecursoComunitario recursoSeleccionado;
 
-    // Interfaz que establece el item seleccionado
+    /*
+        Interfaz que establece el item seleccionado
+     */
     private OnItemSelectedListener listener;
 
+    /*
+        Posición seleccionada.
+     */
     private int selectedPosition = RecyclerView.NO_POSITION;
 
+    /**
+     * Interfaz que crea el listener segun la posición del item.
+     */
     public interface OnItemSelectedListener {
         void onItemSelected(int position);
     }
 
+    /**
+     * Método que retorna el recursoSeleccionado.
+     *
+     * @return
+     */
     public RecursoComunitario getRecursoSeleccionado() {
         return recursoSeleccionado;
     }
 
+    /**
+     * Método que retorna el item seleccionado.
+     *
+     * @param position
+     * @return
+     */
     public RecursoComunitario getItemAtPosition(int position) {
         return items.get(position);
     }
 
+    /**
+     * Método que inicializa el card de los recursos.
+     */
     public static class RecursoComunitarioViewHolder extends RecyclerView.ViewHolder {
 
         // Campos respectivos de un item.

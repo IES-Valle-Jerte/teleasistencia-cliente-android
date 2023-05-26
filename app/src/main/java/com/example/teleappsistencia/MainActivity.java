@@ -687,13 +687,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         childList.put(menuModel, null);
                     }
                 }else{
-                    Toast.makeText(getBaseContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), Constantes.ERROR_ + response.message(),
+                            Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Object>> call, Throwable t) {
-                Toast.makeText(getBaseContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), Constantes.ERROR_+t.getMessage(),
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
