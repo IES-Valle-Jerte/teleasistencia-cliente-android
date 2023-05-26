@@ -108,10 +108,6 @@ public class AlarmaAdapter extends RecyclerView.Adapter<AlarmaAdapter.AlarmaView
             this.alarma = alarma;
         }
 
-        /**
-         * Método que lanza la petición DELETE a la API REST para borrar la alarma
-         */
-
 
         /**
          * Este método vuelve a cargar el fragment con el listado.
@@ -164,19 +160,19 @@ public class AlarmaAdapter extends RecyclerView.Adapter<AlarmaAdapter.AlarmaView
         if(paciente != null) {
             viewHolder.txtCardUsuarioServicioAlarma.setText(Constantes.USUARIO_SERVICIO_DP_SP + paciente);
         } else {
-            viewHolder.txtCardUsuarioServicioAlarma.setText(Constantes.USUARIO_SERVICIO_DP_SP + Constantes.ERROR);
+            viewHolder.txtCardUsuarioServicioAlarma.setText(Constantes.USUARIO_SERVICIO_DP_SP + Constantes.ESPACIO_EN_BLANCO);
         }
 
         if(teleoperador != null){
             viewHolder.txtCardTeleoperadorAlarma.setText(Constantes.TELEOPERADOR_DP_SP + teleoperador.getFirstName() + Constantes.ESPACIO_EN_BLANCO + teleoperador.getLastName());
         } else {
-            viewHolder.txtCardTeleoperadorAlarma.setText(Constantes.TELEOPERADOR_DP_SP + Constantes.ERROR);
+            viewHolder.txtCardTeleoperadorAlarma.setText(Constantes.TELEOPERADOR_DP_SP + Constantes.ESPACIO_EN_BLANCO);
         }
 
         if(terminal != null){
             viewHolder.txtCardTerminalAlarma.setText(Constantes.TERMINAL_DP_SP + terminal.getNumeroTerminal());
         } else {
-            viewHolder.txtCardTerminalAlarma.setText(Constantes.TERMINAL_DP_SP + Constantes.ERROR);
+            viewHolder.txtCardTerminalAlarma.setText(Constantes.TERMINAL_DP_SP + Constantes.ESPACIO_EN_BLANCO);
         }
 
 
@@ -195,7 +191,7 @@ public class AlarmaAdapter extends RecyclerView.Adapter<AlarmaAdapter.AlarmaView
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             String formattedTime = sdf.format(alarma.getFecha_registro());
 
-            viewHolder.txtCardHoraRegistroAlarma.setText(formattedTime);
+            viewHolder.txtCardHoraRegistroAlarma.setText(Constantes.HORA_DP_SP + formattedTime + Constantes.H);
         }
 
 
@@ -203,7 +199,7 @@ public class AlarmaAdapter extends RecyclerView.Adapter<AlarmaAdapter.AlarmaView
         if(tipo != null){ // Control de error si el nombre es nulo.
             viewHolder.txtCardTipoAlarma.setText(Constantes.TIPO_DP_SP + clasificacionAlarma.getNombre() + Constantes.ESPACIO_GUION_ESPACIO+ tipo.getNombre());
         }else{
-            viewHolder.txtCardTipoAlarma.setText(Constantes.TIPO_DP_SP + Constantes.ERROR);
+            viewHolder.txtCardTipoAlarma.setText(Constantes.TIPO_DP_SP + Constantes.ESPACIO_EN_BLANCO);
         }
 
         // Establece un click listener para ViewHolder
@@ -227,9 +223,7 @@ public class AlarmaAdapter extends RecyclerView.Adapter<AlarmaAdapter.AlarmaView
         // Establecer el color de fondo del ViewHolder en función de si está seleccionado o no
         if (selectedPosition == i) {
             viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.azul));
-        }/* else {
-            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), android.R.color.white));
-        }*/
+        }
 
     }
 

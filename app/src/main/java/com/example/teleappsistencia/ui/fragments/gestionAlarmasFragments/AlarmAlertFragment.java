@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.example.teleappsistencia.servicios.ClienteRetrofit;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +75,8 @@ public class AlarmAlertFragment extends DialogFragment implements View.OnClickLi
     private String numeroTelefono;
 
     private Terminal terminal;
+
+    private List<Contacto> lContactosPrueba;
 
 
     public AlarmAlertFragment() {
@@ -188,6 +192,8 @@ public class AlarmAlertFragment extends DialogFragment implements View.OnClickLi
         this.nombrePaciente = persona.getNombre();
         this.apellidosPaciente = persona.getApellidos();
         this.numeroTelefono = persona.getTelefonoMovil() + Constantes.SLASH + persona.getTelefonoFijo();
+
+        extraerContactos();
     }
 
     /**
@@ -202,7 +208,7 @@ public class AlarmAlertFragment extends DialogFragment implements View.OnClickLi
 
         //Datos que se muestran
         this.textViewTipoAlarma.setText(Constantes.TIPO_ALARMA_DP_SP + this.tipoAlarma);
-        this.textViewNombrePaciente.setText(Constantes.PACIENTE_DP_SP + this.nombrePaciente);
+        this.textViewNombrePaciente.setText(Constantes.NOMBRE_DP_SP + this.nombrePaciente);
         this.textViewApellidosPaciente.setText(Constantes.APELLIDOS_DP_SP + this.apellidosPaciente);
         this.textViewTelefono.setText(Constantes.TELEFONO_DP_SP + this.numeroTelefono);
     }
@@ -245,6 +251,8 @@ public class AlarmAlertFragment extends DialogFragment implements View.OnClickLi
                     }else{
                         Toast.makeText(context, Constantes.ERROR_ALARMA_YA_ASIGNADA, Toast.LENGTH_LONG).show();
                     }
+
+                    extraerContactos();
                 } else{
                     Toast.makeText(context, Constantes.ERROR_, Toast.LENGTH_LONG).show();
                 }
@@ -273,8 +281,8 @@ public class AlarmAlertFragment extends DialogFragment implements View.OnClickLi
      */
     public void gestionarAlarma(){
         Bundle bundle = new Bundle();
-
         // se pasan los parametros
+        bundle.putSerializable(Constantes.ARG_AL_CONTACTO, (Serializable) lContactosPrueba);
         bundle.putSerializable(Constantes.ARG_ALARMA, alarmaNotificada);
         bundle.putSerializable(Constantes.ARG_PACIENTE, paciente);
         bundle.putSerializable(Constantes.ARG_TERMINAL, terminal);
@@ -290,6 +298,29 @@ public class AlarmAlertFragment extends DialogFragment implements View.OnClickLi
 
 
         dismiss();
+    }
+
+    public void extraerContactos(){
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Object>> call = apiService.getContactosbyIdPaciente(paciente.getId(), Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<List<Object>>() {
+            @Override
+            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+                List<Object> lObjectAux;
+                if(response.isSuccessful()){
+                    lObjectAux = response.body();
+                    lContactosPrueba = (ArrayList<Contacto>) (Utilidad.getObjeto(lObjectAux, Constantes.AL_CONTACTOS));
+                }else{
+                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Object>> call, Throwable t) {
+                Toast.makeText(getContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 

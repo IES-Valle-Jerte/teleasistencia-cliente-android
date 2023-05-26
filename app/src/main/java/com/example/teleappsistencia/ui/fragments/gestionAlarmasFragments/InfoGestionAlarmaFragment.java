@@ -104,7 +104,7 @@ public class InfoGestionAlarmaFragment extends Fragment {
         capturarElementos(view);
 
         /* Asignamos el listener a los botones */
-        asignarListener();
+        //asignarListener();
 
         /* Extraemos y cargamos los datos */
         if(this.alarma != null){
@@ -137,18 +137,18 @@ public class InfoGestionAlarmaFragment extends Fragment {
      * Asignamos el onClick listener a los botones. En este caso al haber sólo un botón no considero
      * necesario implementar en la clase el OnClick Listener
      */
-    private void asignarListener(){
+    /*private void asignarListener(){
         this.btnGestionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GestionAlarmaFragment gAF = GestionAlarmaFragment.newInstance(alarma, nombrePaciente, numeroTelefono, lContactos, paciente, terminal, color);
+                GestionAlarmaFragment gAF = GestionAlarmaFragment.newInstance(alarma);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.main_fragment, gAF)
                         .addToBackStack(null)
                         .commit();
             }
         });
-    }
+    }*/
 
 
     /**

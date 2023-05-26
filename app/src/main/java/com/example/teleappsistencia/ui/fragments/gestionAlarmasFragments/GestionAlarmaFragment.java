@@ -32,8 +32,10 @@ import com.example.teleappsistencia.modelos.Terminal;
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasFragment;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
+import com.example.teleappsistencia.ui.fragments.alarma.ListarAlarmasOrdenadasFragment;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -64,17 +66,11 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     private Paciente paciente;
 
     // Elementos del layout
-    private TextView textViewNombre;
-    private TextView textViewTelefono;
     private TextInputEditText editTextObservaciones;
     private Button btnRegistrarLlamadaPaciente;
     private Spinner spinnerContactos;
     private TextInputEditText editTextAcuerdoContacto;
     private Button btnRegistrarLlamadaContacto;
-    private Spinner spinnerCentrosSanitarios;
-    private TextInputEditText editTextPersonaLlamadaCentroSanitario;
-    private TextInputEditText editTextAcuerdoCentro;
-    private Button btnRegistrarLlamadaCentroSanitario;
     private Spinner spinnerRecursosComunitarios;
     private TextInputEditText editTextPersonaLlamadaRecursoComunitario;
     private TextInputEditText editTextAcuerdoRecursoComunitario;
@@ -82,15 +78,12 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     private Button buttonCrearAgenda;
     private ImageButton imageButtonInfoPaciente;
     private ImageButton imageButtonInfoContacto;
-    private ImageButton imageButtonInfoCentroSanitario;
     private ImageButton imageButtonInfoRecursoComunitario;
     private TextInputEditText editTextResumen;
     private Button buttonFinalizar;
     private Button buttonCancelar;
 
     // Elementos Auxiliares
-    private List<Contacto> lContactosParseada;
-    private List<RelacionUsuarioCentro> lCentrosSanitarios;
     private List<RelacionTerminalRecursoComunitario> lRecursosComunitarios;
 
     // Elementos para movimiento dinamico
@@ -112,7 +105,7 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     private Boolean desplegado_nivel3;
 
     private List<Object> lContactosPeticion;
-    private List<Object> lContactosPrueba;
+    private List<Contacto> lContactosPrueba;
 
     public GestionAlarmaFragment() {
         // Required empty public constructor
@@ -148,16 +141,50 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         return fragment;
     }
 
+    public static GestionAlarmaFragment newInstance(Alarma alarma){
+        GestionAlarmaFragment fragment = new GestionAlarmaFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(Constantes.ARG_ALARMA, alarma);
+        return fragment;
+    }
+
+    public void extraerContactos(){
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Object>> call = apiService.getContactosbyIdPaciente(paciente.getId(), Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<List<Object>>() {
+            @Override
+            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+                List<Object> lObjectAux;
+                if(response.isSuccessful()){
+                    lObjectAux = response.body();
+                    lContactosPrueba = (ArrayList<Contacto>) Utilidad.getObjeto(lObjectAux, Constantes.AL_CONTACTOS);
+
+                    extraerDatos();
+                    cargarDatos();
+                }else{
+                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Object>> call, Throwable t) {
+                Toast.makeText(getContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /* Si tenemos argumentos, los recogemos (comprobación por seguridad), sugerencia de Android Studio */
         if (getArguments() != null) {
             alarma = (Alarma) getArguments().getSerializable(Constantes.ARG_ALARMA);
-//          lContactos = (ArrayList<Object>) getArguments().getSerializable(Constantes.ARG_LCONTACTOS);
             paciente = (Paciente) getArguments().getSerializable(Constantes.ARG_PACIENTE);
             terminal = (Terminal) getArguments().getSerializable(Constantes.ARG_TERMINAL);
             color = getArguments().getInt(Constantes.ARG_COLOR);
+            lContactosPrueba = (ArrayList<Contacto>) getArguments().getSerializable(Constantes.ARG_AL_CONTACTO);
         }
     }
 
@@ -171,16 +198,18 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         /* Capturar los elementos del layout */
         capturarElementos(view);
 
+
         /* Pliega los niveles 2 y 3 */
         ocultarNivelesDefault();
 
         /* Asignamos el listener a los botones */
         asignarListener();
 
+
+
         /* Extraemos y cargamos los datos */
         if(this.alarma != null){
-            extraerDatos();
-            cargarDatos();
+            extraerContactos();
         }
 
         return view;
@@ -195,26 +224,20 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      * @param view
      */
     private void capturarElementos(View view){
-        //TextView
-
         //TextInputEditText
         this.editTextObservaciones = (TextInputEditText) view.findViewById(R.id.textInputEditTextObservaciones);
         this.editTextAcuerdoContacto = (TextInputEditText) view.findViewById(R.id.textInputEditTextAcuerdoContacto);
-        this.editTextPersonaLlamadaCentroSanitario = (TextInputEditText) view.findViewById(R.id.textInputEditTextPersonaLlamadaCentroSanitario);
-        this.editTextAcuerdoCentro = (TextInputEditText) view.findViewById(R.id.textInputEditTextAcuerdoCentroSanitario);
         this.editTextPersonaLlamadaRecursoComunitario = (TextInputEditText) view.findViewById(R.id.textInputEditTextPersonaLlamadaRecursoComunitario);
         this.editTextAcuerdoRecursoComunitario = (TextInputEditText) view.findViewById(R.id.textInputEditTextAcuerdoRecursoComunitario);
         this.editTextResumen = (TextInputEditText) view.findViewById(R.id.textInputEditTextResumen);
 
         //Spinners
         this.spinnerContactos = (Spinner) view.findViewById(R.id.spinnerContactos);
-        this.spinnerCentrosSanitarios = (Spinner) view.findViewById(R.id.spinnerCentrosSanitarios);
         this.spinnerRecursosComunitarios = (Spinner) view.findViewById(R.id.spinnerRecursosComunitarios);
 
         //Botones
         this.btnRegistrarLlamadaPaciente = (Button) view.findViewById(R.id.buttonRegistrarLlamadaPaciente);
         this.btnRegistrarLlamadaContacto = (Button) view.findViewById(R.id.buttonRegistrarLlamadaContacto);
-        this.btnRegistrarLlamadaCentroSanitario = (Button) view.findViewById(R.id.buttonRegistrarLlamadaCentroSanitario);
         this.btnRegistrarRecursosComunitarios = (Button) view.findViewById(R.id.buttonRegistrarRecursosComunitarios);
         this.buttonCrearAgenda = (Button) view.findViewById(R.id.buttonCrearAgenda);
         this.buttonFinalizar = (Button) view.findViewById(R.id.buttonFinalizar);
@@ -226,7 +249,6 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         //ImageButton (Info)
         this.imageButtonInfoPaciente = (ImageButton) view.findViewById(R.id.imageButtonInfoPaciente);
         this.imageButtonInfoContacto = (ImageButton) view.findViewById(R.id.imageButtonInfoContacto);
-        this.imageButtonInfoCentroSanitario = (ImageButton) view.findViewById(R.id.imageButtonInfoCentroSanitario);
         this.imageButtonInfoRecursoComunitario = (ImageButton) view.findViewById(R.id.imageButtonInfoRecursoComunitario);
 
         //Layout
@@ -243,12 +265,10 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     private void asignarListener(){
         this.btnRegistrarLlamadaPaciente.setOnClickListener(this);
         this.btnRegistrarLlamadaContacto.setOnClickListener(this);
-        this.btnRegistrarLlamadaCentroSanitario.setOnClickListener(this);
         this.btnRegistrarRecursosComunitarios.setOnClickListener(this);
         this.buttonCrearAgenda.setOnClickListener(this);
         this.imageButtonInfoPaciente.setOnClickListener(this);
         this.imageButtonInfoContacto.setOnClickListener(this);
-        this.imageButtonInfoCentroSanitario.setOnClickListener(this);
         this.imageButtonInfoRecursoComunitario.setOnClickListener(this);
         this.buttonFinalizar.setOnClickListener(this);
         this.buttonCancelar.setOnClickListener(this);
@@ -268,13 +288,9 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      * una lista de Object y queremos pasarla a un ArrayList de Contactos.
      */
     private void extraerDatos(){
-        extraerContactos();
-        this.lContactosParseada = (ArrayList<Contacto>) Utilidad.getObjeto(lContactosPeticion, Constantes.AL_CONTACTOS);
-
         /* Estos métodos además cargarán los datos de sus Spinner correspondiente, ya que las operaciones
          *  de extracción y carga deben ir anidadas para hacerlo de forma síncrona y no falle. */
         cargarSpinnerContactos();
-        recuperarListaCentrosSanitarios();
         recuperarListaRecursosComunitarios();
     }
 
@@ -295,12 +311,10 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
         ColorStateList csl = ColorStateList.valueOf(this.color);
         this.btnRegistrarLlamadaPaciente.setBackgroundTintList(csl);
         this.btnRegistrarLlamadaContacto.setBackgroundTintList(csl);
-        this.btnRegistrarLlamadaCentroSanitario.setBackgroundTintList(csl);
         this.btnRegistrarRecursosComunitarios.setBackgroundTintList(csl);
         this.buttonCrearAgenda.setBackgroundTintList(csl);
         this.imageButtonInfoPaciente.setColorFilter(this.color);
         this.imageButtonInfoContacto.setColorFilter(this.color);
-        this.imageButtonInfoCentroSanitario.setColorFilter(this.color);
         this.imageButtonInfoRecursoComunitario.setColorFilter(this.color);
     }
 
@@ -311,84 +325,20 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
     private void cargarSpinnerContactos(){
         /* Si la lista de contactos está vacía, inhabilitamos el botón de registrar llamada al Contacto
          * y  escondemos el botón de ver información del Contacto */
-        if(lContactosPeticion.isEmpty()){
+        if(lContactosPrueba.isEmpty()){
             this.imageButtonInfoContacto.setVisibility(View.INVISIBLE);
             this.btnRegistrarLlamadaContacto.setEnabled(false);
         }
         else{
-            ArrayAdapter<Contacto> adapter = new ArrayAdapter<Contacto>(getActivity(), android.R.layout.simple_spinner_dropdown_item, lContactosParseada);
+            ArrayAdapter<Contacto> adapter = new ArrayAdapter<Contacto>(getActivity(), android.R.layout.simple_spinner_dropdown_item, lContactosPrueba);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             this.spinnerContactos.setAdapter(adapter);
         }
 
     }
-    // obtiene los contactos cercanos del paciente
-    public void extraerContactos(){
-        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-        Call<List<Object>> call = apiService.getContactosbyIdPaciente(1, Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
-        call.enqueue(new Callback<List<Object>>() {
-            @Override
-            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
-                if(response.isSuccessful()){
-                    lContactosPrueba = response.body();
-                }else{
-                    //Toast.makeText(getContext(), "pruebas", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Object>> call, Throwable t) {
-                //Toast.makeText(getContext(), "pruebas", Toast.LENGTH_LONG).show();
-                Toast.makeText(getContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 
 
-    /**
-     * Este métoddo hace una petición a la API REST para traerse los datos de los Centros Sanitarios
-     * relacionados con el Paciente.
-     */
-    private void recuperarListaCentrosSanitarios() {
-        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-        Call<List<Object>> call = apiService.getCentrosbyIdPaciente(this.paciente.getId(), Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
-        call.enqueue(new Callback<List<Object>>() {
-            @Override
-            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
-                if(response.isSuccessful()){
-                    List<Object> lista = response.body();
-                    lCentrosSanitarios = (ArrayList<RelacionUsuarioCentro>) Utilidad.getObjeto(lista, Constantes.AL_RELACION_USUARIO_CENTRO);
-                    if(!lCentrosSanitarios.isEmpty()){
-                        cargarSpinnerCentrosSanitarios(); //Si la lista tiene valores, los cargamos en el Spinner
-                    }
-                    else{ //Si la lista no tiene datos, ocultamos el botón de información y deshabilitamos el de registrar la llamada
-                        imageButtonInfoCentroSanitario.setVisibility(View.INVISIBLE);
-                        btnRegistrarLlamadaCentroSanitario.setEnabled(false);
-                    }
-                }
-                else{
-                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message() , Toast.LENGTH_LONG).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<Object>> call, Throwable t) {
-                Toast.makeText(getContext(), Constantes.ERROR_ + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-
-    /**
-     * Cargamos la lista de Centros Sanitarios relacionados con el Paciente en su Spinner
-     */
-    private void cargarSpinnerCentrosSanitarios(){
-        ArrayAdapter<RelacionUsuarioCentro> adapter = new ArrayAdapter<RelacionUsuarioCentro>(getActivity(), android.R.layout.simple_spinner_dropdown_item, lCentrosSanitarios);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.spinnerCentrosSanitarios.setAdapter(adapter);
-    }
 
 
     /**
@@ -472,12 +422,11 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
 
         if(!acuerdoAlcanzado.isEmpty() && acuerdoAlcanzado.length() >= 10){ //TODO: estas comprobaciones pueden mejorarse
             contacto = (Contacto) this.spinnerContactos.getSelectedItem();
-////            personaEnContacto = (Persona) Utilidad.getObjeto(contacto.getPersonaEnContacto(), Constantes.PERSONA);
 
             personaContactoEnAlarma = new PersonaContactoEnAlarma();
             personaContactoEnAlarma.setFechaRegistro(Utilidad.getStringFechaNowYYYYMMDD());
             personaContactoEnAlarma.setIdAlarma(this.alarma.getId());
-////            personaContactoEnAlarma.setIdPersonaContacto(personaEnContacto.getId());
+            personaContactoEnAlarma.setIdPersonaContacto(contacto.getId());
             personaContactoEnAlarma.setAcuerdoAlcanzado(acuerdoAlcanzado);
 
             // LLamamos al método que hace la petición POST
@@ -512,73 +461,6 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
             }
             @Override
             public void onFailure(Call<PersonaContactoEnAlarma> call, Throwable t) {
-                Toast.makeText(getContext(), Constantes.ERROR_ + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-
-    /**
-     * Este método prepara los datos de la lamadda al Centro Sanitario para poder registrarlo en la Base de Datos.
-     */
-    private void registrarLlamadaCentroSanitario(){
-        RelacionUsuarioCentro relacionUsuarioCentro;
-        CentroSanitario centroSanitario;
-        CentroSanitarioEnAlarma centroSanitarioEnAlarma;
-        String personaLlamada = this.editTextPersonaLlamadaCentroSanitario.getText().toString();
-        String acuerdoAlcanzado = this.editTextAcuerdoCentro.getText().toString();
-
-        if(!personaLlamada.isEmpty() && personaLlamada.length() >= 3){ //TODO: estas comprobaciones pueden mejorarse
-            if(!acuerdoAlcanzado.isEmpty() && acuerdoAlcanzado.length() >= 10) {
-                // Recuperamos el Centro Sanitario del Spinner
-                relacionUsuarioCentro = (RelacionUsuarioCentro) this.spinnerCentrosSanitarios.getSelectedItem();
-                centroSanitario = (CentroSanitario) Utilidad.getObjeto(relacionUsuarioCentro.getIdCentroSanitario(), Constantes.CENTRO_SANITARIO);
-
-                // Creamos el Centro Sanitario en alarma con sus datos
-                centroSanitarioEnAlarma = new CentroSanitarioEnAlarma();
-                centroSanitarioEnAlarma.setFechaRegistro(Utilidad.getStringFechaNowYYYYMMDD()); //Fecha de sistema
-                centroSanitarioEnAlarma.setPersona(personaLlamada);
-                centroSanitarioEnAlarma.setAcuerdoAlcanzado(acuerdoAlcanzado);
-                centroSanitarioEnAlarma.setIdAlarma(this.alarma.getId());
-                centroSanitarioEnAlarma.setIdCentroSanitario(centroSanitario.getId());
-
-                // LLamamos al método que hace la petición POST
-                registrarCentroSanitarioEnAlarma(centroSanitarioEnAlarma);
-            }
-            else{
-                Toast.makeText(getContext(), Constantes.ACUERDO_CORTO_TEXTO_MINIMO_10, Toast.LENGTH_LONG).show();
-            }
-        }
-        else{
-            Toast.makeText(getContext(), Constantes.INTRODUCIR_NOMBRE_PERSONA_LLAMADA, Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-    /**
-     * Este método hace la petición POST a la API REST para persistir en Base de Datos la entidad
-     * Centro Sanitario En Alarma
-     * @param centroSanitarioEnAlarma
-     */
-    private void registrarCentroSanitarioEnAlarma(CentroSanitarioEnAlarma centroSanitarioEnAlarma) {
-        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-        Call<CentroSanitarioEnAlarma> call = apiService.addCentroSanitarioEnAlarma(centroSanitarioEnAlarma, Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
-        call.enqueue(new Callback<CentroSanitarioEnAlarma>() {
-            @Override
-            public void onResponse(Call<CentroSanitarioEnAlarma> call, Response<CentroSanitarioEnAlarma> response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(getContext(), Constantes.LLAMADA_REGISTRADA_EXITO, Toast.LENGTH_LONG).show();
-                    editTextPersonaLlamadaCentroSanitario.setText(Constantes.VACIO);
-                    editTextAcuerdoCentro.setText(Constantes.VACIO);
-                }
-                else{
-                    Toast.makeText(getContext(), Constantes.ERROR_REGISTRAR_LLAMADA, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message() , Toast.LENGTH_LONG).show();
-                }
-
-            }
-            @Override
-            public void onFailure(Call<CentroSanitarioEnAlarma> call, Throwable t) {
                 Toast.makeText(getContext(), Constantes.ERROR_ + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -680,38 +562,13 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      */
     private void dialogoInfoContacto(){
         Contacto contacto = (Contacto) this.spinnerContactos.getSelectedItem();
-////        Persona personaEnContacto = (Persona) Utilidad.getObjeto(contacto.getPersonaEnContacto(), Constantes.PERSONA);
-////        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-////        builder.setTitle(Constantes.INFORMACION_CONTACTO);
-////        builder.setMessage(Constantes.NOMBRE_DP_SP + personaEnContacto.getNombre() + Constantes.ESPACIO + personaEnContacto.getApellidos() + Constantes.SALTO_LINEA +
-////                           Constantes.TELEFONO_MOVIL_DP_SP + personaEnContacto.getTelefonoMovil() + Constantes.SALTO_LINEA +
-////                           Constantes.TELEFONO_FIJO_DP_SP + personaEnContacto.getTelefonoFijo() + Constantes.SALTO_LINEA +
-////                           Constantes.RELACION_CON_PACIENTE_DP_SP + contacto.getTipo_relacion() + Constantes.SALTO_LINEA +
-////                           Constantes.DISPONIBILIDAD_DP_SP + contacto.getDisponibilidad() + Constantes.SALTO_LINEA +////                   Constantes.OBSERVACIONES_DP_SP + contacto.getObservaciones() + Constantes.SALTO_LINEA +
-////                       Constantes.INTERR_TIENE_LLAVES_DP_SP + Utilidad.trueSifalseNo(contacto.isTiene_llaves_vivienda()));
-////        builder.setNeutralButton(Constantes.OK, new DialogInterface.OnClickListener() {
-////            @Override
-////            public void onClick(DialogInterface dialogInterface, int i) {
-////                dialogInterface.dismiss();
-////            }
-////        });
-////        builder.show();
-}
-
-
-    /**
-     * Este método mostrará la información del Centro Sanitario que esté seleccionado en su Spinner correspondiente
-     */
-    private void dialogoInfoCentroSanitario(){
-        RelacionUsuarioCentro relacionUsuarioCentro = (RelacionUsuarioCentro) this.spinnerCentrosSanitarios.getSelectedItem();
-        CentroSanitario centroSanitario = (CentroSanitario) Utilidad.getObjeto(relacionUsuarioCentro.getIdCentroSanitario(), Constantes.CENTRO_SANITARIO);
-        Direccion direccion = (Direccion) Utilidad.getObjeto(centroSanitario.getDireccion(), Constantes.DIRECCION);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(Constantes.INFORMACION_CENTRO_SANITARIO);
-        builder.setMessage(Constantes.NOMBRE_DP_SP + centroSanitario.getNombre() + Constantes.SALTO_LINEA +
-                Constantes.TELEFONO_DP_SP + centroSanitario.getTelefono() + Constantes.SALTO_LINEA +
-                Constantes.LOCALIDAD_DP_SP + direccion.getLocalidad()+Constantes.ESPACIO_PARENTESIS_AP + direccion.getProvincia() + Constantes.PARENTESIS_CIERRE + Constantes.SALTO_LINEA +
-                Constantes.DIRECCION_DP_SP + direccion.getDireccion());
+        builder.setTitle(Constantes.INFORMACION_CONTACTO);
+        builder.setMessage(Constantes.NOMBRE_DP_SP + contacto.getNombre() + Constantes.ESPACIO + contacto.getApellidos() + Constantes.SALTO_LINEA +
+                           Constantes.TELEFONO_MOVIL_DP_SP + contacto.getTelefono() + Constantes.SALTO_LINEA +
+                           Constantes.RELACION_CON_PACIENTE_DP_SP + contacto.getTipo_relacion() + Constantes.SALTO_LINEA +
+                           Constantes.DISPONIBILIDAD_DP_SP + contacto.getDisponibilidad() + Constantes.SALTO_LINEA +////                   Constantes.OBSERVACIONES_DP_SP + contacto.getObservaciones() + Constantes.SALTO_LINEA +
+                       Constantes.INTERR_TIENE_LLAVES_DP_SP + Utilidad.trueSifalseNo(contacto.isTiene_llaves_vivienda()));
         builder.setNeutralButton(Constantes.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -719,7 +576,7 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
             }
         });
         builder.show();
-    }
+}
 
 
     /**
@@ -824,7 +681,7 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
      * Este método carga el fragment del listado de alarmas
      */
     private void volver(){
-        ListarAlarmasFragment listarAlarmasFragment = new ListarAlarmasFragment();
+        ListarAlarmasOrdenadasFragment listarAlarmasFragment = new ListarAlarmasOrdenadasFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment, listarAlarmasFragment)
                 .addToBackStack(null)
@@ -877,7 +734,7 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
                 this.desplegado_nivel2 = false;
                 break;
             case R.id.layout_nivel3:
-                this.desplegado_nivel2 = false;
+                this.desplegado_nivel3 = false;
                 break;
         }
 
@@ -904,9 +761,6 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
             case R.id.buttonRegistrarLlamadaContacto:
                 registrarLlamadaContacto();
                 break;
-            case R.id.buttonRegistrarLlamadaCentroSanitario:
-                registrarLlamadaCentroSanitario();
-                break;
             case R.id.buttonRegistrarRecursosComunitarios:
                 registrarLlamadaRecursoComunitario();
                 break;
@@ -918,9 +772,6 @@ public class GestionAlarmaFragment extends Fragment implements View.OnClickListe
                 break;
             case R.id.imageButtonInfoContacto:
                 dialogoInfoContacto();
-                break;
-            case R.id.imageButtonInfoCentroSanitario:
-                dialogoInfoCentroSanitario();
                 break;
             case R.id.imageButtonInfoRecursoComunitario:
                 dialogoInfoRecursoComunitario();

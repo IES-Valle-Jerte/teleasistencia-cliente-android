@@ -433,6 +433,7 @@
     <string name="codigo_dp">Código:</string>
     <string name="teleoperador_dp">Teleoperador:</string>
     <string name="usuario_servicio_dp">Usuario servicio:</string>
+    <string name="usuario_servicio">Usuario servicio</string>
     <string name="id_alarma">ID Alarma</string>
     <string name="estado">Estado</string>
     <string name="paciente">Paciente</string>

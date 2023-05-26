@@ -1,5 +1,8 @@
 package com.example.teleappsistencia.modelos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import com.example.teleappsistencia.utilidades.Constantes;
@@ -136,8 +139,8 @@ public class Contacto implements Serializable {
         this.tiempo_domicilio = tiempo_domicilio;
     }
 
-    /**
-     * Se retorna el nombre de la persona de contacto para identificarla en los ListView, Spinners, etc
-     * @return
-     */
+    @Override
+    public String toString() {
+        return nombre + Constantes.ESPACIO_EN_BLANCO + apellidos;
+    }
 }

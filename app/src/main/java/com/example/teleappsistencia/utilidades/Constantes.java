@@ -101,6 +101,8 @@ public class Constantes {
     public static final String SUBMENU_LISTAR = "Listar";
     public static final String SUBMENU_MODIFICAR = "Modificar";
 
+    public static final String DIALOGO_CONFIRMAR_ALARMA = "¿Deseas borrar la alarma?";
+
     /**
      * Constantes de uso general.
      */
@@ -250,6 +252,8 @@ public class Constantes {
 
     public static final String ARG_AL_DESARROLLADOR = "AL_Desarrollador";
 
+    public static final String ARG_AL_CONTACTO = "AL_Contacto";
+
     /* Constantes ADAPTERS y Fragments */
     public final static String ID_ALARMA_DP_SP = "ID Alarma: ";
     public final static String ESTADO_DP_SP = "Estado: ";
@@ -373,7 +377,7 @@ public class Constantes {
     public final static String TEXTO_MINIMO_10 = "Texto mínimo de 10 caracteres.";
     public final static String ACUERDO_CORTO_TEXTO_MINIMO_10 = "Acuerdo alcanzado muy corto. Texto mínimo de 10 caracteres.";
     public static final String INTRODUCIR_NOMBRE_PERSONA_LLAMADA = "Introducir el nombre de la persona que atendió la llamada.";
-    public static final String INFORMACION_DEL_PACIENTE = "Información del Paciente";
+    public static final String INFORMACION_DEL_PACIENTE = "Información del Usuario del servicio";
     public static final String NUMERO_EXPEDIENTE_DP_SP = "Número de expediente: ";
     public static final String NUMERO_DE_LA_SS_DP_SP = "Número de la SS: ";
     public static final String OBSERVACIONES_MEDDICAS_DP_SP = "Observaciones médicas: ";
@@ -387,6 +391,10 @@ public class Constantes {
     public static final String INFORMACION_CENTRO_SANITARIO = "Información Centro Sanitario";
     public static final String LOCALIDAD_DP_SP = "Localidad: ";
     public static final String DIRECCION_DP_SP = "Direccion: ";
+
+    public static final String HORA_DP_SP = "Hora: ";
+
+    public static final String H = "h";
     public static final String INFORMACION_RECURSO_COMUNITARIO = "Información Recurso Comunitario";
     public static final String ATENCION = "ATENCIÓN";
     public static final String EN_CONSTRUCCION = "En construcción. Disculpe las molestias.";

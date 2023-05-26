@@ -125,17 +125,16 @@ public class InsertarAlarmaFragment extends Fragment implements View.OnClickList
         //Cargamos los datos desde la API REST en los spinners
         cargarDatosSpinners();
 
-        //Oculta los campos de programar alarmas
-        ocultarCamposProgramarAlarma();
+        //Oculta los campos de programar alarmas Comentar en otra entrega
+        //ocultarCamposProgramarAlarma();
 
         switchProgramarAlarma.setSelected(Boolean.TRUE);
 
         // Próxima entrega quitar comentarios de la siguiente línea
-
-        /*etPlannedDate.setVisibility(View.INVISIBLE);
+        etPlannedDate.setVisibility(View.INVISIBLE);
                     etPlannedDate.setEnabled(false);
                     buttonTimePicker.setVisibility(View.INVISIBLE);
-                    buttonTimePicker.setEnabled(false);*/
+                    buttonTimePicker.setEnabled(false);
 
 
         return view;

@@ -1,6 +1,8 @@
 package com.example.teleappsistencia.ui.fragments.alarma;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,17 +27,25 @@ import android.widget.Toast;
 
 import com.example.teleappsistencia.MainActivity;
 import com.example.teleappsistencia.R;
-import com.example.teleappsistencia.databinding.FragmentConsultarTipoAlarmaBinding;
 import com.example.teleappsistencia.modelos.Alarma;
+import com.example.teleappsistencia.modelos.Contacto;
+import com.example.teleappsistencia.modelos.Paciente;
+import com.example.teleappsistencia.modelos.Persona;
+import com.example.teleappsistencia.modelos.Teleoperador;
+import com.example.teleappsistencia.modelos.Terminal;
 import com.example.teleappsistencia.modelos.TipoAlarma;
 import com.example.teleappsistencia.servicios.APIService;
 import com.example.teleappsistencia.servicios.ClienteRetrofit;
+import com.example.teleappsistencia.ui.fragments.gestionAlarmasFragments.GestionAlarmaFragment;
 import com.example.teleappsistencia.ui.fragments.opciones_listas.OpcionesListaFragment;
 import com.example.teleappsistencia.utilidades.Constantes;
 import com.example.teleappsistencia.utilidades.Utilidad;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.text.Normalizer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -67,8 +77,6 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
     private String mParam2;
 
     private int selectedPosition = RecyclerView.NO_POSITION;
-    private List<Object> lContactos;
-
     private SearchView searchView;
 
     private List<Alarma> filtroItemsBusqueda;
@@ -106,7 +114,6 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_listar_alarmas_ordenadas, container, false);
-
         this.searchView = (SearchView) root.findViewById(R.id.search_view);
         crearFiltroBusqueda();
 
@@ -135,8 +142,6 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
         this.lAlarmas = new ArrayList<>();
         adapter = new AlarmaAdapter(lAlarmas);
         recycler.setAdapter(adapter);
-
-        extraerContactos();
 
         //Cargamos lista desde la API REST
         cargarLista();
@@ -170,20 +175,55 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
     }
 
     public void filtrarBusqueda(String secuencia) {
-        String tipoAlarma = secuencia.toLowerCase();
-        String auxNombre;
+        String secuenciaBuscada = secuencia.toLowerCase();
+        String auxNombre, auxNombreTeleoperador;
         filtroItemsBusqueda = new ArrayList<>();
 
-        if(tipoAlarma.isEmpty()){
+        if(secuenciaBuscada.isEmpty()){
             filtroItemsBusqueda = lAlarmas;
         }else{
             List<Alarma> filtroAlarmas = new ArrayList<>();
             for(Alarma aux : lAlarmas){
-                TipoAlarma tipoAlarmaAux = (TipoAlarma) (Utilidad.getObjeto(aux.getId_tipo_alarma(), Constantes.TIPO_ALARMA));
-                auxNombre = Normalizer.normalize(tipoAlarmaAux.getNombre(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-                if(auxNombre.toLowerCase().contains(tipoAlarma)){
-                    filtroAlarmas.add(aux);
+                Terminal terminal;
+                Paciente paciente;
+                Persona persona;
+
+                if(aux.getId_paciente_ucr() != null){
+                    paciente = (Paciente) Utilidad.getObjeto(aux.getId_paciente_ucr(), Constantes.PACIENTE);
+                    terminal = (Terminal) Utilidad.getObjeto(paciente.getTerminal(), Constantes.TERMINAL);
+
                 }
+                else{
+                    terminal = (Terminal) Utilidad.getObjeto(aux.getId_terminal(), Constantes.TERMINAL);
+                    paciente = (Paciente) Utilidad.getObjeto(terminal.getTitular(), Constantes.PACIENTE);
+                }
+                TipoAlarma tipoAlarmaAux = (TipoAlarma) (Utilidad.getObjeto(aux.getId_tipo_alarma(), Constantes.TIPO_ALARMA));
+                persona = (Persona) Utilidad.getObjeto(paciente.getPersona(), Constantes.PERSONA);
+                auxNombre = Normalizer.normalize(tipoAlarmaAux.getNombre(), Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+
+                Teleoperador teleoperador = (Teleoperador) (Utilidad.getObjeto(aux.getId_teleoperador(), Constantes.TELEOPERADOR));
+                if(teleoperador != null){ // evitar errores si no hay teleoperador en la alarma
+                    auxNombreTeleoperador = teleoperador.getFirstName() + Constantes.ESPACIO_EN_BLANCO + teleoperador.getLastName();
+                }else{
+                    auxNombreTeleoperador = Constantes.ESPACIO_EN_BLANCO;
+                }
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(aux.getFecha_registro());
+
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                String formattedTime = sdf.format(aux.getFecha_registro());
+
+                if(aux.getId_paciente_ucr() != null){
+                    if(auxNombre.toLowerCase().contains(secuenciaBuscada) || formattedTime.toLowerCase().contains(secuenciaBuscada) || paciente.toString().toLowerCase().contains(secuenciaBuscada) || auxNombreTeleoperador.toLowerCase().contains(secuenciaBuscada)){
+                        filtroAlarmas.add(aux);
+                    }
+                }else{
+                    if(auxNombre.toLowerCase().contains(secuenciaBuscada) || formattedTime.toLowerCase().contains(secuenciaBuscada) || auxNombreTeleoperador.toLowerCase().contains(secuenciaBuscada)){
+                        filtroAlarmas.add(aux);
+                    }
+                }
+
             }
             filtroItemsBusqueda = filtroAlarmas;
         }
@@ -240,35 +280,111 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
     // Estos métodos son los que hacen las funciones del layout de interación con los cardviews
     @Override
     public void onViewDetailsButtonClicked() {
-        showAlarmDetails();
-
+        if(this.adapter.getAlarmaSeleccionada()!=null){
+            showAlarmDetails();
+        }
     }
 
     @Override
     public void onDeleteButtonClicked() {
-        borrarAlarma();
+        if(this.adapter.getAlarmaSeleccionada()!=null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(Constantes.DIALOGO_CONFIRMAR_ALARMA)
+                    .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            borrarAlarma();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
 
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
     @Override
     public void onEditButtonClicked() {
-        modificarAlarma();
+        if(this.adapter.getAlarmaSeleccionada()!=null){
+            if(this.adapter.getAlarmaSeleccionada().getEstado_alarma().equals(Constantes.CERRADA)){
+                Toast.makeText(context, Constantes.ALARMA_YA_CERRADA, Toast.LENGTH_SHORT).show();
+            }else{
+                modificarAlarma();
+            }
+        }
+
     }
 
     public void showAlarmDetails(){
+        Paciente paciente;
+        Persona persona;
+        Terminal terminal;
+        int color;
+
+        Alarma alarmaNotificada = adapter.getAlarmaSeleccionada();
+
+        if(alarmaNotificada.getId_paciente_ucr() != null){
+            color = getResources().getColor(R.color.azul, getActivity().getTheme());
+            paciente = (Paciente) Utilidad.getObjeto(alarmaNotificada.getId_paciente_ucr(), Constantes.PACIENTE);
+            terminal = (Terminal) Utilidad.getObjeto(paciente.getTerminal(), Constantes.TERMINAL);
+
+        }
+        else{
+            color = getResources().getColor(R.color.verde, getActivity().getTheme());
+            terminal = (Terminal) Utilidad.getObjeto(alarmaNotificada.getId_terminal(), Constantes.TERMINAL);
+            paciente = (Paciente) Utilidad.getObjeto(terminal.getTitular(), Constantes.PACIENTE);
+        }
+        persona = (Persona) Utilidad.getObjeto(paciente.getPersona(), Constantes.PERSONA);
+
+        //extraerContactos(paciente, alarmaNotificada, persona, terminal, color);
+
+        AppCompatActivity activity = (AppCompatActivity) getContext();
+        GestionAlarmaFragment gestionAlarmaFragment = GestionAlarmaFragment.newInstance(alarmaNotificada, persona.getNombre(),persona.getTelefonoMovil(),new ArrayList<Object>(), paciente, terminal, color);
+        activity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, gestionAlarmaFragment)
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+   /* public void extraerContactos(Paciente paciente, Alarma alarmaNotificada, Persona persona, Terminal terminal, int color){
+        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+        Call<List<Object>> call = apiService.getContactosbyIdPaciente(paciente.getId(), Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
+        call.enqueue(new Callback<List<Object>>() {
+            @Override
+            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+                List<Object> lObjectAux;
+                if(response.isSuccessful()){
+                    lObjectAux = response.body();
+                    lContactos = (ArrayList<Object>) lObjectAux;
+
+                    AppCompatActivity activity = (AppCompatActivity) getContext();
+                    GestionAlarmaFragment gestionAlarmaFragment = GestionAlarmaFragment.newInstance(alarmaNotificada, persona.getNombre(), persona.getTelefonoMovil(), lContactos, paciente, terminal, color);
+                    activity.getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, gestionAlarmaFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }else{
+                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Object>> call, Throwable t) {
+                Toast.makeText(getContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }*/
+
+    public void modificarAlarma(){
         AppCompatActivity activity = (AppCompatActivity) getContext();
         ConsultarAlarmaFragment consultarAlarmaFragment = ConsultarAlarmaFragment.newInstance(adapter.getAlarmaSeleccionada());
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment, consultarAlarmaFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void modificarAlarma(){
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        ModificarAlarmaFragment modificarAlarmaFragment = ModificarAlarmaFragment.newInstance(adapter.getAlarmaSeleccionada());
-        activity.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment, modificarAlarmaFragment)
                 .addToBackStack(null)
                 .commit();
     }
@@ -307,26 +423,5 @@ public class ListarAlarmasOrdenadasFragment extends Fragment implements View.OnC
         this.selectedPosition = position;
     }
 
-    public void extraerContactos(){
-        APIService apiService = ClienteRetrofit.getInstance().getAPIService();
-        Call<List<Object>> call = apiService.getContactosbyIdPaciente(1, Constantes.BEARER_ESPACIO + Utilidad.getToken().getAccess());
-        call.enqueue(new Callback<List<Object>>() {
-            @Override
-            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
-                if(response.isSuccessful()){
-                    lContactos = response.body();
-                }else{
-                    //Toast.makeText(getContext(), "pruebas", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(), Constantes.ERROR_ + response.message(), Toast.LENGTH_LONG).show();
 
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Object>> call, Throwable t) {
-                //Toast.makeText(getContext(), "pruebas", Toast.LENGTH_LONG).show();
-                Toast.makeText(getContext(), Constantes.ERROR_+t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 }
