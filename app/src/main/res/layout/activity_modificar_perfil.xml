@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ModificarPerfilActivity">
+
+    <!-- Toolbar de la app -->
+    <include
+        android:id="@+id/app_bar_main"
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/panelDatos"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:layout_marginTop="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <!-- User's login username -->
+        <TextView
+            android:id="@+id/tvUsername"
+            android:text="@string/modificar_perfil_tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Imagen de perfil -->
+        <Button
+            android:id="@+id/btnCambiarDatabase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/modificar_perfil_btnCambiarBd"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="@+id/tvUsername"
+            app:layout_constraintBottom_toBottomOf="@+id/tvUsername"
+            app:layout_constraintStart_toEndOf="@+id/tvUsername"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivFotoPerfil"
+            android:src="@drawable/default_user"
+            android:layout_width="225dp"
+            android:layout_height="225dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUsername" />
+
+        <ImageButton
+            android:id="@+id/btnCargarFoto"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_menu_camera"
+            android:background="@drawable/imagebutton_circular"
+            android:elevation="5dp"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toTopOf="@+id/ivFotoPerfil"
+            app:layout_constraintBottom_toBottomOf="@+id/ivFotoPerfil"
+            app:layout_constraintStart_toStartOf="@+id/ivFotoPerfil"
+            app:layout_constraintEnd_toEndOf="@+id/ivFotoPerfil" />
+
+        <!-- Datos Usuario -->
+        <LinearLayout
+            android:visibility="visible"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintBottom_toTopOf="@+id/btnCambiarPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivFotoPerfil">
+
+            <!-- Nombre y Apellidos -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/modificar_perfil_tvNombreApellidos"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Nombre -->
+                <EditText
+                    android:id="@+id/edtNombre"
+                    android:enabled="false"
+                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:inputType="text"
+                    android:textSize="18sp" />
+
+                <!-- Apellidos -->
+                <EditText
+                    android:id="@+id/edtApellidos"
+                    android:enabled="false"
+                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:inputType="text"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- Email -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center_horizontal"
+                android:text="@string/modificar_perfil_tvEmail"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtEmail"
+                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:inputType="textEmailAddress"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!-- Mostrar panel contraseña -->
+        <Button
+            android:id="@+id/btnCambiarPassword"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/modificar_perfil_btnCambiarPass"
+            app:layout_constraintBottom_toTopOf="@+id/btnGuardarCambios"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <!-- Guardado -->
+        <Button
+            android:id="@+id/btnGuardarCambios"
+            android:text="@string/modificar_perfil_btnGuardar"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/panelCambiarPassword"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:id="@+id/editTexts"
+            android:layout_width="325dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintVertical_bias="0.25"
+            app:layout_constraintBottom_toTopOf="@+id/btnGuardarNuevaPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <!-- Header y requisitos -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/modificar_perfil_tvNuevaPassHeader"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/modificar_perfil_requisitosPassword1"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modificar_perfil_requisitosPassword2"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modificar_perfil_requisitosPassword3"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modificar_perfil_requisitosPassword4"
+                android:textSize="18sp" />
+
+            <!-- Nueva Contraseña -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center_horizontal"
+                android:text="@string/modificar_perfil_tvNuevaPass"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtNuevaPassword"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:hint="@string/modificar_perfil_tvNuevaPass"
+                android:inputType="textPassword"
+                android:textSize="18sp" />
+
+            <!-- Repetir Nueva Contraseña -->
+            <EditText
+                android:id="@+id/edtRepetirNuevaPassword"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:hint="@string/modificar_perfil_tvRepetirNuevaPass"
+                android:inputType="textPassword"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!-- Guardar -->
+        <Button
+            android:id="@+id/btnGuardarNuevaPassword"
+            android:layout_width="325dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/modificar_perfil_btnGuardarNuevaPassword"
+            app:layout_constraintBottom_toTopOf="@+id/btnCancelarCambioPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <!-- Cancelar -->
+        <Button
+            android:id="@+id/btnCancelarCambioPassword"
+            android:layout_width="325dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="@string/modificar_perfil_btnCancelarCambioPassword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/panelCambiarDatabase"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:layout_marginTop="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <TextView
+            android:id="@+id/tvDatabases"
+            android:text="@string/modificar_perfil_tvDatabases"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinDatabases"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:minHeight="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:gravity="center_horizontal"
+            android:background="@drawable/rounded_spinner"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            tools:listitem="@layout/support_simple_spinner_dropdown_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDatabases" />
+
+        <!-- Guardar -->
+        <Button
+            android:id="@+id/btnGuardarNuevaDatabase"
+            android:layout_width="325dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/modificar_perfil_btnGuardarNuevaPassword"
+            app:layout_constraintBottom_toTopOf="@+id/btnCancelarCambioDatabase"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <!-- Cancelar -->
+        <Button
+            android:id="@+id/btnCancelarCambioDatabase"
+            android:layout_width="325dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="@string/modificar_perfil_btnCancelarCambioPassword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

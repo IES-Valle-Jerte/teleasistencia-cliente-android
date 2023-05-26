@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Es una clase singleton que construye una instancia de Retrofit y la proporciona al resto de la
@@ -73,6 +74,8 @@ public class ClienteRetrofit {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(urlAPI)
                 .client(clienteHttp)
+                // Conversor para que los booleanos y números se manden como boleanos y no texto plano
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
