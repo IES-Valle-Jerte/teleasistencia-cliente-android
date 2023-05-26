@@ -180,7 +180,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
 
         this.editTextTipoRecursoComunitario = (EditText) root.findViewById(R.id.editTextTipoRecursoComunitario);
         this.spinnerTipoRecursoComunitario = (Spinner) root.findViewById(R.id.spinnerTipoRecursoComunitario);
-        this.shimmerFrameLayout = (ShimmerFrameLayout) root.findViewById(R.id.shimmer_container_spinner);
+        this.shimmerFrameLayout = (ShimmerFrameLayout) root.findViewById(R.id.shimmer_container_opciones);
 
         this.buttonGuardar = (Button) root.findViewById(R.id.buttonGuardar);
         this.buttonVolver = (Button) root.findViewById(R.id.buttonVolver);
@@ -196,6 +196,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
              */
             case Constantes.CONSULTAR:
                 this.textViewTitulo.setText(Constantes.TITULO_CONSULTAR);
+                this.shimmerFrameLayout.setVisibility(View.GONE);
                 /*
                     Los EditText pierden su listener para que no puedan ser modificados.
                  */
@@ -414,6 +415,7 @@ public class RecursosOpcionesFragment extends Fragment implements View.OnClickLi
                      */
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.hideShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                     /*
                         Este método sobre escribe el getView y el getDropDownView de la clase ArrayAdapter
                         para que guarde un objeto y muestre su nombre con un tamaño determinado en dimens.xml.
