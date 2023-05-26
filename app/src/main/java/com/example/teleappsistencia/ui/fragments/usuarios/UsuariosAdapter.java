@@ -111,12 +111,12 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.Usuari
         private void borrarUsuario() {
             APIService apiService = ClienteRetrofit.getInstance().getAPIService();
 
-            Call<Response<String>> call = apiService.deleteUser(usuario.getPk(), Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
-            call.enqueue(new Callback<Response<String>>() {
+            Call<String> call = apiService.deleteUser(usuario.getPk(), Constantes.TOKEN_BEARER + Utilidad.getToken().getAccess());
+            call.enqueue(new Callback<String>() {
                 @Override
-                public void onResponse(Call<Response<String>> call, Response<Response<String>> response) {
+                public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()) {
-                        Response<String> respuesta = response.body();
+                        String respuesta = response.body();
                         AlertDialogBuilder.crearInfoAlerDialog(context, Constantes.INFO_ALERTDIALOG_ELIMINADO_USUARIO);
                         recargarFragment();
                     } else {
@@ -125,7 +125,7 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.Usuari
                 }
 
                 @Override
-                public void onFailure(Call<Response<String>> call, Throwable t) {
+                public void onFailure(Call<String> call, Throwable t) {
                     t.printStackTrace();
                     System.out.println(t.getMessage());
                 }

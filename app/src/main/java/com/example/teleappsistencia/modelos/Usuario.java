@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Clase POJO "Usuario" utilizada para parsear la respuesta JSON del servidor.
  */
-public class Usuario implements Serializable{
+public class Usuario implements Serializable {
 
     private final static long serialVersionUID = 2592565805411682085L;
 
@@ -20,6 +20,10 @@ public class Usuario implements Serializable{
     private int pk;
     @SerializedName("url")
     private String url;
+    @SerializedName("is_active")
+    private Boolean isActive;
+    @SerializedName("database_id")
+    private Integer database;
     @SerializedName("last_login")
     private String lastLogin;
     @SerializedName("username")
@@ -57,6 +61,14 @@ public class Usuario implements Serializable{
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public Boolean getActive() { return isActive; }
+
+    public void setActive(Boolean active) { isActive = active; }
+
+    public Integer getDatabase() { return database; }
+
+    public void setDatabase(Integer database) { this.database = database; }
 
     public String getLastLogin() {
         return lastLogin;

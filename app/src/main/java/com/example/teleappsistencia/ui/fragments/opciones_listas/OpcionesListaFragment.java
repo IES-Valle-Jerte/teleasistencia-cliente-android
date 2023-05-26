@@ -65,12 +65,12 @@ public class OpcionesListaFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_opciones_listas, container, false);
+        View view= inflater.inflate(R.layout.fragment_opciones_lista, container, false);
+
         // Asignar listeners a los botones
         ImageButton viewDetailsButton = view.findViewById(R.id.view_details_button);
         viewDetailsButton.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +81,7 @@ public class OpcionesListaFragment extends Fragment {
         });
 
         ImageButton deleteButton = view.findViewById(R.id.delete_button);
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

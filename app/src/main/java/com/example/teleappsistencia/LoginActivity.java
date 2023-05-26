@@ -1,6 +1,7 @@
 package com.example.teleappsistencia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +40,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Toolbar de la aplicación
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         this.btn_iniciar_sesion = findViewById(R.id.btn_iniciar_sesion);
         this.editText_usuario = findViewById(R.id.editText_usuario);
         this.editText_password = findViewById(R.id.editText_password);
@@ -233,10 +239,18 @@ public class LoginActivity extends AppCompatActivity {
         Grupo grupo = (Grupo) Utilidad.getObjeto(gruposList.get(0), Constantes.GRUPO);  // LLamo al método Utils.getObjeto() para evitar
                                                                                         // el error al castear una LinkedTreeMap a un Object.
 
-        if (grupo.getName().equalsIgnoreCase(Constantes.PROFESOR)) {
-            Utilidad.setIsAdmin(true); // Si pertenece a el grupo con el nombre "Profesor" entonces se asigna la variable isAdmin a true.
+        if (grupo.getName().equalsIgnoreCase(Constantes.ADMINISTRADOR)) {
+            // Si pertenece al grupo "Administrador", tanto isAdmin como isSuperUser se asignarán a true.
+            Utilidad.setIsAdmin(true);
+            Utilidad.setIsSuperUser(true);
+        } else if (grupo.getName().equalsIgnoreCase(Constantes.PROFESOR)) {
+            // Si pertenece a el grupo con el nombre "Profesor" entonces se asigna la variable isAdmin a true, pero no a isSuperUser.
+            Utilidad.setIsAdmin(true);
+            Utilidad.setIsSuperUser(false);
         } else {
-            Utilidad.setIsAdmin(false);  // De lo contrario se le asigna false.
+            // De lo contrario se le asigna false a ambos.
+            Utilidad.setIsAdmin(false);
+            Utilidad.setIsSuperUser(false);
         }
     }
 }
