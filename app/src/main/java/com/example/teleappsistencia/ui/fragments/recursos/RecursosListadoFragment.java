@@ -247,6 +247,7 @@ public class RecursosListadoFragment extends Fragment implements View.OnClickLis
                      */
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.hideShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                     /*
                         Filtro para saber que Recursos son los que tenemos que mostrar
                         según su id en la clasificación de recursos (Submenu).
