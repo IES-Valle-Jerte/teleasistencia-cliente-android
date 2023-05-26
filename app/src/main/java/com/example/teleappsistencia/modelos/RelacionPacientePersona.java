@@ -12,9 +12,14 @@ public class RelacionPacientePersona implements Serializable {
      * Atributos de la clase POJO con sus anotaciones GSON correspondientes,
      * que se utilizan para mapear las JSON keys hacia campos Java.
      */
-
     @SerializedName("id")
-    private Object id;
+    private int id;
+    @SerializedName("nombre")
+    private String nombre;
+    @SerializedName("apellidos")
+    private String apellidos;
+    @SerializedName("telefono")
+    private String telefono;
     @SerializedName("tipo_relacion")
     private String tipoRelacion;
     @SerializedName("tiene_llaves_vivienda")
@@ -25,19 +30,47 @@ public class RelacionPacientePersona implements Serializable {
     private String observaciones;
     @SerializedName("prioridad")
     private int prioridad;
+    @SerializedName("es_conviviente")
+    private boolean esConviviente;
+    @SerializedName("tiempo_domicilio")
+    private int tiempoDomicilio;
     @SerializedName("id_paciente")
-    private Object idPaciente;
-    @SerializedName("id_persona")
-    private Object idPersona;
+    private int idPaciente;
+
 
     //Getters y setters
-    
-    public Object getId() {
+
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Object id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getTipoRelacion() {
@@ -80,20 +113,27 @@ public class RelacionPacientePersona implements Serializable {
         this.prioridad = prioridad;
     }
 
-    public Object getIdPaciente() {
+    public boolean isEsConviviente() {
+        return esConviviente;
+    }
+
+    public void setEsConviviente(boolean esConviviente) {
+        this.esConviviente = esConviviente;
+    }
+
+    public int getTiempoDomicilio() {
+        return tiempoDomicilio;
+    }
+
+    public void setTiempoDomicilio(int tiempoDomicilio) {
+        this.tiempoDomicilio = tiempoDomicilio;
+    }
+
+    public int getIdPaciente() {
         return idPaciente;
     }
 
-    public void setIdPaciente(Object idPaciente) {
+    public void setIdPaciente(int idPaciente) {
         this.idPaciente = idPaciente;
     }
-
-    public Object getIdPersona() {
-        return idPersona;
-    }
-
-    public void setIdPersona(Object idPersona) {
-        this.idPersona = idPersona;
-    }
-
 }

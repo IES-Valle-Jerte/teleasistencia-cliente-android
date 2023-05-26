@@ -82,7 +82,7 @@ public class RelacionTerminalRecursoComunitarioAdapter extends RecyclerView.Adap
         }
 
         private void accionBorrarTerminalRecursoComunitario() {
-            APIService apiService = ClienteRetrofit.getInstance().getAPIService();
+            /*APIService apiService = ClienteRetrofit.getInstance().getAPIService();
             Call<ResponseBody> call = apiService.deleteRelacionTerminalRecursoComunitario(String.valueOf(this.relacionTerminalRecursoComunitario.getId()), Constantes.BEARER + Utilidad.getToken().getAccess());
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -99,7 +99,7 @@ public class RelacionTerminalRecursoComunitarioAdapter extends RecyclerView.Adap
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
                 }
-            });
+            });*/
         }
 
         private void recargarFragment() {
@@ -136,7 +136,7 @@ public class RelacionTerminalRecursoComunitarioAdapter extends RecyclerView.Adap
 
     @Override
     public void onBindViewHolder(RelacionTerminalRecursoComunitarioViewholder viewHolder, int i) {
-        viewHolder.setOnClickListeners();
+       /* viewHolder.setOnClickListeners();
         viewHolder.setRelacionTerminalRecursoComunitario(items.get(i));
         viewHolder.idRelacionTerminalRecursoComunitario.setText("ID: " + String.valueOf(items.get(i).getId()));
         Terminal terminal = (Terminal) Utilidad.getObjeto(items.get(i).getIdTerminal(), "Terminal");
@@ -146,6 +146,6 @@ public class RelacionTerminalRecursoComunitarioAdapter extends RecyclerView.Adap
         RecursoComunitario recursoComunitario = (RecursoComunitario) Utilidad.getObjeto(items.get(i).getIdRecursoComunitario(), "RecursoComunitario");
         if(recursoComunitario != null) {
             viewHolder.recursoComunitarioCard.setText("Nombre: " + recursoComunitario.getNombre());
-        }
+        }*/
     }
 }

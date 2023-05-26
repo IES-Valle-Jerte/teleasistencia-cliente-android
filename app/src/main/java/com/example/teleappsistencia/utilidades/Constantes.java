@@ -12,7 +12,7 @@ public class Constantes {
     public final static String TIPO_CENTRO_SANITARIO = "TipoCentroSanitario";
     public final static String TIPO_RECURSO_COMUNITARIO = "TipoRecursoComunitario";
     public final static String TIPO_CENTRO_SANITARIO_OBJETO = "tipoCentroSanitario";
-    public final static String TIPO_MODALIDAD_PACIENTE_OBJETO = "tipoModalidadPaciente";
+    public final static String TIPO_MODALIDAD_PACIENTE_OBJETO = "TipoModalidadPaciente";
     public final static String TIPO_RECURSO_COMUNITARIO_OBJETO = "tipoRecursoComunitario";
     public final static String CENTRO_SANITARIO_OBJETO = "centroSanitario";
     public final static String RECURSO_COMUNITARIO_OBJETO = "recursoComunitario";

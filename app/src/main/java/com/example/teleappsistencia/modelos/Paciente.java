@@ -39,6 +39,19 @@ public class Paciente implements Serializable {
     @SerializedName("id_tipo_modalidad_paciente")
     private Object tipoModalidadPaciente;
 
+    public Paciente() {
+        this.id = 0;
+        this.tieneUcr = false;
+        this.numeroExpediente = "";
+        this.numeroSeguridadSocial = "";
+        this.prestacionOtrosServiciosSociales = "";
+        this.observacionesMedicas = "";
+        this.interesesYActividades = "";
+        this.idTerminal = null;
+        this.persona = 0;
+        this.tipoModalidadPaciente = "";
+    }
+
     //Getters y setters
 
     public int getId() {
