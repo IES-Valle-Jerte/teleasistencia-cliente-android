@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         List<MenuModel> childModelsList; // Lista para las sub-opciones
         MenuModel menuModel; // Modelo de la opción.
 
-        // Menu Alarmas.
+        /*// Menu Alarmas.
         // Las alarmas están ordenadas por abiertas y por hora de registro
         menuModel = new MenuModel(getResources().getString(R.string.menu_alarmas), false, false, new ListarAlarmasOrdenadasFragment());
         headerList.add(menuModel);
@@ -633,10 +633,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // mod-GAG
         // Menu Recursos
+        menuRecursos();*/
+
+        //USUARIOS DEL SISTEMA. Solo le aparece a los administradores
+        if(Utilidad.isAdmin()) {
+            menuModel = new MenuModel(getResources().getString(R.string.menu_usuarios_sistema), false, false, new UsuariosSistemaFragment());
+            headerList.add(menuModel);
+        }
+
+        //USUARIOS DEL SERVICIO
+        childModelsList = new ArrayList<>();
+        menuModel = new MenuModel(getResources().getString(R.string.menu_usuarios_servicio), true, true, new ListarPacienteFragment());
+        headerList.add(menuModel);
+
+        //RECURSOS
         menuRecursos();
+
+        //AGENDAS
+        //Incluir aquí la opción de menú de Agenda
+
+        //ALARMAS
+        menuModel = new MenuModel(getResources().getString(R.string.menu_alarmas), false, false, new ListarAlarmasOrdenadasFragment());
+        headerList.add(menuModel);
+
+        //ACERCA DE
+        menuModel = new MenuModel(getResources().getString(R.string.menu_acercaDe), false, false, new AcercaDeFragment());
+        headerList.add(menuModel);
+
     }
 
-    // mod-GAG
     /**
      * Método que genera la opción "Recursos" menu.
      *
