@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Teleappsistencia</string>
+    <string name="menu_alarmas">Alarms</string>
+    <string name="menu_alarma">Alarm</string>
+    <string name="menu_usuarios_servicio">Service Users</string>
+    <string name="menu_usuarios_sistema">System Users</string>
+    <string name="nombreUsuario">Username</string>
+    <string name="password">Password</string>
+    <string name="apellidos">Surnames</string>
+    <string name="sexo">Sex</string>
+    <string name="sexo_masculino">Man</string>
+    <string name="sexo_femenimo">Woman</string>
+    <string name="grupo">Group</string>
+    <string name="textview_nombre_usuario_obligatorio">"Username is required "</string>
+    <string name="textview_password_obligatoria">"Password is required "</string>
+    <string name="textview_nombre_obligatorio">Name is required</string>
+    <string name="textview_apellidos_obligatorios">Usernames are required</string>
+    <string name="textview_email_obligatorio">Mail is required</string>
+    <string name="textview_fecha_obligatoria">Date is required</string>
+    <string name="textview_localidad_obligatoria">Location is required</string>
+    <string name="textview_provincia_obligatoria">Province is required</string>
+    <string name="textview_direccion_obligatoria">Direction is required</string>
+    <string name="textview_codigoPostal_obligatoria">Postal code is required</string>
+    <string name="textview_dni_obligatorio">NIF is required</string>
+    <string name="textview_dni_no_valido">NIF is not valid</string>
+    <string name="textview_fechaNacimiento_obligatorio">Birthdate is required</string>
+    <string name="textview_telefonoFijo_obligatorio">Landline is required</string>
+    <string name="titulo_listarPacientes">Service users</string>
+    <string name="titulo_usuarios_sistema">System users</string>
+    <string name="titulo_listarDatosCentroSanitario">Health centers</string>
+    <string name="titulo_listarDatosTipoRecursoComunitario">Types of community resources</string>
+    <string name="titulo_listarDatosRecursoComunitario">Community resources</string>
+    <string name="menu_acercaDe">About us</string>
 </resources>
