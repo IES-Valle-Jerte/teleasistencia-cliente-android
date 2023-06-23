@@ -553,9 +553,8 @@
     <string name="situacion_terminal" translatable="false">Situacion terminal</string>
     <!-- no pisar este bloque -->
     <!-- acerca de -->
-    <string name="info_acercaDe" translatable="false">"El software ha sido desarrollado bajo la licencia GPL3 por el departamento de Informática del IES “Valle del Jerte” de Plasencia, con la colaboración principal de Fréderic Sánchez, Angel Enrique Pineda y Jesús Redondo.
-
-Especial mención al departamento de Atención Sociosanitaria del IES “San Martín” de Talayuela. Partícipes e impulsores de la plataforma de prácticas de teleasistencia
+    <string name="info_acercaDe" translatable="false">"El software ha sido desarrollado bajo la licencia GPL3 por el departamento de Informática del IES “Valle del Jerte” de Plasencia, siendo los analistas del software y coordinadores principales los profesores Fréderic Sánchez, Enrique Pineda y Jesús Redondo.
+Especial mención al departamento de Servicios Socioculturales y a la Comunidad del IES “San Martín” de Talayuela. Partícipes e impulsores de la plataforma de prácticas de teleasistencia
 
 Los alumnos que han contribuido en el desarrollo de este proyecto son:"
 </string>
